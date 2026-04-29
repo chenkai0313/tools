@@ -44,6 +44,15 @@ const en = {
     copy: 'Copy',
     copied: 'Copied!',
     clear: 'Clear',
+    uppercase: 'Uppercase',
+    flags: {
+      g: 'Global match',
+      i: 'Case insensitive',
+      m: 'Multiline mode',
+      s: 'Dot matches newline',
+      u: 'Unicode mode',
+      y: 'Sticky mode',
+    },
   },
   footer: {
     copyright: '© 2025 Webmaster Tools',

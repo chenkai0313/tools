@@ -159,8 +159,7 @@ export default function CryptoPage() {
 
   const copySymResult = useCallback(async () => {
     if (!symResult) return
-    const text = symResultRef.current?.textContent
-    if (text) await navigator.clipboard.writeText(text)
+    await navigator.clipboard.writeText(symResult)
     setCopiedSym(true); setFlashSym(true)
     setTimeout(() => setCopiedSym(false), 1500)
     setTimeout(() => setFlashSym(false), 400)
@@ -168,8 +167,7 @@ export default function CryptoPage() {
 
   const copyRsaResult = useCallback(async () => {
     if (!rsaResult) return
-    const text = rsaResultRef.current?.textContent
-    if (text) await navigator.clipboard.writeText(text)
+    await navigator.clipboard.writeText(rsaResult)
     setCopiedRsa(true); setFlashRsa(true)
     setTimeout(() => setCopiedRsa(false), 1500)
     setTimeout(() => setFlashRsa(false), 400)
@@ -248,7 +246,7 @@ export default function CryptoPage() {
 
           {/* Key */}
           <div className="mb-4">
-            <label className="block text-xs text-dark-400 mb-2">{lang === 'zh' ? '密钥' : 'Key'}</label>
+            <label className="block text-xs text-dark-300 mb-2">{lang === 'zh' ? '密钥' : 'Key'}</label>
             <div className="flex gap-2">
               <input type="text" value={symKey} onChange={(e) => setSymKey(e.target.value)}
                 placeholder={lang === 'zh' ? '输入密钥或点击生成...' : 'Enter a key or generate...'}
@@ -288,10 +286,8 @@ export default function CryptoPage() {
                   : 'bg-white/[0.04] hover:bg-white/[0.06]'
               }`}>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs text-dark-400">{symMode === 'encrypt' ? (lang === 'zh' ? '密文' : 'Ciphertext') : (lang === 'zh' ? '明文' : 'Plaintext')}</span>
-                <span className="text-xs text-dark-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                  {copiedSym ? <span className="text-indigo-300 animate-pulse">{lang === 'zh' ? '已复制 ✓' : 'Copied ✓'}</span> : (lang === 'zh' ? '双击复制' : 'Copy')}
-                </span>
+                <span className="text-xs text-dark-300">{symMode === 'encrypt' ? (lang === 'zh' ? '密文' : 'Ciphertext') : (lang === 'zh' ? '明文' : 'Plaintext')}</span>
+                {copiedSym && <span className="text-xs text-indigo-300 animate-pulse">{lang === 'zh' ? '已复制 ✓' : 'Copied ✓'}</span>}
               </div>
               <span className="text-dark-100">{symResult}</span>
             </div>
@@ -314,7 +310,7 @@ export default function CryptoPage() {
             {/* Public Key */}
             <div className="mb-3">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs text-dark-400">{lang === 'zh' ? '公钥 (加密用)' : 'Public Key (for encryption)'}</span>
+                <span className="text-xs text-dark-300">{lang === 'zh' ? '公钥 (加密用)' : 'Public Key (for encryption)'}</span>
                 {publicKeyPem && (
                   <button onClick={() => copyPem(publicKeyPem)} className="text-xs text-indigo-400 hover:text-indigo-300">
                     {lang === 'zh' ? '复制' : 'Copy'}
@@ -331,7 +327,7 @@ export default function CryptoPage() {
             {/* Private Key */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs text-dark-400">{lang === 'zh' ? '私钥 (解密用)' : 'Private Key (for decryption)'}</span>
+                <span className="text-xs text-dark-300">{lang === 'zh' ? '私钥 (解密用)' : 'Private Key (for decryption)'}</span>
                 {privateKeyPem && (
                   <button onClick={() => copyPem(privateKeyPem)} className="text-xs text-indigo-400 hover:text-indigo-300">
                     {lang === 'zh' ? '复制' : 'Copy'}
@@ -424,9 +420,7 @@ export default function CryptoPage() {
                 }`}>
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs text-dark-400">{lang === 'zh' ? '结果' : 'Result'}</span>
-                  <span className="text-xs text-dark-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                    {copiedRsa ? <span className="text-indigo-300 animate-pulse">{lang === 'zh' ? '已复制 ✓' : 'Copied ✓'}</span> : (lang === 'zh' ? '双击复制' : 'Copy')}
-                  </span>
+                  {copiedRsa && <span className="text-xs text-indigo-300 animate-pulse">{lang === 'zh' ? '已复制 ✓' : 'Copied ✓'}</span>}
                 </div>
                 <span className="text-dark-100 whitespace-pre-wrap">{rsaResult}</span>
               </div>

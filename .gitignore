@@ -44,3 +44,7 @@ next-env.d.ts
 node_modules/
 .idea
 .out
+push.sh
+CLAUDE.md
+AGENTS.md
+PRD.md

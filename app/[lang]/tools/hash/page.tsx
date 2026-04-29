@@ -72,17 +72,18 @@ export default function HashPage() {
           ))}
         </div>
 
-        <div className="mb-3 flex items-center justify-between">
-          <button
-            onClick={() => setUppercase(!uppercase)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
-              uppercase
-                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                : 'text-dark-300 border border-white/[0.06] hover:bg-white/[0.06]'
-            }`}
-          >
-            Aa → AA
-          </button>
+        <div className="mb-3 flex items-center gap-2">
+          <label className="flex items-center gap-2 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={uppercase}
+              onChange={(e) => setUppercase(e.target.checked)}
+              className="w-4 h-4 rounded border-white/[0.12] bg-white/[0.04] checked:bg-amber-500/80 checked:border-amber-500/80 focus:ring-1 focus:ring-amber-500/40 focus:outline-none transition-all cursor-pointer"
+            />
+            <span className="text-xs font-mono font-medium text-dark-300">
+              {dict.tool.uppercase}
+            </span>
+          </label>
         </div>
 
         <textarea
@@ -112,7 +113,7 @@ export default function HashPage() {
                 )}
               </span>
             </div>
-            <span className="text-dark-100">{result}</span>
+            <span className="text-dark-100">{display}</span>
           </div>
         )}
       </div>

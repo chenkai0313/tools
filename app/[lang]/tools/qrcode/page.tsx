@@ -87,7 +87,7 @@ export default function QRCodePage() {
       <div className="grid gap-6 md:grid-cols-2">
         {/* Controls */}
         <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-6">
-          <label className="block text-xs text-dark-400 mb-2">
+          <label className="block text-xs text-dark-300 mb-2">
             {lang === 'zh' ? '内容' : 'Content'}
           </label>
           <textarea
@@ -98,7 +98,7 @@ export default function QRCodePage() {
             className="w-full rounded-lg border border-white/[0.06] bg-white/[0.04] px-4 py-2.5 text-sm text-dark-50 font-mono placeholder-dark-400 outline-none focus:border-indigo-500/40 focus:bg-white/[0.06] transition-all resize-y"
           />
 
-          <label className="block text-xs text-dark-400 mt-4 mb-2">
+          <label className="block text-xs text-dark-300 mt-4 mb-2">
             {lang === 'zh' ? '尺寸: ' : 'Size: '}{size}px
           </label>
           <div className="flex items-center gap-3">
@@ -119,7 +119,7 @@ export default function QRCodePage() {
             />
           </div>
 
-          <label className="block text-xs text-dark-400 mt-4 mb-2">
+          <label className="block text-xs text-dark-300 mt-4 mb-2">
             {lang === 'zh' ? 'Logo (可选)' : 'Logo (optional)'}
           </label>
           <div className="flex items-center gap-3">
@@ -146,7 +146,7 @@ export default function QRCodePage() {
             )}
           </div>
           {logo && (
-            <p className="mt-1 text-xs text-dark-400">
+            <p className="mt-1 text-xs text-dark-300">
               {lang === 'zh' ? '已选择 Logo' : 'Logo selected'}
             </p>
           )}

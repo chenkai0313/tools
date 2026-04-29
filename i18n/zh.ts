@@ -13,8 +13,8 @@ const zh = {
     crypto: '加解密',
     hash: '哈希计算',
     encoding: '编码转换',
-    regex: '正则测试',
-    config: '格式转化',
+    regex: '正则表达式',
+    config: '配置文件格式转化',
   },
   home: {
     hotArticles: '🔥 热点文章',
@@ -44,6 +44,15 @@ const zh = {
     copy: '复制',
     copied: '已复制',
     clear: '清空',
+    uppercase: '大写',
+    flags: {
+      g: '全局匹配',
+      i: '忽略大小写',
+      m: '多行模式',
+      s: '点号匹配换行',
+      u: 'Unicode 模式',
+      y: '粘性匹配',
+    },
   },
   footer: {
     copyright: '© 2025 站长工具',

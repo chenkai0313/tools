@@ -98,7 +98,7 @@ export default function RegexPage() {
       <div className="grid gap-6">
         {/* Pattern Input */}
         <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-6">
-          <label className="block text-xs text-dark-400 mb-2">
+          <label className="block text-xs text-dark-300 mb-2">
             {lang === 'zh' ? '正则表达式' : 'Regular Expression'}
           </label>
           <div className="flex items-center gap-2">
@@ -114,18 +114,19 @@ export default function RegexPage() {
           </div>
 
           {/* Flags */}
-          <div className="mt-3 flex flex-wrap gap-2">
-            {['g', 'i', 'm', 's', 'u', 'y'].map((f) => (
+          <div className="mt-3 flex flex-wrap gap-x-3 gap-y-2">
+            {(['g', 'i', 'm', 's', 'u', 'y'] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => toggleFlag(f)}
-                className={`px-2 py-1 rounded text-xs font-mono transition-all ${
+                className={`flex items-center gap-1.5 px-2 py-1 rounded text-xs transition-all ${
                   flags.includes(f)
                     ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
                     : 'text-dark-400 border border-white/[0.06] hover:bg-white/[0.06]'
                 }`}
               >
-                {f}
+                <span className="font-mono">{f}</span>
+                <span className="text-dark-300 font-mono">{dict.tool.flags[f]}</span>
               </button>
             ))}
           </div>
@@ -133,7 +134,7 @@ export default function RegexPage() {
 
         {/* Test Text */}
         <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-6">
-          <label className="block text-xs text-dark-400 mb-2">
+          <label className="block text-xs text-dark-300 mb-2">
             {lang === 'zh' ? '测试文本' : 'Test Text'}
           </label>
           <textarea
