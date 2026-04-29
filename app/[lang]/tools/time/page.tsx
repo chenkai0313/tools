@@ -175,7 +175,7 @@ export default function TimeToolPage() {
             </button>
           </div>
 
-          <div className="grid grid-cols-6 gap-2 mb-3">
+          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-3">
             <div>
               <label className="block text-[10px] text-dark-400 mb-1 text-center">{lang === 'zh' ? '年' : 'Y'}</label>
               <input
