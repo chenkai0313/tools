@@ -39,7 +39,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         </p>
         <div className="mt-4 flex items-center justify-center gap-2 text-xs text-dark-400">
           <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/10 px-3 py-1 text-indigo-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-green-400" /> 6 {lang === 'zh' ? '个可用工具' : 'tools available'}
+            <span className="h-1.5 w-1.5 rounded-full bg-green-400" /> 12 {lang === 'zh' ? '个可用工具' : 'tools available'}
           </span>
         </div>
       </section>
@@ -55,7 +55,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
           </svg>
           {dict.nav.tools}
         </h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {[
             { href: `/${lang}/tools/time`, icon: '🕐', label: dict.nav.time, desc: lang === 'zh' ? '时间戳与日期互转' : 'Timestamp & date' },
             { href: `/${lang}/tools/json`, icon: '📋', label: dict.nav.json, desc: lang === 'zh' ? '格式化/校验/结构体' : 'Format / Validate / Struct' },
@@ -63,6 +63,12 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             { href: `/${lang}/tools/password`, icon: '🔑', label: dict.nav.password, desc: lang === 'zh' ? '随机密码生成' : 'Password generator' },
             { href: `/${lang}/tools/cron`, icon: '⏰', label: dict.nav.cron, desc: lang === 'zh' ? 'Cron 表达式解析' : 'Cron expression' },
             { href: `/${lang}/tools/case`, icon: '🔤', label: dict.nav.case, desc: lang === 'zh' ? '驼峰/下划线互转' : 'Camel / snake case' },
+            { href: `/${lang}/tools/qrcode`, icon: '📱', label: dict.nav.qrcode, desc: lang === 'zh' ? '文本/链接生成二维码' : 'Generate QR codes' },
+            { href: `/${lang}/tools/hash`, icon: '#️⃣', label: dict.nav.hash, desc: lang === 'zh' ? 'MD5/SHA 哈希' : 'MD5 / SHA hash' },
+            { href: `/${lang}/tools/encoding`, icon: '🔡', label: dict.nav.encoding, desc: lang === 'zh' ? 'Unicode/URL编码' : 'Unicode / URL encode' },
+            { href: `/${lang}/tools/regex`, icon: '🔍', label: dict.nav.regex, desc: lang === 'zh' ? '正则表达式测试' : 'Regex testing' },
+            { href: `/${lang}/tools/config`, icon: '⚙️', label: dict.nav.config, desc: lang === 'zh' ? 'YAML/TOML互转' : 'YAML / TOML' },
+            { href: `/${lang}/tools/crypto`, icon: '🔐', label: dict.nav.crypto, desc: lang === 'zh' ? 'AES/DES/RSA加解密' : 'AES / DES / RSA' },
           ].map((tool) => (
             <Link
               key={tool.href}

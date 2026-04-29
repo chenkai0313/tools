@@ -9,6 +9,12 @@ const en = {
     password: 'Password Generator',
     cron: 'Cron Expression',
     case: 'Case Converter',
+    qrcode: 'QR Code',
+    crypto: 'Encrypt/Decrypt',
+    hash: 'Hash',
+    encoding: 'Encoding',
+    regex: 'Regex Tester',
+    config: 'Config Convert',
   },
   home: {
     hotArticles: '🔥 Hot Articles',

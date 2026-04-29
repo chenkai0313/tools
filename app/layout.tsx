@@ -36,6 +36,20 @@ export default function RootLayout({
       lang="zh"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2997084266989115" crossOrigin="anonymous"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+          var _hmt = _hmt || [];
+          (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?58507b69aa7c6518ec1a830b30ab4bff";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+          })();
+          `
+        }} />
+      </head>
       <body className="min-h-full flex flex-col">
         {children}
       </body>

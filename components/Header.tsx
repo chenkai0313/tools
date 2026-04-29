@@ -32,6 +32,12 @@ export default function Header({ dict, locale }: HeaderProps) {
     { href: `/${locale}/tools/password`, icon: '🔑', label: dict.nav.password },
     { href: `/${locale}/tools/cron`, icon: '⏰', label: dict.nav.cron },
     { href: `/${locale}/tools/case`, icon: '🔤', label: dict.nav.case },
+    { href: `/${locale}/tools/qrcode`, icon: '📱', label: dict.nav.qrcode },
+    { href: `/${locale}/tools/hash`, icon: '#️⃣', label: dict.nav.hash },
+    { href: `/${locale}/tools/encoding`, icon: '🔡', label: dict.nav.encoding },
+    { href: `/${locale}/tools/regex`, icon: '🔍', label: dict.nav.regex },
+    { href: `/${locale}/tools/config`, icon: '⚙️', label: dict.nav.config },
+    { href: `/${locale}/tools/crypto`, icon: '🔐', label: dict.nav.crypto },
   ]
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')

@@ -26,24 +26,35 @@ A pure frontend, bilingual (zh/en) webmaster tools portal. All tools run in the 
 - **Font**: Geist (via `next/font`)
 
 ## SEO Requirements
-Every page MUST export static metadata:
+
+Every page MUST have a unique title and description. Since tool pages are `'use client'` components (can't export `metadata`), create a **layout file** alongside the page with `generateMetadata`:
 
 ```typescript
-export const metadata: Metadata = {
-  title: '页面标题 - 站长工具',
-  description: '页面描述，120字以内',
-  keywords: '关键词1, 关键词2',
-  alternates: {
-    languages: {
-      'zh': '/zh/page-path',
-      'en': '/en/page-path',
-    },
-  },
+// app/[lang]/tools/xxx/layout.tsx
+import type { Metadata } from 'next'
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params
+  return {
+    title: `${lang === 'zh' ? '页面标题' : 'Page Title'} - 站长工具`,
+    description: lang === 'zh' ? '页面描述，120字以内' : 'English description under 120 chars',
+    keywords: '关键词1, 关键词2',
+    alternates: { languages: { 'zh': '/zh/page-path', 'en': '/en/page-path' } },
+  }
+}
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return children
 }
 ```
 
-- Tool pages should include JSON-LD structured data via `<script>` tag
+- Every `/tools/xxx/` page must have its own `layout.tsx` with `generateMetadata`
+- Tool pages should include JSON-LD structured data via `<script>` tag where appropriate
 - Each page must have unique title and description
+
+## AdSense
+
+Google AdSense script is in `app/layout.tsx` root layout — do NOT remove or duplicate it. When adding new tool pages, they automatically inherit it.
 
 ## Project Structure
 
@@ -60,7 +71,14 @@ app/
 │       ├── json/page.tsx      # JSON tool
 │       ├── base64/page.tsx    # Base64 image tool
 │       ├── password/page.tsx  # Password generator
-│       └── cron/page.tsx      # Cron expression tool
+│       ├── case/page.tsx      # Case converter
+│       ├── qrcode/page.tsx    # QR code generator
+│       ├── hash/page.tsx      # Hash calculator
+│       ├── encoding/page.tsx  # Encoding converter
+│       ├── regex/page.tsx     # Regex tester
+│       ├── config/page.tsx    # Config format converter
+│       └── crypto/page.tsx    # Encryption/Decryption
+│       # Each tool also has layout.tsx for SEO metadata
 ├── layout.tsx                 # Root layout (html/body only)
 ├── globals.css                # Global Tailwind imports
 components/

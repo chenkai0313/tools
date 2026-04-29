@@ -13,6 +13,12 @@ const toolIcons: Record<string, string> = {
   password: '🔑',
   cron: '⏰',
   case: '🔤',
+  qrcode: '📱',
+  hash: '#️⃣',
+  encoding: '🔡',
+  regex: '🔍',
+  config: '⚙️',
+  crypto: '🔐',
 }
 
 export default function Footer({ dict, locale }: FooterProps) {
@@ -23,6 +29,12 @@ export default function Footer({ dict, locale }: FooterProps) {
     { key: 'password', href: `/${locale}/tools/password` },
     { key: 'cron', href: `/${locale}/tools/cron` },
     { key: 'case', href: `/${locale}/tools/case` },
+    { key: 'qrcode', href: `/${locale}/tools/qrcode` },
+    { key: 'hash', href: `/${locale}/tools/hash` },
+    { key: 'encoding', href: `/${locale}/tools/encoding` },
+    { key: 'regex', href: `/${locale}/tools/regex` },
+    { key: 'config', href: `/${locale}/tools/config` },
+    { key: 'crypto', href: `/${locale}/tools/crypto` },
   ]
 
   const navItems = [
@@ -51,7 +63,7 @@ export default function Footer({ dict, locale }: FooterProps) {
           </div>
 
           {/* Tools Grid */}
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
             {tools.map((tool) => (
               <Link
                 key={tool.key}

@@ -9,6 +9,12 @@ const zh = {
     password: '密码生成',
     cron: 'Cron 表达式',
     case: '命名转换',
+    qrcode: '二维码生成',
+    crypto: '加解密',
+    hash: '哈希计算',
+    encoding: '编码转换',
+    regex: '正则测试',
+    config: '格式转化',
   },
   home: {
     hotArticles: '🔥 热点文章',
