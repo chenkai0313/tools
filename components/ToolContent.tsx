@@ -1,0 +1,935 @@
+'use client'
+
+// Shared layout components — keeps Tailwind JIT happy since all classes are here
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="mt-12 space-y-6 border-t border-white/[0.06] pt-10">
+      <h2 className="text-lg font-bold text-dark-50 flex items-center gap-2">
+        <svg className="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+        </svg>
+        {title}
+      </h2>
+      {children}
+    </section>
+  )
+}
+
+function Block({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <h3 className="text-sm font-semibold text-dark-100 mb-2">{title}</h3>
+      {typeof children === 'string' ? (
+        <p className="text-sm text-dark-300 leading-relaxed">{children}</p>
+      ) : (
+        children
+      )}
+    </div>
+  )
+}
+
+function List({ items }: { items: string[] }) {
+  return (
+    <ul className="list-disc ml-5 text-sm text-dark-300 space-y-1.5">
+      {items.map((item, i) => (
+        <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+      ))}
+    </ul>
+  )
+}
+
+function OrderedList({ items }: { items: string[] }) {
+  return (
+    <ol className="list-decimal ml-5 text-sm text-dark-300 space-y-1.5">
+      {items.map((item, i) => (
+        <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+      ))}
+    </ol>
+  )
+}
+
+function Tips({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-lg border border-indigo-500/15 bg-indigo-500/5 px-4 py-3 text-sm text-indigo-300 leading-relaxed">
+      {children}
+    </div>
+  )
+}
+
+function ExampleBox({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-lg bg-dark-800/50 px-4 py-3 text-sm font-mono text-dark-200 leading-relaxed whitespace-pre-wrap">
+      {children}
+    </div>
+  )
+}
+
+// ───────────── Tool Content ─────────────
+
+type Content = { zh: React.ReactNode; en: React.ReactNode }
+
+export const toolContent: Record<string, Content> = {
+
+  time: {
+    zh: (
+      <Section title="📖 时间戳转换工具使用说明">
+        <Block title="工具简介">时间戳转换工具是一个在线日期与 Unix 时间戳互转的工具。Unix 时间戳是从 1970 年 1 月 1 日（UTC）开始所经过的秒数（或毫秒数），广泛应用于服务器日志、数据库存储、API 接口签名等场景。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>秒级时间戳 ↔ 日期时间</strong>：10 位时间戳与标准日期格式互转',
+            '<strong>毫秒级时间戳 ↔ 日期时间</strong>：13 位时间戳与标准日期格式互转',
+            '<strong>实时预览</strong>：修改任意输入即时看到对应结果',
+            '<strong>一键复制</strong>：双击结果即可复制到剪贴板',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '在"秒级时间戳"或"毫秒级时间戳"输入框中粘贴时间戳',
+            '对应的日期时间会自动显示在右侧',
+            '也可以在日期时间选择器中修改日期，自动生成对应的时间戳',
+            '双击结果区域复制到剪贴板',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'输入：1746000000（秒级时间戳）\n输出：2025-04-30 12:00:00\n\n输入：1746000000000（毫秒级时间戳）\n输出：2025-04-30 12:00:00.000'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '调试 API 接口时查看返回的时间戳对应的实际日期',
+            '数据库查询中将日期条件转换为时间戳范围',
+            '查看服务器日志中时间戳对应的具体时间',
+            '前后端联调时确认时间参数是否正确',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Timestamp Converter Guide">
+        <Block title="Introduction">The Timestamp Converter converts between Unix timestamps and human-readable dates. The Unix timestamp represents seconds (or milliseconds) since January 1, 1970 (UTC), widely used in server logs, databases, and API signatures.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Seconds ↔ Date</strong>: 10-digit timestamps to date strings',
+            '<strong>Milliseconds ↔ Date</strong>: 13-digit timestamps to date strings',
+            '<strong>Real-time preview</strong>: Instant results as you type',
+            '<strong>Copy with double-click</strong>',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Paste a timestamp into the seconds or milliseconds input',
+            'The corresponding date appears automatically',
+            'Modify date fields to generate timestamps',
+            'Double-click the result to copy',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'Input: 1746000000 (seconds)\nOutput: 2025-04-30 12:00:00'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Debugging API responses with timestamp fields',
+            'Converting date conditions to timestamp ranges in queries',
+            'Reading server log entries',
+            'Frontend-backend timestamp format alignment',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  json: {
+    zh: (
+      <Section title="📖 JSON 工具使用说明">
+        <Block title="工具简介">JSON（JavaScript Object Notation）是一种轻量级的数据交换格式，已成为 Web 开发中最主流的数据格式。本工具提供 JSON 格式化、校验、压缩和代码结构体生成等一站式功能。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>JSON 格式化</strong>：将压缩的 JSON 美化成缩进清晰的树形结构',
+            '<strong>JSON 校验</strong>：检测 JSON 语法错误并提示具体位置',
+            '<strong>JSON 压缩</strong>：去除空格和换行，生成紧凑格式',
+            '<strong>字段提取</strong>：列出 JSON 中所有的键路径和值的类型',
+            '<strong>生成代码结构体</strong>：一键将 JSON 转换为 Go、TypeScript、Rust、Python、Java 的类型定义',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '将 JSON 粘贴到左侧编辑区',
+            '自动格式化并显示树形预览',
+            '在右侧查看字段结构、生成代码',
+            '选择目标语言生成对应的结构体定义',
+            '点击复制按钮获取结果',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'输入压缩 JSON：\n{"name":"Alice","age":30}\n\n格式化后：\n{\n  "name": "Alice",\n  "age": 30\n}\n\n生成 TypeScript：\ninterface Root {\n  name: string;\n  age: number;\n}'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '调试 API 接口时格式化返回的 JSON 数据',
+            '定义接口数据结构时从示例 JSON 生成类型定义',
+            '前后端联调时校验 JSON 格式是否正确',
+            '编写配置文件时检查 JSON 语法',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 JSON Tools Guide">
+        <Block title="Introduction">JSON (JavaScript Object Notation) is the most popular data format in web development. This tool provides formatting, validation, compression, and code generation in one place.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Format</strong>: Beautify minified JSON with proper indentation',
+            '<strong>Validate</strong>: Detect syntax errors with precise locations',
+            '<strong>Compress</strong>: Remove whitespace for compact output',
+            '<strong>Field extraction</strong>: List all key paths and their types',
+            '<strong>Code generation</strong>: Generate structs for Go/TypeScript/Rust/Python/Java',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Paste JSON into the editor',
+            'Auto-formatted preview appears',
+            'View field structure and generate code on the right',
+            'Select target language for struct definitions',
+            'Copy the result',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'Minified JSON → Formatted with indentation\nJSON fields → TypeScript interface or Go struct'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Debugging API JSON responses',
+            'Generating type definitions from sample data',
+            'Validating JSON syntax during development',
+            'Editing JSON configuration files',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  base64: {
+    zh: (
+      <Section title="📖 Base64 图片工具使用说明">
+        <Block title="工具简介">Base64 是一种用 64 个可打印字符表示二进制数据的编码方式。本工具实现 Base64 编码与图片文件之间的双向转换，支持 PNG、JPG、GIF、WebP 四种格式，所有处理在浏览器端完成，不上传服务器。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>图片 → Base64</strong>：选择图片文件，自动生成 Base64 data URL',
+            '<strong>Base64 → 图片</strong>：粘贴 Base64 编码，实时预览图片',
+            '<strong>实时预览</strong>：转换后立即看到图片效果',
+            '<strong>一键复制</strong>：双击结果复制 Base64 字符串',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '选择"图片 → Base64"模式，上传一张图片',
+            '自动生成完整的 data:image/...;base64 编码',
+            '选择"Base64 → 图片"模式，粘贴 Base64 字符串预览原图',
+            '双击结果区域即可复制',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'Base64 data URL 格式：\ndata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '将小图标直接嵌入 HTML/CSS 中，减少 HTTP 请求',
+            '在邮件 HTML 中嵌入图片，避免图片链接失效',
+            '将用户上传的头像保存为 Base64 存储在数据库中',
+            '在 Markdown 文档中内嵌小图片',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Base64 Image Tool Guide">
+        <Block title="Introduction">Base64 encoding represents binary data using 64 printable characters. This tool converts between Base64 strings and image files (PNG, JPG, GIF, WebP). All processing happens in your browser.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Image → Base64</strong>: Select an image, get its Base64 data URL',
+            '<strong>Base64 → Image</strong>: Paste Base64 and preview the image',
+            '<strong>Live preview</strong>: See results immediately',
+            '<strong>Copy with double-click</strong>',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Select an image file',
+            'The Base64 data URL is generated automatically',
+            'Switch to decode mode to preview from Base64',
+            'Double-click to copy the result',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'Base64 data URL format:\ndata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Embedding small icons directly in HTML/CSS',
+            'Inlining images in email HTML',
+            'Storing user avatars as Base64 in databases',
+            'Embedding images in Markdown documentation',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  password: {
+    zh: (
+      <Section title="📖 密码生成器使用说明">
+        <Block title="工具简介">密码生成器是一个在线随机密码生成工具，可以根据你的需求生成高强度、难以破解的随机密码。支持自定义字符类型组合、密码长度，并可以排除容易混淆的相似字符（如 0 和 O、1 和 I 等）。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>字符类型选择</strong>：大写字母、小写字母、数字、特殊符号自由组合',
+            '<strong>长度调整</strong>：支持 1~64 位密码长度',
+            '<strong>排除相似字符</strong>：避免混淆 0/O、1/I/l 等',
+            '<strong>密码强度指示</strong>：实时显示密码强度等级',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '勾选需要的字符类型（大写、小写、数字、符号）',
+            '拖动滑块调整密码长度',
+            '开启"排除相似字符"避免混淆',
+            '点击生成按钮，复制你满意的密码',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'全部字符类型，16 位长度：\nkG7#mP2$xQ9&vR5@\n\n大小写+数字，排除相似，12 位：\nAb3Xm8Kp2Rw7'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '注册网站时生成高强度账户密码',
+            '为服务器生成 SSH 密钥或数据库密码',
+            '生成 Wi-Fi 密码、应用密钥等',
+            '定期更换密码时生成新密码',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Password Generator Guide">
+        <Block title="Introduction">The Password Generator creates strong, cryptographically random passwords. Customize character types, length, and exclude similar characters to generate secure passwords.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Character types</strong>: Uppercase, lowercase, digits, symbols',
+            '<strong>Adjustable length</strong>: 1 to 64 characters',
+            '<strong>Exclude similar chars</strong>: Avoid confusing 0/O, 1/I/l',
+            '<strong>Strength indicator</strong>: Real-time password strength',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Select character types',
+            'Adjust length with slider',
+            'Toggle "exclude similar" if desired',
+            'Generate and copy',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'All types, 16 chars:\nkG7#mP2$xQ9&vR5@'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Creating strong account passwords',
+            'Generating database or SSH keys',
+            'Creating Wi-Fi passwords',
+            'Regular password rotation',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  cron: {
+    zh: (
+      <Section title="📖 Cron 表达式工具使用说明">
+        <Block title="工具简介">Cron 是 Unix/Linux 系统中用于定时任务调度的标准格式，由 5 个字段组成分别表示分、时、日、月、周。本工具帮助你解析 Cron 表达式的含义、生成可视化执行计划，以及通过可视化方式构建 Cron 表达式。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>Cron → 可读文本</strong>：将 Cron 表达式翻译为自然语言描述',
+            '<strong>最近执行时间</strong>：显示接下来 5 次执行时间',
+            '<strong>可视化构建器</strong>：通过点选菜单构建 Cron 表达式',
+            '<strong>预设模板</strong>：提供常用 Cron 配置供快速选择',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '在输入框直接输入 Cron 表达式（如 */5 * * * *）',
+            '下方自动显示可读描述和最近 5 次执行时间',
+            '或者使用可视化构建器，通过选择菜单生成表达式',
+            '点击预设模板快速填入常用定时规则',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'*/5 * * * *  →  每 5 分钟执行一次\n0 9 * * 1-5  →  工作日早上 9 点\n0 0 1 * *    →  每月 1 日零点\n30 2 * * *   →  每天凌晨 2:30'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '配置服务器定时备份任务',
+            '设置日志清理周期',
+            '配置定时数据同步任务',
+            '部署监控脚本的定时执行',
+            '学习 Cron 表达式时快速验证',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Cron Expression Tool Guide">
+        <Block title="Introduction">Cron is the standard format for scheduling tasks on Unix/Linux systems. This tool parses cron expressions into readable text and helps you build them visually.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Cron → Readable</strong>: Translate cron to plain English',
+            '<strong>Next executions</strong>: Show upcoming 5 run times',
+            '<strong>Visual builder</strong>: Build cron expressions by clicking',
+            '<strong>Presets</strong>: Quick-select common cron schedules',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Type a cron expression (e.g. */5 * * * *)',
+            'Readable description and next run times appear below',
+            'Or use the visual builder to generate expressions',
+            'Click presets for common schedules',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'*/5 * * * *  →  Every 5 minutes\n0 9 * * 1-5  →  Weekdays at 9:00 AM\n0 0 1 * *    →  First day of month at midnight'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Configuring server backup schedules',
+            'Setting up log rotation',
+            'Scheduling data sync jobs',
+            'Learning cron syntax',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  case: {
+    zh: (
+      <Section title="📖 命名转换工具使用说明">
+        <Block title="工具简介">命名转换工具用于在多种编程命名规范之间相互转换。不同语言、团队、框架往往使用不同的命名规则，本工具支持驼峰、帕斯卡、下划线、短横线、点号等 8 种命名格式一键互转。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>支持 8 种格式</strong>：camelCase、PascalCase、snake_case、kebab-case、dot.case、SCREAMING_SNAKE、Train-Case、空格分隔',
+            '<strong>实时转换</strong>：输入即转换，无需点击按钮',
+            '<strong>一键复制</strong>：双击任意结果复制',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '在输入框中输入需要转换的变量名或短语',
+            '所有 8 种格式的结果实时显示在下方',
+            '双击任意结果即可复制到剪贴板',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'输入：user login count\n\ncamelCase       → userLoginCount\nPascalCase      → UserLoginCount\nsnake_case      → user_login_count\nkebab-case      → user-login-count\nSCREAMING_SNAKE → USER_LOGIN_COUNT'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '在 Go（驼峰）和 Python（下划线）项目之间迁移代码',
+            '定义数据库字段（snake_case）映射到前端变量（camelCase）',
+            'CSS 类名（kebab-case）与 JavaScript 变量（camelCase）互转',
+            '统一团队代码风格规范',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Case Converter Guide">
+        <Block title="Introduction">The Case Converter transforms text between multiple programming naming conventions. Supports 8 formats including camelCase, PascalCase, snake_case, kebab-case, and more.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>8 formats</strong>: camelCase, PascalCase, snake_case, kebab-case, dot.case, SCREAMING_SNAKE, Train-Case',
+            '<strong>Real-time conversion</strong>: Results update as you type',
+            '<strong>Copy on double-click</strong>',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Type or paste a variable name or phrase',
+            'All 8 formats appear in real-time',
+            'Double-click any result to copy',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'Input: user login count\n\ncamelCase  → userLoginCount\nsnake_case → user_login_count\nkebab-case → user-login-count'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Migrating code between language conventions',
+            'Mapping database columns to frontend variables',
+            'Converting CSS class names to JavaScript variables',
+            'Enforcing team coding standards',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  qrcode: {
+    zh: (
+      <Section title="📖 二维码生成工具使用说明">
+        <Block title="工具简介">二维码生成器是一个在线 QR Code 生成工具，可以将文本、链接等内容转换为标准二维码图片。支持自定义二维码尺寸，并允许在二维码中央嵌入 Logo 图片，生成带有品牌标识的个性化二维码。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>多种内容类型</strong>：支持文本、URL、联系方式等任意内容',
+            '<strong>尺寸自定义</strong>：128px ~ 1024px 自由调整',
+            '<strong>Logo 嵌入</strong>：上传图片作为二维码中央的 Logo',
+            '<strong>下载 PNG</strong>：一键下载为高清 PNG 图片',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '在输入框中输入要生成二维码的文本或网址',
+            '调整尺寸滑块到合适大小',
+            '可选：点击"选择图片"上传 Logo',
+            '二维码右侧实时生成预览',
+            '点击"下载 PNG"保存图片',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'输入网址 https://schg.xyz 生成二维码\n扫描后可直接访问网站\n\n尺寸建议：256px 适合网页展示\n        512px+ 适合打印'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '在名片上生成个人网站或微信二维码',
+            '为活动页面或产品链接生成推广二维码',
+            'Wi-Fi 配置二维码分享网络',
+            '在 PPT 或海报中加入二维码链接',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 QR Code Generator Guide">
+        <Block title="Introduction">The QR Code Generator creates QR codes from text or URLs. Customize size and add a logo in the center for branded QR codes.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Any content</strong>: Text, URLs, and more',
+            '<strong>Custom size</strong>: 128px to 1024px',
+            '<strong>Logo overlay</strong>: Embed an image in the center',
+            '<strong>PNG download</strong>: Save as high-quality PNG',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Enter text or a URL',
+            'Adjust the size',
+            'Optionally upload a logo image',
+            'Preview updates in real-time',
+            'Download as PNG',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'Enter https://schg.xyz to generate a QR code\n\n256px for web display\n512px+ for printing'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Business cards with QR codes',
+            'Promotional materials and posters',
+            'Wi-Fi network sharing',
+            'Presentations with quick-access links',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  hash: {
+    zh: (
+      <Section title="📖 哈希计算工具使用说明">
+        <Block title="工具简介">哈希计算工具是一个在线文本哈希值生成器，支持 MD5、SHA-1、SHA-256、SHA-384、SHA-512 五种主流哈希算法。哈希函数将任意长度的输入通过数学运算映射为固定长度的输出，常用于数据完整性校验和密码存储。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>五种算法</strong>：MD5、SHA-1、SHA-256、SHA-384、SHA-512',
+            '<strong>实时计算</strong>：输入文本即时生成哈希值',
+            '<strong>大小写切换</strong>：支持输出大写或小写哈希值',
+            '<strong>一键复制</strong>：双击结果复制到剪贴板',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '在文本框中输入要计算哈希的字符串',
+            '选择要使用的哈希算法（MD5、SHA-1、SHA-256 等）',
+            '可选：勾选"大写"将结果转为大写字母',
+            '查看实时计算结果，双击复制',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'输入："hello world"\n\nMD5：5eb63bbbe01eeed093cb22bb8f5acdc3\nSHA-256：b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9\nSHA-512：309ecc489c12d6eb4cc40f50c902f2b4d0ed77ee511a7c7a9bcd3ca86d4cd86f9...'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '验证下载文件的完整性（比对 MD5/SHA 校验值）',
+            '数据库中安全存储用户密码的哈希值（配合加盐使用）',
+            'API 接口签名生成使用 SHA-256 哈希',
+            '消息或数据的完整性校验',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Hash Calculator Guide">
+        <Block title="Introduction">The Hash Calculator generates hash values for text using MD5, SHA-1, SHA-256, SHA-384, and SHA-512. Hash functions map input data to fixed-size outputs for integrity verification.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>5 algorithms</strong>: MD5, SHA-1, SHA-256, SHA-384, SHA-512',
+            '<strong>Real-time computation</strong>',
+            '<strong>Uppercase toggle</strong>',
+            '<strong>Copy on double-click</strong>',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Enter text to hash',
+            'Select an algorithm',
+            'Optionally toggle uppercase output',
+            'View and copy the result',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'Input: "hello world"\n\nMD5: 5eb63bbbe01eeed093cb22bb8f5acdc3\nSHA-256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Verifying file integrity with checksums',
+            'Storing password hashes (with salt)',
+            'API request signing',
+            'Data integrity verification',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  encoding: {
+    zh: (
+      <Section title="📖 编码转换工具使用说明">
+        <Block title="工具简介">编码转换工具支持 Unicode 编解码和 URL 百分号编解码两种常用编码方式。Unicode 编码用于表示非 ASCII 字符，URL 编码用于在网址中安全传输特殊字符，在 Web 开发中非常常见。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>Unicode 编码</strong>：将中文等字符转为 \\uXXXX 格式',
+            '<strong>Unicode 解码</strong>：将 \\uXXXX 格式还原为原始文本',
+            '<strong>URL 编码</strong>：将特殊字符转换为 %XX 格式',
+            '<strong>URL 解码</strong>：将 %XX 格式还原为原始文本',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '选择要使用的编码类型（Unicode 或 URL）',
+            '选择编码方向（编码或解码）',
+            '在输入框中输入要转换的文本',
+            '结果实时显示在下方，双击复制',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'URL 编码：\n搜索?q=你好世界\n→ %E6%90%9C%E7%B4%A2?q=%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C\n\nUnicode 编码：\n站长工具\n→ \\u7ad9\\u957f\\u5de5\\u5177'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '调试 API 时处理 URL 中的中文字符',
+            '将中文 JSON 内容转为纯 ASCII 表示',
+            '处理前端表单提交时的 URL 编码数据',
+            '在 JavaScript 源码中使用 \\uXXXX 转义非 ASCII 字符',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Encoding Converter Guide">
+        <Block title="Introduction">The Encoding Converter supports Unicode (\\uXXXX) encoding/decoding and URL percent-encoding/decoding for safely transmitting special characters in web applications.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Unicode encode</strong>: Convert characters to \\uXXXX format',
+            '<strong>Unicode decode</strong>: Restore \\uXXXX to original text',
+            '<strong>URL encode</strong>: Convert special chars to %XX format',
+            '<strong>URL decode</strong>: Restore %XX to original text',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Select encoding type (Unicode or URL)',
+            'Choose direction (encode or decode)',
+            'Enter text to convert',
+            'View and copy results',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'URL encode: 你好 → %E4%BD%A0%E5%A5%BD\nUnicode encode: 站长工具 → \\u7ad9\\u957f\\u5de5\\u5177'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Debugging URLs with special characters',
+            'Encoding Chinese characters in JSON',
+            'Processing form submissions',
+            'Writing portable JavaScript source code',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  regex: {
+    zh: (
+      <Section title="📖 正则表达式测试工具使用说明">
+        <Block title="工具简介">正则表达式测试工具是一个在线正则调试器，支持输入正则表达式和测试文本，实时展示匹配结果。支持 g/i/m/s/u/y 所有匹配标志，高亮显示所有匹配位置，并展示捕获分组。是编写和调试正则表达式的得力助手。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>实时匹配高亮</strong>：在测试文本中高亮所有匹配内容',
+            '<strong>捕获分组展示</strong>：显示每个匹配的 $1、$2 等分组内容',
+            '<strong>匹配位置</strong>：显示每个匹配所在的位置索引',
+            '<strong>错误提示</strong>：正则语法错误时显示详细错误信息',
+            '<strong>完整 flags 支持</strong>：g（全局）、i（忽略大小写）、m（多行）、s（点号匹配换行）、u（Unicode）、y（粘性）',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '在第一个输入框中输入正则表达式（不要包含 / 定界符）',
+            '在下方勾选需要的 flags（如 g 全局匹配）',
+            '在"测试文本"框中输入要匹配的文本',
+            '匹配结果实时高亮显示，结果区展示详情',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'正则：\\d{3,4}[ -]?\\d{7,8}\n匹配：中国大陆电话号码\n\n正则：[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\n匹配：Email 地址\n\n正则：https?://[^\\s]+\n匹配：HTTP/HTTPS 网址'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '表单验证：验证邮箱、手机号、身份证格式',
+            '日志分析：从日志中提取 IP 地址、错误信息',
+            '数据清洗：批量替换文本中的特定模式',
+            '代码重构：在代码编辑器中执行查找替换',
+            '学习正则：通过实时反馈学习和调试正则语法',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Regex Tester Guide">
+        <Block title="Introduction">The Regex Tester is an online regular expression debugger. Enter a pattern and test text, see matches highlighted in real-time. Supports all flags (g/i/m/s/u/y), capture groups, and match positions.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Real-time highlighting</strong>: See matches instantly',
+            '<strong>Capture groups</strong>: View $1, $2 group contents',
+            '<strong>Match positions</strong>: See where each match occurs',
+            '<strong>Error feedback</strong>: Detailed syntax error messages',
+            '<strong>Full flags</strong>: g, i, m, s, u, y',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Enter a regex pattern (without delimiters)',
+            'Select flags',
+            'Enter test text',
+            'Matches highlight automatically',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'Pattern: \\d{3,4}[ -]?\\d{7,8}  → Phone numbers\nPattern: [\\w.-]+@[\\w.-]+\\.[\\w]{2,}  → Emails\nPattern: https?://[^\\s]+  → URLs'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Form validation (email, phone, ID)',
+            'Log parsing and analysis',
+            'Data cleaning and transformation',
+            'Learning and debugging regex patterns',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  config: {
+    zh: (
+      <Section title="📖 配置文件格式转换工具使用说明">
+        <Block title="工具简介">配置文件格式转换工具支持 YAML、JSON、TOML、INI、Properties、.env、XML 七种常见配置文件格式之间的相互转换。不同项目、不同语言使用不同的配置格式，本工具让你无需安装任何软件即可在浏览器中完成格式转换。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>七种格式互转</strong>：YAML / JSON / TOML / INI / Properties / .env / XML',
+            '<strong>自动检测格式</strong>：粘贴内容后自动识别当前格式',
+            '<strong>实时转换</strong>：修改输入即时得到转换结果',
+            '<strong>格式不匹配提示</strong>：检测到输入格式与所选格式不一致时给出警告',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '在"从"选择器中选择源格式（如 YAML）',
+            '在"到"选择器中选择目标格式（如 JSON）',
+            '在左侧编辑区粘贴源文件内容',
+            '右侧实时显示转换结果',
+            '双击转换结果复制到剪贴板',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'YAML → JSON：\nserver:\n  port: 8080\n  host: localhost\n↓\n{"server":{"port":8080,"host":"localhost"}}\n\nTOML → .env：\n[database]\nhost = "localhost"\nport = 3306\n↓\nDATABASE_HOST=localhost\nDATABASE_PORT=3306'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '将 Spring Boot 的 application.properties 转为 application.yml',
+            '将 Docker Compose 的 YAML 转为 JSON 格式',
+            '处理不同项目间的配置格式迁移',
+            '将 Python 项目的 TOML 配置转为 .env 环境变量',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Config Format Converter Guide">
+        <Block title="Introduction">The Config Format Converter converts between YAML, JSON, TOML, INI, Properties, .env, and XML formats. Different projects use different config formats — convert between them instantly in your browser.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>7 formats</strong>: YAML / JSON / TOML / INI / Properties / .env / XML',
+            '<strong>Auto-detect</strong>: Recognizes the input format automatically',
+            '<strong>Real-time conversion</strong>',
+            '<strong>Mismatch warning</strong>: Alerts when input format doesn\'t match selection',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Select source format (From)',
+            'Select target format (To)',
+            'Paste source content on the left',
+            'Converted result appears on the right',
+            'Double-click to copy',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'YAML → JSON:\nserver:\n  port: 8080\n↓\n{"server":{"port":8080}}'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Migrating Spring Boot properties to YAML',
+            'Converting Docker Compose files',
+            'Cross-project config format migration',
+            'TOML to .env conversion for deployment',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  crypto: {
+    zh: (
+      <Section title="📖 加解密工具使用说明">
+        <Block title="工具简介">加解密工具提供对称加密（AES、DES）和非对称加密（RSA）两种加密方式。所有加解密操作在浏览器端完成，数据不会上传到任何服务器，保障你的数据安全。支持密钥生成、加密解密以及数字签名验证。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>AES 对称加密</strong>：使用相同的密钥加密和解密，支持密钥自动生成',
+            '<strong>DES 对称加密</strong>：经典的对称加密算法',
+            '<strong>RSA 非对称加密</strong>：公钥加密、私钥解密，支持密钥对生成',
+            '<strong>RSA 签名验证</strong>：私钥签名、公钥验签，确保数据完整性和来源可信',
+            '<strong>浏览器端处理</strong>：所有计算在本机完成，数据不上传',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '选择加密方式（AES、DES 或 RSA）',
+            '对称加密：输入或生成密钥，选择加密/解密模式，输入文本',
+            'RSA 加密：生成密钥对，使用公钥加密，私钥解密',
+            '查看结果，双击复制密文或明文',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'AES 加密：\n明文：Hello World\n密钥：MySecretKey123\n密文：U2FsdGVkX1/...\n\nRSA：\n生成 2048 位密钥对 → 公钥加密 → 私钥解密\n或：私钥签名 → 公钥验证'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '本地加密敏感配置文件，防止明文泄露',
+            'API 通信中使用 RSA 公钥加密传输密钥',
+            '使用 RSA 签名验证软件包或消息的完整性',
+            '学习对称加密和非对称加密的原理和区别',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Encryption/Decryption Tool Guide">
+        <Block title="Introduction">The Encryption/Decryption tool supports AES, DES symmetric encryption and RSA asymmetric encryption. All operations run in your browser — data never leaves your machine.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>AES</strong>: Symmetric encryption with auto key generation',
+            '<strong>DES</strong>: Classic symmetric encryption algorithm',
+            '<strong>RSA</strong>: Public/private key encryption with key pair generation',
+            '<strong>RSA Sign/Verify</strong>: Digital signatures for data authenticity',
+            '<strong>100% client-side</strong>: No data uploaded to servers',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Select encryption type (AES, DES, or RSA)',
+            'Symmetric: Enter/generate a key, choose encrypt/decrypt mode',
+            'RSA: Generate key pair, encrypt with public key, decrypt with private',
+            'View and copy results',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'AES: "Hello World" + key "MySecretKey123" → encrypted Base64\nRSA: Generate 2048-bit keys → encrypt with public → decrypt with private\nRSA Sign: Private key sign → public key verify'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Encrypting sensitive config files locally',
+            'Secure key exchange with RSA public-key encryption',
+            'Verifying software package integrity with signatures',
+            'Learning cryptography concepts',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+}
