@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState, useCallback, useMemo } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
+import { toolContent } from '@/components/ToolContent'
 import {
   timestampToDateTime,
   dateTimeToTimestamp,
@@ -288,6 +289,8 @@ export default function TimeToolPage() {
           )}
         </div>
       </div>
+
+      {toolContent.time[lang as 'zh' | 'en']}
     </div>
   )
 }

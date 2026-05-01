@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
+import { toolContent } from '@/components/ToolContent'
 import yaml from 'js-yaml'
 import { parse as parseToml, stringify as stringifyToml } from 'smol-toml'
 
@@ -395,6 +396,8 @@ export default function ConfigPage() {
           </div>
         )}
       </div>
+
+      {toolContent.config[lang as 'zh' | 'en']}
     </div>
   )
 }

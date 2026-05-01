@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState, useCallback, useMemo } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
+import { toolContent } from '@/components/ToolContent'
 import { convertAll, detectCase, CASE_FORMATS, type CaseFormat } from '@/lib/case'
 
 export default function CaseToolPage() {
@@ -139,6 +140,8 @@ export default function CaseToolPage() {
           </div>
         )}
       </div>
+
+      {toolContent.case[lang as 'zh' | 'en']}
     </div>
   )
 }

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState, useCallback, useMemo } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
+import { toolContent } from '@/components/ToolContent'
 
 type Mode = 'encode' | 'decode'
 type Encoding = 'unicode' | 'url'
@@ -146,6 +147,8 @@ export default function EncodingPage() {
           </div>
         )}
       </div>
+
+      {toolContent.encoding[lang as 'zh' | 'en']}
     </div>
   )
 }

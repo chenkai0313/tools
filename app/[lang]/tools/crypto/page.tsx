@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState, useCallback, useRef } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
+import { toolContent } from '@/components/ToolContent'
 import CryptoJS from 'crypto-js'
 import {
   generateRSAKeyPair, exportPublicKey, exportPrivateKey,
@@ -429,6 +430,8 @@ export default function CryptoPage() {
           </div>
         </div>
       )}
+
+      {toolContent.crypto[lang as 'zh' | 'en']}
     </div>
   )
 }

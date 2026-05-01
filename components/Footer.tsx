@@ -40,6 +40,9 @@ export default function Footer({ dict, locale }: FooterProps) {
   const navItems = [
     { key: 'home', href: `/${locale}` },
     { key: 'articles', href: `/${locale}/articles` },
+    { key: 'about', href: `/${locale}/about`, label: 'About' },
+    { key: 'privacy', href: `/${locale}/privacy`, label: 'Privacy' },
+    { key: 'terms', href: `/${locale}/terms`, label: 'Terms' },
   ]
 
   return (
@@ -84,7 +87,7 @@ export default function Footer({ dict, locale }: FooterProps) {
           <div className="flex items-center gap-4 text-xs text-dark-400">
             {navItems.map((item) => (
               <Link key={item.key} href={item.href} className="hover:text-dark-200 transition-colors">
-                {dict.nav[item.key as keyof typeof dict.nav]}
+                {item.label ?? dict.nav[item.key as keyof typeof dict.nav]}
               </Link>
             ))}
           </div>

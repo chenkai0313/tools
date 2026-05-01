@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState, useCallback } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
+import { toolContent } from '@/components/ToolContent'
 import CryptoJS from 'crypto-js'
 
 const algorithms = ['MD5', 'SHA-1', 'SHA-256', 'SHA-384', 'SHA-512'] as const
@@ -117,6 +118,8 @@ export default function HashPage() {
           </div>
         )}
       </div>
+
+      {toolContent.hash[lang as 'zh' | 'en']}
     </div>
   )
 }

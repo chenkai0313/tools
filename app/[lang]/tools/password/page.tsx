@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState, useCallback } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
+import { toolContent } from '@/components/ToolContent'
 import { generatePasswords, calculateStrength, type PasswordOptions } from '@/lib/password'
 
 export default function PasswordToolPage() {
@@ -164,6 +165,8 @@ export default function PasswordToolPage() {
           </div>
         )}
       </div>
+
+      {toolContent.password[lang as 'zh' | 'en']}
     </div>
   )
 }

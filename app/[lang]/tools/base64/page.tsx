@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState, useCallback, useRef } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
+import { toolContent } from '@/components/ToolContent'
 import { fileToBase64, base64ToImageSrc, isValidBase64, formatFileSize } from '@/lib/base64'
 
 export default function Base64ToolPage() {
@@ -157,6 +158,8 @@ export default function Base64ToolPage() {
           )}
         </div>
       </div>
+
+      {toolContent.base64[lang as 'zh' | 'en']}
     </div>
   )
 }

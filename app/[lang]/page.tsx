@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import ArticleCard from '@/components/ArticleCard'
 import { getDictionary, isLocale } from '@/i18n'
-import { articles, categories, getHotArticles } from '@/data/articles'
+import { articles, categories as articleCats, getHotArticles } from '@/data/articles'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
@@ -10,14 +10,31 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const dict = getDictionary(lang as any)
   return {
     title: `${dict.nav.home} - 站长工具`,
-    description: '免费在线站长工具集合，提供时间戳转换、JSON格式化、Base64图片转换等实用工具。',
+    description: '免费在线站长工具集合，提供时间戳转换、JSON格式化、Base64图片转换、正则表达式测试、哈希计算、AES/RSA加解密等12种开发者工具。',
     openGraph: {
-      title: '站长工具',
-      description: '为站长和开发者提供实用的在线工具',
+      title: '站长工具 - 在线开发者工具集',
+      description: '为站长和开发者提供实用的在线工具，所有工具均在浏览器本地运行，保护你的数据隐私。',
     },
     alternates: { languages: { 'zh': '/zh', 'en': '/en' } },
   }
 }
+
+const tools = [
+  { key: 'time', icon: '🕐', category: 'convert' as const, popular: true, descZh: '时间戳与日期互转', descEn: 'Timestamp & date' },
+  { key: 'json', icon: '📋', category: 'dev' as const, popular: true, descZh: '格式化/校验/生成结构体', descEn: 'Format / Validate / Struct' },
+  { key: 'base64', icon: '🖼️', category: 'convert' as const, popular: true, descZh: 'Base64 与图片互转', descEn: 'Base64 & images' },
+  { key: 'password', icon: '🔑', category: 'security' as const, popular: true, descZh: '随机高强度密码生成', descEn: 'Password generator' },
+  { key: 'cron', icon: '⏰', category: 'utility' as const, popular: false, descZh: 'Cron 表达式解析', descEn: 'Cron expression' },
+  { key: 'case', icon: '🔤', category: 'dev' as const, popular: false, descZh: '驼峰/蛇形/中划线互转', descEn: 'Camel / snake / kebab' },
+  { key: 'qrcode', icon: '📱', category: 'utility' as const, popular: false, descZh: '文本/链接生成二维码', descEn: 'Generate QR codes' },
+  { key: 'hash', icon: '#️⃣', category: 'security' as const, popular: true, descZh: 'MD5 / SHA 哈希', descEn: 'MD5 / SHA hash' },
+  { key: 'encoding', icon: '🔡', category: 'dev' as const, popular: false, descZh: 'Unicode / URL 编码', descEn: 'Unicode / URL encode' },
+  { key: 'regex', icon: '🔍', category: 'dev' as const, popular: true, descZh: '正则表达式测试', descEn: 'Regex testing' },
+  { key: 'config', icon: '⚙️', category: 'convert' as const, popular: false, descZh: 'YAML/TOML/JSON 互转', descEn: 'YAML / TOML / JSON' },
+  { key: 'crypto', icon: '🔐', category: 'security' as const, popular: false, descZh: 'AES / DES / RSA 加解密', descEn: 'AES / DES / RSA' },
+]
+
+const categoryKeys = ['dev', 'security', 'convert', 'utility'] as const
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
@@ -27,58 +44,91 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      {/* Hero section */}
-      <section className="mb-12 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold mb-3">
+      {/* Hero + Site Intro */}
+      <section className="mb-16 text-center">
+        <h1 className="text-3xl md:text-4xl font-bold mb-4">
           <span className="gradient-text">ken 站长工具</span>
         </h1>
-        <p className="text-dark-300 text-sm max-w-xl mx-auto">
-          {lang === 'zh'
-            ? '为站长和开发者打造的在线工具集'
-            : 'Online toolset for webmasters and developers · 100% client-side · Secure · Free'}
+        <p className="text-dark-300 text-sm max-w-2xl mx-auto leading-relaxed">
+          {dict.home.siteIntro}
         </p>
-        <div className="mt-4 flex items-center justify-center gap-2 text-xs text-dark-400">
+        <div className="mt-6 flex items-center justify-center gap-2 text-xs text-dark-400">
           <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/10 px-3 py-1 text-indigo-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-green-400" /> 12 {lang === 'zh' ? '个可用工具' : 'tools available'}
+            <span className="h-1.5 w-1.5 rounded-full bg-green-400" /> 12 {lang === 'zh' ? '个工具' : 'tools'}
           </span>
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="mb-10 h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
-
-      {/* Tools Grid - Tiled */}
+      {/* Popular Tools */}
       <section className="mb-12">
-        <h2 className="mb-4 text-lg font-bold text-dark-50 flex items-center gap-2">
-          <svg className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
-          </svg>
-          {dict.nav.tools}
-        </h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-          {[
-            { href: `/${lang}/tools/time`, icon: '🕐', label: dict.nav.time, desc: lang === 'zh' ? '时间戳与日期互转' : 'Timestamp & date' },
-            { href: `/${lang}/tools/json`, icon: '📋', label: dict.nav.json, desc: lang === 'zh' ? '格式化/校验/结构体' : 'Format / Validate / Struct' },
-            { href: `/${lang}/tools/base64`, icon: '🖼️', label: dict.nav.base64, desc: lang === 'zh' ? 'Base64与图片互转' : 'Base64 & images' },
-            { href: `/${lang}/tools/password`, icon: '🔑', label: dict.nav.password, desc: lang === 'zh' ? '随机密码生成' : 'Password generator' },
-            { href: `/${lang}/tools/cron`, icon: '⏰', label: dict.nav.cron, desc: lang === 'zh' ? 'Cron 表达式解析' : 'Cron expression' },
-            { href: `/${lang}/tools/case`, icon: '🔤', label: dict.nav.case, desc: lang === 'zh' ? '驼峰/下划线互转' : 'Camel / snake case' },
-            { href: `/${lang}/tools/qrcode`, icon: '📱', label: dict.nav.qrcode, desc: lang === 'zh' ? '文本/链接生成二维码' : 'Generate QR codes' },
-            { href: `/${lang}/tools/hash`, icon: '#️⃣', label: dict.nav.hash, desc: lang === 'zh' ? 'MD5/SHA 哈希' : 'MD5 / SHA hash' },
-            { href: `/${lang}/tools/encoding`, icon: '🔡', label: dict.nav.encoding, desc: lang === 'zh' ? 'Unicode/URL编码' : 'Unicode / URL encode' },
-            { href: `/${lang}/tools/regex`, icon: '🔍', label: dict.nav.regex, desc: lang === 'zh' ? '正则表达式测试' : 'Regex testing' },
-            { href: `/${lang}/tools/config`, icon: '⚙️', label: dict.nav.config, desc: lang === 'zh' ? 'YAML/TOML互转' : 'YAML / TOML' },
-            { href: `/${lang}/tools/crypto`, icon: '🔐', label: dict.nav.crypto, desc: lang === 'zh' ? 'AES/DES/RSA加解密' : 'AES / DES / RSA' },
-          ].map((tool) => (
+        <h2 className="mb-5 text-lg font-bold text-dark-50">{dict.home.popularTools}</h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
+          {tools.filter(t => t.popular).map((tool) => (
             <Link
-              key={tool.href}
-              href={tool.href}
-              className="tool-tile flex flex-col items-center rounded-xl py-5 px-3 text-center group"
+              key={tool.key}
+              href={`/${lang}/tools/${tool.key}`}
+              className="tool-tile flex flex-col items-center rounded-xl py-5 px-3 text-center group relative overflow-hidden"
             >
-              <span className="mb-2 text-2xl">{tool.icon}</span>
-              <span className="text-sm font-semibold text-dark-50 group-hover:text-indigo-300 transition-colors">{tool.label}</span>
-              <span className="mt-0.5 text-xs text-dark-400">{tool.desc}</span>
+              <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <span className="mb-2 text-2xl relative">{tool.icon}</span>
+              <span className="text-sm font-semibold text-dark-50 group-hover:text-indigo-300 transition-colors relative">{dict.nav[tool.key as keyof typeof dict.nav]}</span>
+              <span className="mt-0.5 text-xs text-dark-400 relative">{lang === 'zh' ? tool.descZh : tool.descEn}</span>
             </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Tool Categories */}
+      <section className="mb-12">
+        <h2 className="mb-5 text-lg font-bold text-dark-50">{dict.home.toolCategories.title}</h2>
+        <div className="grid gap-6 md:grid-cols-2">
+          {categoryKeys.map((catKey) => {
+            const cat = dict.home.toolCategories[catKey]
+            const catTools = tools.filter(t => t.category === catKey)
+            return (
+              <div key={catKey} className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5">
+                <h3 className="text-sm font-bold text-dark-50 mb-1">{cat.title}</h3>
+                <p className="text-xs text-dark-400 mb-4 leading-relaxed">{cat.desc}</p>
+                <div className="flex flex-wrap gap-2">
+                  {catTools.map((tool) => (
+                    <Link
+                      key={tool.key}
+                      href={`/${lang}/tools/${tool.key}`}
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.04] px-3 py-1.5 text-xs text-dark-300 hover:text-indigo-300 hover:bg-indigo-500/10 transition-all"
+                    >
+                      <span>{tool.icon}</span>
+                      {dict.nav[tool.key as keyof typeof dict.nav]}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* Use Scenarios */}
+      <section className="mb-12">
+        <h2 className="mb-5 text-lg font-bold text-dark-50">{dict.home.scenarios.title}</h2>
+        <div className="grid gap-4 sm:grid-cols-3">
+          {dict.home.scenarios.items.map((item, i) => (
+            <div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5">
+              <h3 className="text-sm font-bold text-dark-50 mb-2">{item.title}</h3>
+              <p className="text-xs text-dark-400 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="mb-12">
+        <h2 className="mb-5 text-lg font-bold text-dark-50">{dict.home.whyUs.title}</h2>
+        <div className="grid gap-4 sm:grid-cols-3">
+          {dict.home.whyUs.points.map((point, i) => (
+            <div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5">
+              <h3 className="text-sm font-bold text-dark-50 mb-2">{point.title}</h3>
+              <p className="text-xs text-dark-400 leading-relaxed">{point.desc}</p>
+            </div>
           ))}
         </div>
       </section>
@@ -103,7 +153,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
       {/* Article Categories */}
       <div className="grid gap-8 sm:grid-cols-2">
-        {categories.map((category) => {
+        {articleCats.map((category) => {
           const categoryArticles = articles.filter((a) => a.categoryKey === category.key)
           return (
             <section key={category.key}>

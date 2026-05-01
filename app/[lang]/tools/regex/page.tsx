@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState, useMemo } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
+import { toolContent } from '@/components/ToolContent'
 
 export default function RegexPage() {
   const { lang } = useParams() as { lang: Locale }
@@ -198,6 +199,8 @@ export default function RegexPage() {
           </div>
         )}
       </div>
+
+      {toolContent.regex[lang as 'zh' | 'en']}
     </div>
   )
 }
