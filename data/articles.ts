@@ -15,6 +15,7 @@ export const categories: { key: string; label: Record<string, string> }[] = [
   { key: 'devops', label: { zh: '运维监控', en: 'DevOps' } },
   { key: 'tools', label: { zh: '站长工具', en: 'Webmaster Tools' } },
   { key: 'security', label: { zh: '安全相关', en: 'Security' } },
+  { key: 'ai', label: { zh: 'AI 相关', en: 'AI' } },
 ]
 
 export const articles: Article[] = [
@@ -1004,6 +1005,156 @@ kq() {
 
 加到 ~/.bashrc 里永久生效。`,
   },
+  {
+    slug: 'deepseek-intro-guide',
+    title: 'DeepSeek AI 介绍与使用指南',
+    description: 'DeepSeek 是什么？有哪些核心功能？如何通过网页、API 和本地部署使用 DeepSeek？一文讲透。',
+    category: 'AI 相关',
+    categoryKey: 'ai',
+    date: '2026-05-02',
+    readTime: 5,
+    hot: true,
+    content: `## DeepSeek 是什么？
+
+DeepSeek（深度求索）是一家专注于人工智能研究的中国公司，由幻方量化创立。其开发的 DeepSeek AI 模型系列在自然语言处理、代码生成、数学推理等领域表现出色，尤其以超高的性价比和开源策略在 AI 社区引起广泛关注。
+
+## DeepSeek 的发展历程
+
+DeepSeek 从 2023 年开始陆续发布多个模型版本：
+
+- **DeepSeek LLM**：首个开源模型，奠定了技术基础
+- **DeepSeek-V2**：引入 MoE（混合专家）架构，大幅提升效率
+- **DeepSeek-V3**：671B 参数的强大模型，性能达到开源顶尖水平
+- **DeepSeek-R1**：首个开源推理模型，在数学和逻辑推理上媲美 OpenAI o1
+
+## DeepSeek 的核心特点
+
+### 开源策略
+
+DeepSeek 坚持开源，模型的权重和技术报告公开可查。这意味着开发者可以在本地部署、微调和二次开发，不受 API 限制，也不用担心数据隐私问题。
+
+### 超高性价比
+
+DeepSeek API 的价格远低于同类产品。以 DeepSeek-V3 为例，其 API 调用成本仅为 GPT-4 的几十分之一。对于需要大量调用 AI 的场景来说，这是非常显著的成本优势。
+
+### 强大的代码能力
+
+DeepSeek 在编程任务上表现优异，支持 Python、JavaScript、Go、Rust、Java 等多种编程语言，能够完成代码生成、调试、重构等任务。在 HumanEval 等编程基准测试中成绩靠前。
+
+### 长上下文支持
+
+DeepSeek 支持 128K 的上下文长度，可以处理整本书籍或大型代码库的内容。这个特性在文档分析、代码审查、长文本处理等需要大量上下文的任务中非常有优势。
+
+## 如何使用 DeepSeek
+
+### 方式一：网页版
+
+访问 DeepSeek 官网（chat.deepseek.com）即可直接使用网页版对话。界面简洁，支持文件上传（图片、PDF、Word、Excel 等）和联网搜索功能，无需任何配置即可上手。
+
+### 方式二：API 调用
+
+DeepSeek 提供兼容 OpenAI 格式的 API，可以无缝替换现有的 OpenAI 集成。只需要修改 base_url 和 api_key 即可：
+
+\`\`\`python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="your-deepseek-api-key",
+    base_url="https://api.deepseek.com"
+)
+
+response = client.chat.completions.create(
+    model="deepseek-chat",
+    messages=[
+        {"role": "user", "content": "用 Python 写一个快速排序算法"}
+    ]
+)
+print(response.choices[0].message.content)
+\`\`\`
+
+### 方式三：本地部署
+
+借助 Ollama、vLLM 等工具，可以在本地 GPU 上运行 DeepSeek 的蒸馏版本。这对于数据安全和隐私要求高的企业场景非常重要。
+
+## DeepSeek 的局限性
+
+- 部分复杂推理任务上仍与 GPT-4 和 Claude 有一定差距
+- 虽然中文表现出色，但英文内容的精细度偶尔不如原生英文模型
+- 本地部署蒸馏版本对硬件仍有较高要求
+- 联网搜索功能的实时性和准确度有待进一步提升
+
+## 总结
+
+DeepSeek 是目前最值得关注的中国 AI 模型之一。其开源策略、低廉的价格和扎实的性能，使其成为开发者在选择 AI 助手时的重要选项。无论你是通过网页版快速体验，还是通过 API 集成到自己的应用中，DeepSeek 都能提供出色的体验。`,
+  },
+
+  {
+    slug: 'deepseek-coding-tips',
+    title: 'DeepSeek 在编程中的应用与实践技巧',
+    description: '如何用 DeepSeek 提升编程效率？代码生成、调试、审查、文档生成等实用技巧汇总。',
+    category: 'AI 相关',
+    categoryKey: 'ai',
+    date: '2026-05-03',
+    readTime: 5,
+    content: `## AI 辅助编程的现状
+
+AI 辅助编程已经从实验阶段进入到日常开发的标配。GitHub Copilot、ChatGPT、Claude 等工具被广泛使用，而 DeepSeek 凭借其强大的代码能力、超长上下文和开源策略，成为越来越多开发者的选择。
+
+## DeepSeek 在编程中的优势
+
+### 1. 深度理解代码逻辑
+
+DeepSeek 不仅能生成代码片段，更能理解完整的代码逻辑结构。对于复杂的算法题、架构设计问题，DeepSeek 能够给出思路清晰、结构完整的解决方案。在处理多文件、多模块的项目时，128K 的上下文窗口可以容纳整个代码库的核心部分。
+
+### 2. 多语言支持
+
+无论是 Python、JavaScript、Go、Rust、Java 还是 C++，DeepSeek 都能熟练处理。在不同语言之间进行代码转换时，DeepSeek 表现得尤其出色。比如把 Python 的算法实现改写成 Go 版本，或者把 JavaScript 代码转成 TypeScript，都能一次性完成。
+
+### 3. 代码审查与调试
+
+将一段有问题的代码粘贴给 DeepSeek，它能够迅速定位 bug 并给出修复建议。对于性能优化，DeepSeek 也能提供有针对性的改进方案，例如指出可以优化的循环、不必要的内存分配等。
+
+### 4. 文档与注释生成
+
+DeepSeek 可以自动为代码生成文档注释、README 文件和 API 文档。支持 Javadoc、GoDoc、TSDoc 等主流文档格式，帮助团队保持代码文档的完整性和一致性。
+
+## 实际使用技巧
+
+### 技巧一：提供充足的上下文
+
+给 DeepSeek 提供足够的上下文信息——包括使用的技术栈、框架版本、代码目录结构——可以得到更准确的回答。不要只贴一段代码，而是简单说明这个代码在项目中的角色和你要解决的问题。
+
+### 技巧二：分步骤提问
+
+复杂任务拆解成多个步骤。先让 DeepSeek 设计整体架构，再逐一实现每个模块。DeepSeek 有 128K 的上下文，可以记住整个对话链路上的所有内容，所以分步骤对话效果很好。
+
+### 技巧三：提供输入输出示例
+
+在写正则表达式、数据转换脚本或 API 集成代码时，提供输入输出的示例可以让 DeepSeek 更准确地理解你的需求。示例比文字描述更精确，能显著减少反复修改的沟通成本。
+
+### 技巧四：迭代优化
+
+对于代码生成任务，先让 DeepSeek 生成一个基础版本，然后逐步提出优化需求。例如先让它实现基本功能，再要求增加错误处理，最后优化性能。DeepSeek 能够基于之前的上下文进行迭代改进，不需要每次都从头开始。
+
+## 注意事项
+
+### 代码安全性
+
+AI 生成的代码可能存在安全漏洞。不要直接在生产环境使用未经审查的 AI 生成代码，特别是涉及 SQL 查询、用户输入处理、加密解密等敏感场景时，必须人工审查。
+
+### 版权合规
+
+AI 训练数据中可能包含开源代码，生成的代码可能带有类似 GPL 等许可证的约束。在商业项目中使用时需要注意合规性，尤其是复制大量生成的代码时。
+
+### 避免过度依赖
+
+AI 辅助编程提高了效率，但也可能导致开发者忽视基础能力的积累。建议将 AI 作为辅助工具来提升效率，而非完全替代学习和深入思考。理解代码为什么能工作，比让 AI 生成能工作的代码更重要。
+
+## 总结
+
+DeepSeek 在编程领域的表现相当出色。无论是日常编码、调试排错还是代码审查，都能提供有效的帮助。合理使用 DeepSeek，可以显著提升开发效率，让开发者将更多精力放在架构设计和业务逻辑上。但要记住，AI 是工具不是替代品，代码质量和安全的责任始终在开发者自己手上。`,
+  },
+
 ]
 
 export function getHotArticles(): Article[] {
