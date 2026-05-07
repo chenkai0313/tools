@@ -10,11 +10,15 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params
   const dict = getDictionary(lang as any)
   return {
-    title: `${dict.nav.home} - 站长工具`,
-    description: '免费在线站长工具集合，提供时间戳转换、JSON格式化、Base64图片转换、正则表达式测试、哈希计算、AES/RSA加解密等12种开发者工具。',
+    title: `${dict.nav.home} - Ken Webmaster Tools`,
+    description: lang === 'zh'
+      ? '免费在线站长工具集合，提供时间戳转换、JSON格式化、Base64图片转换、正则表达式测试、哈希计算、AES/RSA加解密等12种开发者工具。所有工具在浏览器本地运行，不上传服务器。'
+      : 'Free online developer tools: JSON formatter, timestamp converter, Base64 encoder, regex tester, hash calculator, password generator, and more. 100% client-side, no data upload.',
     openGraph: {
-      title: '站长工具 - 在线开发者工具集',
-      description: '为站长和开发者提供实用的在线工具，所有工具均在浏览器本地运行，保护你的数据隐私。',
+      title: `${dict.nav.home} - Ken Webmaster Tools`,
+      description: lang === 'zh'
+        ? '为站长和开发者提供实用的在线工具，所有工具均在浏览器本地运行，保护你的数据隐私。'
+        : 'Free online toolkit for developers and webmasters. All tools run in your browser - no upload, no backend, privacy first.',
     },
     alternates: { languages: { 'zh': '/zh', 'en': '/en' } },
   }

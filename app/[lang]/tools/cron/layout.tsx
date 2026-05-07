@@ -7,7 +7,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     description: lang === 'zh'
       ? '在线Cron表达式解析生成工具，支持5位和6位Cron格式，将Cron转换为可读的时间描述，实时预览最近5次执行时间。'
       : 'Online cron expression parser and generator. Parse cron expressions to human-readable schedules, preview next 5 execution times.',
-    keywords: 'Cron, Cron表达式, 定时任务, 计划任务, crontab, 在线Cron工具',
+    keywords: 'cron expression parser, crontab generator, cron schedule builder, cron translator, online cron tool, Cron, Cron表达式, 定时任务, 计划任务, crontab, 在线Cron工具',
     openGraph: {
       title: `${lang === 'zh' ? 'Cron 表达式' : 'Cron Expression'} - 站长工具`,
       description: lang === 'zh'

@@ -18,13 +18,39 @@ export async function generateStaticParams() {
   return paths
 }
 
+const categoryKeywords: Record<string, Record<string, string>> = {
+  frontend: {
+    zh: '前端开发, JSON, 编程教程, Web开发',
+    en: 'frontend development, web development, JSON, programming tutorial',
+  },
+  devops: {
+    zh: '运维, Docker, K3s, DevOps, 容器化, 部署',
+    en: 'DevOps, Docker, K3s, containerization, deployment',
+  },
+  security: {
+    zh: '安全, 加密, 哈希, Base64, 算法',
+    en: 'security, encryption, hash, Base64, cryptography',
+  },
+  ai: {
+    zh: 'AI, 人工智能, DeepSeek, 大模型, 编程',
+    en: 'AI, artificial intelligence, DeepSeek, LLM, programming',
+  },
+  tools: {
+    zh: '站长工具, Cron, IP地址',
+    en: 'webmaster tools, cron, IP address',
+  },
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { lang, slug } = await params
   const article = getArticleBySlug(slug)
   if (!article) return {}
+  const ck = categoryKeywords[article.categoryKey]
+  const kw = ck ? ck[lang === 'zh' ? 'zh' : 'en'] : ''
   return {
     title: `${article.title} - 站长工具`,
     description: article.description,
+    keywords: kw,
     alternates: { languages: { 'zh': `/zh/articles/${slug}`, 'en': `/en/articles/${slug}` } },
   }
 }

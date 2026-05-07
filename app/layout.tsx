@@ -13,15 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "站长工具 - 为站长和开发者提供的在线工具集",
-  description: "免费在线站长工具，包括时间戳转换、JSON格式化、Base64图片转换、密码生成、Cron表达式解析等实用工具。",
-  keywords: "站长工具, 在线工具, 时间戳转换, JSON格式化, Base64, 密码生成, Cron",
+  title: "Ken Webmaster Tools - Free Online Developer Tools",
+  description: "Free online developer tools: JSON formatter, Base64 converter, timestamp converter, regex tester, hash calculator, password generator, QR code creator and more. 100% client-side, no data upload.",
+  keywords: "webmaster tools, online developer tools, JSON formatter, Base64 encoder, timestamp converter, regex tester, hash calculator, password generator, QR code generator, cron expression parser, free online tools",
   icons: {
     icon: '/favicon.svg',
   },
   openGraph: {
-    title: "站长工具 - 在线工具集",
-    description: "为站长和开发者提供实用的在线工具",
+    title: "Ken Webmaster Tools - Free Online Developer Tools",
+    description: "Free online toolkit for developers and webmasters. All tools run in your browser - no upload, no backend, privacy first.",
     type: "website",
   },
 };
