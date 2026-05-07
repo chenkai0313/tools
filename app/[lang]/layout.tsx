@@ -4,7 +4,7 @@ import { getDictionary, isLocale } from '@/i18n'
 import { notFound } from 'next/navigation'
 
 export function generateStaticParams() {
-  return [{ lang: 'zh' }, { lang: 'en' }]
+  return [{ lang: 'en' }, { lang: 'zh' }]
 }
 
 export default async function LangLayout({
