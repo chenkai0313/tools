@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ken Webmaster Tools (ken 站长工具)
+
+A free, privacy-first online toolkit for developers and webmasters. All tools run entirely in the browser — no backend server, no data upload, no registration required.
+
+Site: [schg.xyz](https://schg.xyz)
+
+## Features
+
+- **12 browser-based tools** covering development, security, conversion, and everyday utilities
+- **Bilingual** (Chinese / English) with automatic locale detection
+- **Privacy-first**: all computation happens client-side, your data never leaves your device
+- **Static export**: built with Next.js static generation, deployable anywhere
+
+### Tools
+
+| Category | Tools |
+|---|---|
+| Development | JSON formatter & validator, Regex tester, Case converter, URL/Unicode encoder |
+| Security | Hash calculator (MD5/SHA), AES/DES/RSA encryption, Password generator |
+| Conversion | Timestamp converter, Base64 image converter, Config format (YAML/TOML/JSON) converter |
+| Utilities | QR code generator, Cron expression parser |
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript 5 (strict mode)
+- **Styling**: Tailwind CSS v4
+- **Font**: Geist (via `next/font`)
+- **Icons**: Inline SVG / lucide-react
+- **Internationalization**: Custom dictionary-based i18n
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+Static files are output to the `out/` directory, ready for deployment.
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/[lang]/          # Locale-based routes (zh/en)
+  ├── page.tsx       # Homepage
+  ├── tools/         # 12 tool pages
+  ├── articles/      # Blog articles
+  ├── about/         # About page
+  ├── contact/       # Contact page
+  ├── privacy/       # Privacy policy
+  └── terms/         # Terms of service
+components/          # Shared UI components
+data/                # Static article data
+i18n/                # Translation dictionaries (zh.ts, en.ts)
+lib/                 # Utility functions
+proxy.ts             # Locale detection middleware
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
