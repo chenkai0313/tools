@@ -6,7 +6,6 @@ import Link from 'next/link'
 interface NewsItem {
   id: number
   title: string
-  img?: string
   source_name: string
   content: string
   is_manual: boolean
@@ -21,8 +20,6 @@ interface NewsResponse {
     list: NewsItem[]
   }
 }
-
-const IMG_BASE = 'https://sitehub.schg.xyz'
 
 export default function HotNewsSection({ lang }: { lang: string }) {
   const [news, setNews] = useState<NewsItem[]>([])
@@ -97,9 +94,6 @@ export default function HotNewsSection({ lang }: { lang: string }) {
       <div className="space-y-2.5">
         {news.map((item) => {
           const isExpanded = expandedId === item.id
-          const imgUrl = item.img
-            ? item.img.startsWith('http') ? item.img : `${IMG_BASE}${item.img}`
-            : null
 
           return (
             <div
@@ -107,18 +101,7 @@ export default function HotNewsSection({ lang }: { lang: string }) {
               className="rounded-lg border border-white/[0.06] bg-white/[0.03] overflow-hidden cursor-pointer hover:border-white/[0.12] transition-colors"
               onClick={() => toggleExpand(item.id)}
             >
-              {/* collapsed view */}
               <div className="flex items-start gap-3 p-3">
-                {imgUrl && (
-                  <div className="shrink-0 w-16 h-12 rounded overflow-hidden bg-white/[0.04]">
-                    <img
-                      src={imgUrl}
-                      alt=""
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
                 <div className="min-w-0 flex-1">
                   <h4 className={`text-xs font-semibold text-dark-50 leading-snug ${isExpanded ? '' : 'line-clamp-2'}`}>
                     {item.title}
@@ -139,19 +122,8 @@ export default function HotNewsSection({ lang }: { lang: string }) {
                 </svg>
               </div>
 
-              {/* expanded content */}
               {isExpanded && (
                 <div className="border-t border-white/[0.06] px-3 pb-3 pt-2">
-                  {imgUrl && (
-                    <div className="mb-2 rounded-lg overflow-hidden bg-white/[0.04]">
-                      <img
-                        src={imgUrl}
-                        alt={item.title}
-                        className="w-full max-h-48 object-cover"
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
                   <p className="text-xs text-dark-300 leading-relaxed whitespace-pre-wrap">
                     {item.is_markdown
                       ? item.content

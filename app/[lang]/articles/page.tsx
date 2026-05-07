@@ -10,15 +10,12 @@ import { articles, categories } from '@/data/articles'
 interface NewsItem {
   id: number
   title: string
-  img?: string
   source_name: string
   content: string
   is_manual: boolean
   is_markdown: boolean
   created_at: string
 }
-
-const IMG_BASE = 'https://sitehub.schg.xyz'
 
 function NewsList({ lang }: { lang: Locale }) {
   const [news, setNews] = useState<NewsItem[]>([])
@@ -88,10 +85,6 @@ function NewsList({ lang }: { lang: Locale }) {
     <div className="space-y-3">
       {news.map((item) => {
         const isExpanded = expandedId === item.id
-        const imgUrl = item.img
-            ? item.img.startsWith('http') ? item.img : `${IMG_BASE}${item.img}`
-            : null
-
         return (
           <div
             key={item.id}
@@ -99,16 +92,6 @@ function NewsList({ lang }: { lang: Locale }) {
             onClick={() => toggleExpand(item.id)}
           >
             <div className="flex items-start gap-3 p-4">
-              {imgUrl && (
-                <div className="shrink-0 w-20 h-14 rounded-lg overflow-hidden bg-white/[0.04]">
-                  <img
-                    src={imgUrl}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              )}
               <div className="min-w-0 flex-1">
                 <h3 className={`text-sm font-semibold text-dark-50 leading-snug ${isExpanded ? '' : 'line-clamp-2'}`}>
                   {item.title}
@@ -136,16 +119,6 @@ function NewsList({ lang }: { lang: Locale }) {
 
             {isExpanded && (
               <div className="border-t border-white/[0.06] px-4 pb-4 pt-3">
-                {imgUrl && (
-                  <div className="mb-3 rounded-lg overflow-hidden bg-white/[0.04]">
-                    <img
-                      src={imgUrl}
-                      alt={item.title}
-                      className="w-full max-h-64 object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
                 <p className="text-sm text-dark-300 leading-relaxed whitespace-pre-wrap">
                   {item.is_markdown
                     ? item.content
