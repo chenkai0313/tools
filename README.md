@@ -1,5 +1,7 @@
 # Ken Webmaster Tools (ken 站长工具)
 
+> [🇨🇳 中文版本](README.zh.md)
+
 A free, privacy-first online toolkit for developers and webmasters. All tools run entirely in the browser — no backend server, no data upload, no registration required.
 
 Site: [schg.xyz](https://schg.xyz)
