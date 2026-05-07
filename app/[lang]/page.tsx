@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import ArticleCard from '@/components/ArticleCard'
+import HotNewsSection from '@/components/HotNewsSection'
 import { getDictionary, isLocale } from '@/i18n'
 import { articles, categories as articleCats, getHotArticles } from '@/data/articles'
 import { notFound } from 'next/navigation'
@@ -78,60 +79,73 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         </div>
       </section>
 
-      {/* Tool Categories */}
-      <section className="mb-12">
-        <h2 className="mb-5 text-lg font-bold text-dark-50">{dict.home.toolCategories.title}</h2>
-        <div className="grid gap-6 md:grid-cols-2">
-          {categoryKeys.map((catKey) => {
-            const cat = dict.home.toolCategories[catKey]
-            const catTools = tools.filter(t => t.category === catKey)
-            return (
-              <div key={catKey} className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5">
-                <h3 className="text-sm font-bold text-dark-50 mb-1">{cat.title}</h3>
-                <p className="text-xs text-dark-400 mb-4 leading-relaxed">{cat.desc}</p>
-                <div className="flex flex-wrap gap-2">
-                  {catTools.map((tool) => (
-                    <Link
-                      key={tool.key}
-                      href={`/${lang}/tools/${tool.key}`}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.04] px-3 py-1.5 text-xs text-dark-300 hover:text-indigo-300 hover:bg-indigo-500/10 transition-all"
-                    >
-                      <span>{tool.icon}</span>
-                      {dict.nav[tool.key as keyof typeof dict.nav]}
-                    </Link>
-                  ))}
+      {/* Main content + Hot News sidebar */}
+      <div className="lg:grid lg:grid-cols-3 lg:gap-8 mb-12">
+        {/* Left: main content */}
+        <div className="lg:col-span-2 space-y-12">
+          {/* Tool Categories */}
+          <section>
+            <h2 className="mb-5 text-lg font-bold text-dark-50">{dict.home.toolCategories.title}</h2>
+            <div className="grid gap-6 md:grid-cols-2">
+              {categoryKeys.map((catKey) => {
+                const cat = dict.home.toolCategories[catKey]
+                const catTools = tools.filter(t => t.category === catKey)
+                return (
+                  <div key={catKey} className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5">
+                    <h3 className="text-sm font-bold text-dark-50 mb-1">{cat.title}</h3>
+                    <p className="text-xs text-dark-400 mb-4 leading-relaxed">{cat.desc}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {catTools.map((tool) => (
+                        <Link
+                          key={tool.key}
+                          href={`/${lang}/tools/${tool.key}`}
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.04] px-3 py-1.5 text-xs text-dark-300 hover:text-indigo-300 hover:bg-indigo-500/10 transition-all"
+                        >
+                          <span>{tool.icon}</span>
+                          {dict.nav[tool.key as keyof typeof dict.nav]}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </section>
+
+          {/* Use Scenarios */}
+          <section>
+            <h2 className="mb-5 text-lg font-bold text-dark-50">{dict.home.scenarios.title}</h2>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {dict.home.scenarios.items.map((item, i) => (
+                <div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5">
+                  <h3 className="text-sm font-bold text-dark-50 mb-2">{item.title}</h3>
+                  <p className="text-xs text-dark-400 leading-relaxed">{item.desc}</p>
                 </div>
-              </div>
-            )
-          })}
-        </div>
-      </section>
-
-      {/* Use Scenarios */}
-      <section className="mb-12">
-        <h2 className="mb-5 text-lg font-bold text-dark-50">{dict.home.scenarios.title}</h2>
-        <div className="grid gap-4 sm:grid-cols-3">
-          {dict.home.scenarios.items.map((item, i) => (
-            <div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5">
-              <h3 className="text-sm font-bold text-dark-50 mb-2">{item.title}</h3>
-              <p className="text-xs text-dark-400 leading-relaxed">{item.desc}</p>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </section>
 
-      {/* Why Choose Us */}
-      <section className="mb-12">
-        <h2 className="mb-5 text-lg font-bold text-dark-50">{dict.home.whyUs.title}</h2>
-        <div className="grid gap-4 sm:grid-cols-3">
-          {dict.home.whyUs.points.map((point, i) => (
-            <div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5">
-              <h3 className="text-sm font-bold text-dark-50 mb-2">{point.title}</h3>
-              <p className="text-xs text-dark-400 leading-relaxed">{point.desc}</p>
+          {/* Why Choose Us */}
+          <section>
+            <h2 className="mb-5 text-lg font-bold text-dark-50">{dict.home.whyUs.title}</h2>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {dict.home.whyUs.points.map((point, i) => (
+                <div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5">
+                  <h3 className="text-sm font-bold text-dark-50 mb-2">{point.title}</h3>
+                  <p className="text-xs text-dark-400 leading-relaxed">{point.desc}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          </section>
         </div>
-      </section>
+
+        {/* Right: Hot News sidebar */}
+        <div className="mt-10 lg:mt-0">
+          <div className="rounded-xl border border-orange-500/15 bg-gradient-to-b from-orange-500/5 to-transparent p-4">
+            <HotNewsSection lang={lang} />
+          </div>
+        </div>
+      </div>
 
       {/* Divider */}
       <div className="mb-10 h-px bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent" />
@@ -153,7 +167,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
       {/* Article Categories */}
       <div className="grid gap-8 sm:grid-cols-2">
-        {articleCats.map((category) => {
+        {articleCats.filter((c) => c.key !== 'news').map((category) => {
           const categoryArticles = articles.filter((a) => a.categoryKey === category.key)
           return (
             <section key={category.key}>

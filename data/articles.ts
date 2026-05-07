@@ -13,9 +13,9 @@ export interface Article {
 export const categories: { key: string; label: Record<string, string> }[] = [
   { key: 'frontend', label: { zh: '前端开发', en: 'Frontend' } },
   { key: 'devops', label: { zh: '运维监控', en: 'DevOps' } },
-  { key: 'tools', label: { zh: '站长工具', en: 'Webmaster Tools' } },
   { key: 'security', label: { zh: '安全相关', en: 'Security' } },
   { key: 'ai', label: { zh: 'AI 相关', en: 'AI' } },
+  { key: 'news', label: { zh: '热点文章', en: 'Hot News' } },
 ]
 
 export const articles: Article[] = [
