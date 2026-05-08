@@ -82,6 +82,9 @@ export default function Footer({ dict, locale }: FooterProps) {
           </div>
         </div>
 
+        {/* Friend links & Contact */}
+        <div className="flex flex-col gap-4">
+
         {/* Friend links */}
         <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-6 py-5">
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:justify-center sm:gap-6">
@@ -104,7 +107,26 @@ export default function Footer({ dict, locale }: FooterProps) {
           </div>
         </div>
 
-        {/* Bottom bar */}
+        {/* Contact */}
+        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-6 py-5">
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-center sm:gap-6">
+            <span className="flex items-center gap-2 text-xs font-medium text-dark-400 whitespace-nowrap">
+              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 text-xs">✉️</span>
+              {dict.footer.contactTitle}
+            </span>
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+              <a
+                href="mailto:ckck0313@gmail.com"
+                className="group flex items-center gap-2 text-sm"
+              >
+                <span className="font-mono text-sm text-dark-200 group-hover:text-emerald-400 transition-colors">ckck0313@gmail.com</span>
+              </a>
+              <span className="text-dark-500 text-xs hidden sm:inline">|</span>
+              <span className="text-dark-500 text-xs text-center">{dict.footer.contactDesc}</span>
+            </div>
+          </div>
+        </div>
+        </div>
         <div className="mt-8 pt-6 border-t border-white/[0.06] flex flex-col items-center gap-3">
           <div className="flex items-center gap-4 text-xs text-dark-400">
             {navItems.map((item) => (

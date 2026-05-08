@@ -84,6 +84,8 @@ const en = {
     desc: 'Practical online tools for webmasters and developers',
     friends: 'Friends',
     friendDesc: 'Free Online Resume Builder',
+    contactTitle: 'Contact',
+    contactDesc: 'Have suggestions or ideas? Email us and I\'ll build them!',
   },
   common: {
     breadcrumb: {

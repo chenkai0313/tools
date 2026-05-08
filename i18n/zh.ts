@@ -84,6 +84,8 @@ const zh = {
     desc: '为站长和开发者提供实用的在线工具',
     friends: '友情链接',
     friendDesc: '免费在线简历生成工具',
+    contactTitle: '联系我们',
+    contactDesc: '有任何建议或想法？发邮件告诉我，我会及时更新开发！',
   },
   common: {
     breadcrumb: {
