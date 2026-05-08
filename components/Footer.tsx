@@ -82,8 +82,23 @@ export default function Footer({ dict, locale }: FooterProps) {
           </div>
         </div>
 
+        {/* Friend links */}
+        <div className="flex flex-col items-center gap-3">
+          <span className="text-xs text-dark-500">{dict.footer.friends}</span>
+          <div className="flex flex-wrap justify-center gap-4 text-xs">
+            <a
+              href="https://resbu.top"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-dark-400 hover:text-indigo-400 transition-colors"
+            >
+              Resbu - Online Resume Builder
+            </a>
+          </div>
+        </div>
+
         {/* Bottom bar */}
-        <div className="mt-10 pt-6 border-t border-white/[0.06] flex flex-col items-center gap-3">
+        <div className="mt-8 pt-6 border-t border-white/[0.06] flex flex-col items-center gap-3">
           <div className="flex items-center gap-4 text-xs text-dark-400">
             {navItems.map((item) => (
               <Link key={item.key} href={item.href} className="hover:text-dark-200 transition-colors">

@@ -82,6 +82,7 @@ const en = {
   footer: {
     copyright: '© 2025 Webmaster Tools',
     desc: 'Practical online tools for webmasters and developers',
+    friends: 'Friends',
   },
   common: {
     breadcrumb: {
