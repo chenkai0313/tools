@@ -83,17 +83,24 @@ export default function Footer({ dict, locale }: FooterProps) {
         </div>
 
         {/* Friend links */}
-        <div className="flex flex-col items-center gap-3">
-          <span className="text-xs text-dark-500">{dict.footer.friends}</span>
-          <div className="flex flex-wrap justify-center gap-4 text-xs">
-            <a
-              href="https://resbu.top"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-dark-400 hover:text-indigo-400 transition-colors"
-            >
-              Resbu - Online Resume Builder
-            </a>
+        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-6 py-5">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:justify-center sm:gap-6">
+            <span className="flex items-center gap-2 text-xs font-medium text-dark-400 whitespace-nowrap">
+              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 text-xs">🤝</span>
+              {dict.footer.friends}
+            </span>
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+              <a
+                href="https://resbu.top"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-2 text-sm transition-colors"
+              >
+                <span className="font-medium text-dark-200 group-hover:text-indigo-400 transition-colors">Resbu</span>
+                <span className="text-dark-500 group-hover:text-dark-400 transition-colors text-xs hidden sm:inline">-</span>
+                <span className="text-dark-500 group-hover:text-dark-300 transition-colors text-xs">{dict.footer.friendDesc}</span>
+              </a>
+            </div>
           </div>
         </div>
 

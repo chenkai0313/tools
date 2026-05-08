@@ -83,6 +83,7 @@ const en = {
     copyright: '© 2025 Webmaster Tools',
     desc: 'Practical online tools for webmasters and developers',
     friends: 'Friends',
+    friendDesc: 'Free Online Resume Builder',
   },
   common: {
     breadcrumb: {
