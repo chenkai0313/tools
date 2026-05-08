@@ -32,8 +32,8 @@ const categoryKeywords: Record<string, Record<string, string>> = {
     en: 'security, encryption, hash, Base64, cryptography',
   },
   ai: {
-    zh: 'AI, 人工智能, DeepSeek, 大模型, 编程',
-    en: 'AI, artificial intelligence, DeepSeek, LLM, programming',
+    zh: 'AI, 人工智能, DeepSeek, 大模型, 编程, Typeless, AI写作, Obsidian, 笔记软件, 知识管理',
+    en: 'AI, artificial intelligence, DeepSeek, LLM, programming, Typeless, AI writing, Obsidian, note-taking, knowledge management',
   },
   tools: {
     zh: '站长工具, Cron, IP地址',
