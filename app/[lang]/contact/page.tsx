@@ -6,8 +6,9 @@ import type { Metadata } from 'next'
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
   return {
-    title: 'Contact Us - 站长工具',
+    title: `${lang === 'zh' ? '联系我们' : 'Contact Us'} - 站长工具`,
     description: 'Get in touch with the Ken Webmaster Tools team. Report bugs, suggest features, or send feedback.',
+    keywords: '联系站长, 反馈建议, contact webmaster, feedback, feature request, bug report',
     alternates: { languages: { 'zh': '/zh/contact', 'en': '/en/contact' } },
   }
 }

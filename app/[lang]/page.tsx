@@ -74,9 +74,9 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
       {/* Popular Tools */}
       <section className="mb-12">
-        <h2 className="mb-5 text-lg font-bold text-dark-50">{dict.home.popularTools}</h2>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
-          {tools.filter(t => t.popular).map((tool) => (
+        <h2 className="mb-5 text-lg font-bold text-dark-50">{lang === "zh" ? "全部工具" : "All Tools"}</h2>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-7">
+          {tools.map((tool) => (
             <Link
               key={tool.key}
               href={`/${lang}/tools/${tool.key}`}

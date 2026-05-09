@@ -8,6 +8,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return {
     title: `${lang === 'zh' ? '关于我们' : 'About Us'} - 站长工具`,
     description: lang === 'zh' ? 'Ken 站长工具是一个免费在线的开发者工具集合。所有工具均在浏览器端运行，无后端服务器，保护你的数据隐私。' : 'Ken Webmaster Tools is a free online toolkit for developers. All tools run in the browser with no backend server.',
+    keywords: '站长工具, 在线工具, 开发者工具, webmaster tools, free online tools, about us',
     alternates: { languages: { 'zh': '/zh/about', 'en': '/en/about' } },
   }
 }
