@@ -19,7 +19,6 @@ const en = {
     'random-data': 'Random Data',
     'image-tools': 'Image Tools',
     'world-clock': 'World Clock',
-    'chinese-convert': 'Chinese Convert',
     'roman-numeral': 'Roman Numeral',
     'number-chinese': 'Number to Chinese',
     'loan-calc': 'Loan Calculator',
@@ -32,7 +31,7 @@ const en = {
       tools: 'Webmaster Tools',
       security: 'Security',
     },
-    siteIntro: 'Ken Webmaster Tools is a free online toolset for developers and webmasters. All tools run entirely in the browser — no backend server, no data upload. Currently offering 20 tools including timestamp conversion, JSON formatting & validation, Base64 image conversion, password generation, Cron expression parsing, case conversion, QR code generation, hash calculation, encoding conversion, regex testing, config format conversion, AES/DES/RSA encryption/decryption, BMI calculator, random data generator, image compressor, world clock, Chinese converter, Roman numeral converter, number to Chinese converter, and loan calculator. Covers everyday scenarios in development, deployment, and security.',
+    siteIntro: 'Ken Webmaster Tools is a free online toolset for developers and webmasters. All tools run entirely in the browser — no backend server, no data upload. Currently offering 19 tools including timestamp conversion, JSON formatting & validation, Base64 image conversion, password generation, Cron expression parsing, case conversion, QR code generation, hash calculation, encoding conversion, regex testing, config format conversion, AES/DES/RSA encryption/decryption, BMI calculator, random data generator, image compressor, world clock, Roman numeral converter, number to Chinese converter, and loan calculator. Covers everyday scenarios in development, deployment, and security.',
     whyUs: {
       title: 'Why Choose Us',
       points: [

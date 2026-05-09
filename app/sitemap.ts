@@ -6,7 +6,6 @@ const tools = [
   'time', 'json', 'base64', 'password', 'cron', 'case',
   'qrcode', 'hash', 'encoding', 'regex', 'config', 'crypto',
   'bmi', 'random-data', 'image-tools', 'world-clock',
-  'chinese-convert', 'roman-numeral', 'number-chinese', 'loan-calc',
 ]
 
 const articles = [
