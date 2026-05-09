@@ -37,6 +37,15 @@ const tools = [
   { key: 'regex', icon: '🔍', category: 'dev' as const, popular: true, descZh: '正则表达式测试', descEn: 'Regex testing' },
   { key: 'config', icon: '⚙️', category: 'convert' as const, popular: false, descZh: 'YAML/TOML/JSON 互转', descEn: 'YAML / TOML / JSON' },
   { key: 'crypto', icon: '🔐', category: 'security' as const, popular: false, descZh: 'AES / DES / RSA 加解密', descEn: 'AES / DES / RSA' },
+  // New tools
+  { key: 'bmi', icon: '⚖️', category: 'utility' as const, popular: true, descZh: 'BMI 计算与年龄计算', descEn: 'BMI & age calculator' },
+  { key: 'random-data', icon: '🎲', category: 'dev' as const, popular: false, descZh: '随机测试数据生成', descEn: 'Random test data' },
+  { key: 'image-tools', icon: '🗜️', category: 'utility' as const, popular: true, descZh: '图片压缩与裁剪编辑', descEn: 'Image compress & crop' },
+  { key: 'world-clock', icon: '🌍', category: 'utility' as const, popular: false, descZh: '世界时钟与时区转换', descEn: 'World clock & timezone' },
+  { key: 'chinese-convert', icon: '🀄', category: 'dev' as const, popular: false, descZh: '简繁体中文互转', descEn: 'S/T Chinese convert' },
+  { key: 'roman-numeral', icon: '🏛️', category: 'dev' as const, popular: false, descZh: '阿拉伯/罗马数字互转', descEn: 'Roman numeral' },
+  { key: 'number-chinese', icon: '🔢', category: 'dev' as const, popular: false, descZh: '数字转中文大写金额', descEn: 'Number to Chinese' },
+  { key: 'loan-calc', icon: '💰', category: 'convert' as const, popular: true, descZh: '贷款还款计算器', descEn: 'Loan calculator' },
 ]
 
 const categoryKeys = ['dev', 'security', 'convert', 'utility'] as const
@@ -59,7 +68,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         </p>
         <div className="mt-6 flex items-center justify-center gap-2 text-xs text-dark-400">
           <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/10 px-3 py-1 text-indigo-300">
-            <span className="h-1.5 w-1.5 rounded-full bg-green-400" /> 12 {lang === 'zh' ? '个工具' : 'tools'}
+            <span className="h-1.5 w-1.5 rounded-full bg-green-400" /> 20 {lang === 'zh' ? '个工具' : 'tools'}
           </span>
         </div>
       </section>

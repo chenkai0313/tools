@@ -38,6 +38,14 @@ export default function Header({ dict, locale }: HeaderProps) {
     { href: `/${locale}/tools/regex`, icon: '🔍', label: dict.nav.regex },
     { href: `/${locale}/tools/config`, icon: '⚙️', label: dict.nav.config },
     { href: `/${locale}/tools/crypto`, icon: '🔐', label: dict.nav.crypto },
+    { href: `/${locale}/tools/bmi`, icon: '⚖️', label: dict.nav.bmi },
+    { href: `/${locale}/tools/random-data`, icon: '🎲', label: dict.nav['random-data'] },
+    { href: `/${locale}/tools/image-tools`, icon: '🗜️', label: dict.nav['image-tools'] },
+    { href: `/${locale}/tools/world-clock`, icon: '🌍', label: dict.nav['world-clock'] },
+    { href: `/${locale}/tools/chinese-convert`, icon: '🀄', label: dict.nav['chinese-convert'] },
+    { href: `/${locale}/tools/roman-numeral`, icon: '🏛️', label: dict.nav['roman-numeral'] },
+    { href: `/${locale}/tools/number-chinese`, icon: '🔢', label: dict.nav['number-chinese'] },
+    { href: `/${locale}/tools/loan-calc`, icon: '💰', label: dict.nav['loan-calc'] },
   ]
 
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')

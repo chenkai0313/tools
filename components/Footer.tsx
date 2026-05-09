@@ -19,6 +19,14 @@ const toolIcons: Record<string, string> = {
   regex: '🔍',
   config: '⚙️',
   crypto: '🔐',
+  bmi: '⚖️',
+  'random-data': '🎲',
+  'image-tools': '🗜️',
+  'world-clock': '🌍',
+  'chinese-convert': '🀄',
+  'roman-numeral': '🏛️',
+  'number-chinese': '🔢',
+  'loan-calc': '💰',
 }
 
 export default function Footer({ dict, locale }: FooterProps) {
@@ -35,6 +43,14 @@ export default function Footer({ dict, locale }: FooterProps) {
     { key: 'regex', href: `/${locale}/tools/regex` },
     { key: 'config', href: `/${locale}/tools/config` },
     { key: 'crypto', href: `/${locale}/tools/crypto` },
+    { key: 'bmi', href: `/${locale}/tools/bmi` },
+    { key: 'random-data', href: `/${locale}/tools/random-data` },
+    { key: 'image-tools', href: `/${locale}/tools/image-tools` },
+    { key: 'world-clock', href: `/${locale}/tools/world-clock` },
+    { key: 'chinese-convert', href: `/${locale}/tools/chinese-convert` },
+    { key: 'roman-numeral', href: `/${locale}/tools/roman-numeral` },
+    { key: 'number-chinese', href: `/${locale}/tools/number-chinese` },
+    { key: 'loan-calc', href: `/${locale}/tools/loan-calc` },
   ]
 
   const navItems = [

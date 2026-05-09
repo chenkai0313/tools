@@ -932,4 +932,557 @@ export const toolContent: Record<string, Content> = {
     ),
   },
 
+
+  bmi: {
+    zh: (
+      <Section title="📖 BMI 计算器使用说明">
+        <Block title="工具简介">BMI（Body Mass Index，身体质量指数）是衡量人体胖瘦程度的国际标准。本工具同时提供年龄计算功能，输入出生日期即可精确计算年龄（年/月/天）。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>BMI 计算</strong>：根据身高体重计算 BMI 指数，自动判断偏瘦/正常/偏胖/肥胖',
+            '<strong>年龄计算</strong>：输入出生日期，精确计算到岁、月、天',
+            '<strong>单位切换</strong>：支持公制（kg/cm）和英制（lb/in）两种单位',
+            '<strong>健康体重范围</strong>：自动计算当前身高的健康体重区间',
+          ]} />
+        </Block>
+        <Block title="BMI 参考标准">
+          <List items={[
+            '<strong>&lt; 18.5</strong>：偏瘦',
+            '<strong>18.5 - 24.9</strong>：正常',
+            '<strong>25 - 29.9</strong>：偏胖',
+            '<strong>≥ 30</strong>：肥胖',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '选择 BMI 或年龄标签页',
+            'BMI：输入身高和体重，自动计算并显示结果',
+            '年龄：选择出生日期，自动计算精确年龄',
+            '可在公制和英制单位之间切换',
+          ]} />
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '健康管理：定期监测 BMI 变化趋势',
+            '健身目标：参考健康体重范围设定减脂或增肌目标',
+            '体检参考：快速了解自己的体重状况',
+            '计算精确年龄：用于生日、纪念日或统计用途',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 BMI Calculator Guide">
+        <Block title="Introduction">BMI (Body Mass Index) is an international standard for assessing body weight. This tool also provides age calculation from date of birth.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>BMI calculation</strong>: Based on height and weight with category detection',
+            '<strong>Age calculation</strong>: Precise years/months/days from birthday',
+            '<strong>Unit toggle</strong>: Metric (kg/cm) and Imperial (lb/in)',
+            '<strong>Healthy weight range</strong>: Suggested range for your height',
+          ]} />
+        </Block>
+        <Block title="BMI Reference">
+          <List items={[
+            '<strong>&lt; 18.5</strong>: Underweight',
+            '<strong>18.5 - 24.9</strong>: Normal',
+            '<strong>25 - 29.9</strong>: Overweight',
+            '<strong>≥ 30</strong>: Obese',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Select BMI or Age tab',
+            'BMI: Enter height and weight to see results instantly',
+            'Age: Select date of birth for precise age calculation',
+            'Toggle between metric and imperial units',
+          ]} />
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Health tracking and BMI monitoring',
+            'Fitness goal planning',
+            'Quick health assessment',
+            'Precise age calculation for any purpose',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  'random-data': {
+    zh: (
+      <Section title="📖 随机数据生成器使用说明">
+        <Block title="工具简介">随机数据生成器可以快速生成结构化的模拟数据，包括姓名、邮箱、电话、地址、公司、UUID、IP 地址、颜色等。常用于开发和测试阶段填充模拟数据。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>8 种字段类型</strong>：姓名、邮箱、电话、地址、公司、UUID、IP 地址、颜色',
+            '<strong>自定义数量</strong>：一次生成 1~100 条数据',
+            '<strong>双语支持</strong>：中文/英文姓名和地址格式',
+            '<strong>导出功能</strong>：生成结果支持 CSV 和 JSON 格式导出',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '选择需要的字段类型（点击按钮切换选中状态）',
+            '调整生成数量（1-100 之间）',
+            '选择数据语言（中文/English）',
+            '点击"生成数据"按钮',
+            '查看结果并导出为 CSV 或 JSON',
+          ]} />
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '前端开发时填充表格或列表测试数据',
+            '后端开发时生成模拟数据用于接口调试',
+            '数据库测试数据填充',
+            '演示环境的数据模拟',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Random Data Generator Guide">
+        <Block title="Introduction">Generate structured mock data including names, emails, phones, addresses, companies, UUIDs, IPs, and colors. Useful for development and testing.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>8 field types</strong>: Name, Email, Phone, Address, Company, UUID, IP, Color',
+            '<strong>Custom count</strong>: Generate 1 to 100 records at once',
+            '<strong>Bilingual</strong>: Chinese and English name/address formats',
+            '<strong>Export</strong>: Download results as CSV or JSON',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Select field types (click to toggle)',
+            'Adjust the count (1-100)',
+            'Choose language (Chinese/English)',
+            'Click Generate',
+            'View results and export as CSV or JSON',
+          ]} />
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Filling frontend tables with test data',
+            'Backend API debugging with mock data',
+            'Database seeding',
+            'Demo environment data population',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  'image-tools': {
+    zh: (
+      <Section title="📖 图片工具使用说明">
+        <Block title="工具简介">图片工具提供在线压缩和裁剪功能，所有处理在浏览器端使用 Canvas API 完成，图片不上传到服务器，保护你的隐私安全。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>图片压缩</strong>：调整质量和格式（JPEG/PNG/WebP），显著减小文件大小',
+            '<strong>图片裁剪</strong>：自定义裁剪区域，支持锁定宽高比',
+            '<strong>实时预览</strong>：压缩和裁剪效果即时可见',
+            '<strong>一键下载</strong>：处理完成后直接下载结果',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '点击或拖拽上传图片（支持 PNG/JPG/WebP，最大 20MB）',
+            '切换到"压缩"或"裁剪"标签页',
+            '压缩：调整质量滑块和格式，点击"应用压缩"',
+            '裁剪：设置 X/Y/宽/高，可开启锁定宽高比，点击"应用裁剪"',
+            '预览结果无误后，点击"下载"保存',
+          ]} />
+        </Block>
+        <Block title="注意事项">
+          <Tips>所有图片处理仅在浏览器中完成，图片不会上传到任何服务器。但压缩质量过低可能导致图片清晰度明显下降，建议质量设置在 60% 以上。</Tips>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '网站图片优化：压缩图片减小页面加载体积',
+            '社交媒体：调整图片尺寸和格式',
+            '批量处理前的快速预览',
+            '无需安装软件的临时图片编辑需求',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Image Tools Guide">
+        <Block title="Introduction">Online image compression and cropping tool. All processing uses the Canvas API in your browser — images never leave your device.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Compress</strong>: Adjust quality and format (JPEG/PNG/WebP) to reduce file size',
+            '<strong>Crop</strong>: Custom crop area with optional aspect ratio lock',
+            '<strong>Live preview</strong>: See results immediately',
+            '<strong>Download</strong>: Save processed images with one click',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Upload an image by clicking or dragging (PNG/JPG/WebP, max 20MB)',
+            'Switch to Compress or Crop tab',
+            'Compress: Adjust quality and format, click Apply',
+            'Crop: Set X/Y/Width/Height, optionally lock aspect ratio, click Apply',
+            'Preview and click Download to save',
+          ]} />
+        </Block>
+        <Block title="Tips">
+          <Tips>All processing is client-side — no image is ever uploaded. For best results, keep quality above 60% to avoid visible degradation.</Tips>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Website image optimization',
+            'Social media image preparation',
+            'Quick image editing without software installation',
+            'Pre-processing before batch operations',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  'world-clock': {
+    zh: (
+      <Section title="📖 世界时钟使用说明">
+        <Block title="工具简介">世界时钟工具可以查看全球各时区的当前时间，支持时区搜索添加、实时时钟刷新和时区转换功能。最多可同时显示 10 个时区。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>实时时钟</strong>：每秒刷新，显示时区名称、当前时间、日期和 UTC 偏移',
+            '<strong>时区搜索</strong>：支持搜索并添加任意时区，最多 10 个',
+            '<strong>常用时区</strong>：一键添加北京、纽约、伦敦等热门时区',
+            '<strong>时区转换</strong>：输入日期时间，在任意两个时区之间转换',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '在搜索框中输入时区名称（如 Asia/Shanghai）并选择添加',
+            '点击时区卡片右上角的 × 移除',
+            '在"常用时区"中一键添加热门时区',
+            '切换到"时区转换"标签，选择源和目标时区进行转换',
+          ]} />
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '跨国团队协作：快速查看各地同事的当前时间',
+            '国际会议：确认不同时区的参会者是否在合理时间范围',
+            '旅行计划：提前了解目的地的时差',
+            '远程工作：协调跨时区的线上会议时间',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 World Clock Guide">
+        <Block title="Introduction">View current time around the world with live clock updates and timezone conversion. Display up to 10 timezones simultaneously.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Live clock</strong>: Second-by-second updates with timezone name, date, and UTC offset',
+            '<strong>Timezone search</strong>: Search and add any timezone (max 10)',
+            '<strong>Quick add</strong>: One-click add for Beijing, New York, London, and more',
+            '<strong>Timezone converter</strong>: Convert between any two timezones',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Search for a timezone (e.g. Asia/Shanghai) and add it',
+            'Click × on a card to remove it',
+            'Use Common Timezones for quick add',
+            'Switch to Convert tab for timezone conversion',
+          ]} />
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Global team collaboration across timezones',
+            'International event planning',
+            'Travel planning and jet lag preparation',
+            'Remote work coordination',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  'chinese-convert': {
+    zh: (
+      <Section title="📖 简繁转换工具使用说明">
+        <Block title="工具简介">简繁转换工具基于 OpenCC（开放中文转换）实现简体中文和繁体中文之间的互相转换。支持标准常用词汇的转换，而非简单的字形替换，使转换结果更加准确自然。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>简 → 繁</strong>：将简体中文转换为繁体中文（台湾标准）',
+            '<strong>繁 → 简</strong>：将繁体中文转换为简体中文',
+            '<strong>双向切换</strong>：一键切换转换方向',
+            '<strong>字数统计</strong>：实时显示输入和输出的字符数',
+            '<strong>互换和清空</strong>：一键交换输入输出或清空内容',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '在输入框中粘贴或输入要转换的中文文本',
+            '默认方向为简体 → 繁体，点击箭头按钮可切换方向',
+            '右侧实时显示转换结果',
+            '点击结果区域复制转换后的文本，或点击"互换"交换输入输出',
+          ]} />
+        </Block>
+        <Block title="注意事项">
+          <Tips>转换引擎基于 OpenCC 的 WASM 实现，首次使用需要加载词库文件，页面会显示"加载转换引擎"的提示，加载完成即可正常使用。</Tips>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '阅读繁体中文内容时将其转换为简体',
+            '与台湾、香港等地区的读者分享文章时转为繁体',
+            '繁体中文资料的编辑和整理',
+            '跨地区的中文内容本地化',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Chinese Converter Guide">
+        <Block title="Introduction">Convert between Simplified and Traditional Chinese using OpenCC (Open Chinese Convert). Goes beyond character mapping to provide accurate vocabulary-based conversion.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>S → T</strong>: Convert Simplified to Traditional Chinese (Taiwan standard)',
+            '<strong>T → S</strong>: Convert Traditional to Simplified Chinese',
+            '<strong>Direction toggle</strong>: Switch conversion direction instantly',
+            '<strong>Character count</strong>: Real-time stats for input and output',
+            '<strong>Swap & Clear</strong>: Exchange input/output or clear all',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Paste or type Chinese text in the input area',
+            'Default direction is Simplified → Traditional; click the arrow to toggle',
+            'Output updates in real-time on the right',
+            'Click the result to copy, or click Swap to exchange input and output',
+          ]} />
+        </Block>
+        <Block title="Note">
+          <Tips>The converter uses OpenCC WASM. The first load requires downloading the dictionary — the page will show "Loading conversion engine" briefly.</Tips>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Reading Traditional Chinese content',
+            'Writing articles for Taiwan/Hong Kong audiences',
+            'Editing Traditional Chinese documents',
+            'Cross-region Chinese content localization',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  'roman-numeral': {
+    zh: (
+      <Section title="📖 罗马数字转换工具使用说明">
+        <Block title="工具简介">罗马数字是古罗马时期使用的数字系统，至今仍广泛用于钟表、书籍章节编号、电影发行年份等场景。本工具支持阿拉伯数字和罗马数字的双向自动识别转换（1~3999）。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>双向转换</strong>：阿拉伯数字和罗马数字自动识别互转',
+            '<strong>实时转换</strong>：输入即转换，无需点击按钮',
+            '<strong>一键复制</strong>：双击结果即可复制到剪贴板',
+            '<strong>常用对照表</strong>：快速参考 I/V/X/L/C/D/M 对应的数值',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '在输入框中输入阿拉伯数字（如 2024）或罗马数字（如 MMXXIV）',
+            '工具自动识别输入类型并完成转换',
+            '转换结果同时显示阿拉伯和罗马两种格式',
+            '双击任意结果即可复制',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'阿拉伯数字 → 罗马数字：\n1 → I    4 → IV    9 → IX\n40 → XL  90 → XC  100 → C\n400 → CD 500 → D  900 → CM\n1000 → M\n\n年份示例：\n2024 → MMXXIV\n1999 → MCMXCIX'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '图书编目：处理章节编号和出版年份',
+            '学习罗马数字：配合对照表快速掌握',
+            '历史文档解读：理解古罗马时期的数字记载',
+            '设计排版：标题和日期的罗马数字格式',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Roman Numeral Converter Guide">
+        <Block title="Introduction">Roman numerals originated in ancient Rome and are still used today in clocks, book chapters, movie release years, and more. This tool converts between Arabic and Roman numerals (1-3999) in both directions.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Bi-directional</strong>: Auto-detect and convert between Arabic and Roman',
+            '<strong>Real-time</strong>: Results update as you type',
+            '<strong>Copy on double-click</strong>',
+            '<strong>Reference chart</strong>: I/V/X/L/C/D/M values at a glance',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Enter an Arabic number (e.g. 2024) or Roman numeral (e.g. MMXXIV)',
+            'The tool auto-detects and converts both ways',
+            'Both formats are displayed simultaneously',
+            'Double-click any result to copy',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'Arabic → Roman:\n1 → I    4 → IV    9 → IX\n40 → XL  90 → XC  100 → C\n400 → CD 500 → D  900 → CM\n1000 → M\n\n2024 → MMXXIV\n1999 → MCMXCIX'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Book cataloging and chapter numbering',
+            'Learning Roman numerals',
+            'Historical document interpretation',
+            'Design and typography',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  'number-chinese': {
+    zh: (
+      <Section title="📖 数字转中文工具使用说明">
+        <Block title="工具简介">将阿拉伯数字转换为中文小写和中文大写两种格式。中文大写数字（壹贰叁）是财务票据的标准书写方式，用于发票、合同等正式场合。本工具支持整数和小数，最大支持 999999999999（近万亿）。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>中文小写</strong>：一二三四五六七八九十百千万亿',
+            '<strong>中文大写</strong>：壹贰叁肆伍陆柒捌玖拾佰仟万亿（财务用）',
+            '<strong>支持小数</strong>：如 3.14 转换为"三点一四"',
+            '<strong>智能去零</strong>：正确处理中间和末尾的零，如 10001 → 一万零一',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '输入阿拉伯数字（支持整数和小数）',
+            '下方实时显示中文小写和大写两种格式',
+            '点击示例按钮快速体验',
+            '双击结果复制到剪贴板',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'100 → 一百 / 壹佰\n10000 → 一万 / 壹万\n125000 → 十二万五千 / 壹拾贰万伍仟\n999999 → 九十九万九千九百九十九 / 玖拾玖万玖仟玖佰玖拾玖\n3.14 → 三点一四 / 叁点壹肆'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '财务票据：发票、支票、收据的金额大写',
+            '合同文书：法律文件和合同中的金额标准写法',
+            '教育学习：帮助学习中文数字的读写规则',
+            '银行汇款：填写汇款单时的金额大写',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Number to Chinese Converter Guide">
+        <Block title="Introduction">Convert Arabic numerals to Chinese lowercase and financial uppercase. Chinese financial characters (壹贰叁) are the standard for invoices, contracts, and official documents. Supports decimals up to 999999999999.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Chinese lowercase</strong>: 一二三四五六七八九十百千万亿',
+            '<strong>Financial uppercase</strong>: 壹贰叁肆伍陆柒捌玖拾佰仟万亿',
+            '<strong>Decimal support</strong>: e.g. 3.14 → 三点一四',
+            '<strong>Smart zero handling</strong>: 10001 → 一万零一',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Enter an Arabic number (integers and decimals supported)',
+            'Results appear in both formats in real-time',
+            'Click example buttons for quick testing',
+            'Double-click a result to copy',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'100 → 一百 / 壹佰\n10000 → 一万 / 壹万\n125000 → 十二万五千 / 壹拾贰万伍仟\n999999 → 九十九万九千九百九十九 / 玖拾玖万玖仟玖佰玖拾玖\n3.14 → 三点一四 / 叁点壹肆'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Financial documents: invoices, checks, receipts',
+            'Legal contracts requiring standardized amount writing',
+            'Learning Chinese number system',
+            'Bank remittance forms',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
+  'loan-calc': {
+    zh: (
+      <Section title="📖 贷款计算器使用说明">
+        <Block title="工具简介">贷款计算器是在线房贷、车贷月供计算工具，支持等额本息和等额本金两种主流还款方式。输入贷款金额、年利率和期限，即可查看每月还款明细和累计利息。</Block>
+        <Block title="功能说明">
+          <List items={[
+            '<strong>等额本息</strong>：每月还款金额固定，前期利息占比高，适合收入稳定的借款人',
+            '<strong>等额本金</strong>：每月还款本金固定、利息递减，总利息更少，适合前期还款能力强',
+            '<strong>还款明细</strong>：逐月展示月供、本金、利息和剩余本金',
+            '<strong>快捷预设</strong>：一键填入房贷 30 年、车贷 5 年等常见场景',
+          ]} />
+        </Block>
+        <Block title="使用方法">
+          <OrderedList items={[
+            '输入贷款金额（元）、年利率（%）和期限（月）',
+            '选择还款方式：等额本息或等额本金',
+            '点击"计算"按钮查看结果',
+            '点击"还款明细表"查看逐月还款详情',
+          ]} />
+        </Block>
+        <Block title="示例">
+          <ExampleBox>
+            {'贷款 100 万，年利率 3.85%，30 年（360 个月）\n\n等额本息：月供约 4,687 元\n等额本金：首月约 5,986 元，逐月递减\n\n贷款 15 万，年利率 4.75%，5 年（60 个月）\n等额本息：月供约 2,812 元'}
+          </ExampleBox>
+        </Block>
+        <Block title="应用场景">
+          <List items={[
+            '购房贷款：计算房贷月供和总利息，辅助购房决策',
+            '购车贷款：比较不同贷款期限的月供差异',
+            '贷款方案对比：等额本息 vs 等额本金两种方式的总成本和月供对比',
+            '提前还款规划：了解不同期限的总利息支出',
+          ]} />
+        </Block>
+      </Section>
+    ),
+    en: (
+      <Section title="📖 Loan Calculator Guide">
+        <Block title="Introduction">Online loan calculator supporting equal principal and equal interest payment methods. Enter loan amount, annual rate, and term to view monthly payments and total interest.</Block>
+        <Block title="Features">
+          <List items={[
+            '<strong>Equal Interest</strong>: Fixed monthly payment, higher initial interest portion',
+            '<strong>Equal Principal</strong>: Fixed principal portion, decreasing interest over time',
+            '<strong>Amortization schedule</strong>: Month-by-month breakdown of payment, principal, interest, and balance',
+            '<strong>Quick presets</strong>: Mortgage 30yr, Auto 5yr, and more',
+          ]} />
+        </Block>
+        <Block title="How to Use">
+          <OrderedList items={[
+            'Enter loan amount, annual rate (%), and term (months)',
+            'Choose repayment method: Equal Interest or Equal Principal',
+            'Click Calculate to view results',
+            'Expand the amortization schedule for monthly details',
+          ]} />
+        </Block>
+        <Block title="Example">
+          <ExampleBox>
+            {'$1,000,000 at 3.85% for 30 years\nEqual Interest: ~$4,687/month\nEqual Principal: ~$5,986/month first month, decreasing\n\n$150,000 at 4.75% for 5 years\nEqual Interest: ~$2,812/month'}
+          </ExampleBox>
+        </Block>
+        <Block title="Use Cases">
+          <List items={[
+            'Mortgage planning and comparison',
+            'Auto loan calculation',
+            'Comparing equal interest vs equal principal total costs',
+            'Repayment planning and budget forecasting',
+          ]} />
+        </Block>
+      </Section>
+    ),
+  },
+
 }
