@@ -51,7 +51,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `${article.title} - 站长工具`,
     description: article.description,
     keywords: kw,
-    alternates: { languages: { 'zh': `/zh/articles/${slug}`, 'en': `/en/articles/${slug}` } },
+    alternates: {
+      languages: { 'zh': `/zh/articles/${slug}`, 'en': `/en/articles/${slug}` },
+      canonical: `https://schg.xyz/zh/articles/${slug}`,
+    },
   }
 }
 
@@ -126,6 +129,32 @@ export default async function ArticleDetailPage({ params }: PageProps) {
         <span className="mx-2">›</span>
         <span className="text-dark-200">{article.title}</span>
       </nav>
+
+      {/* JSON-LD structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: article.title,
+            description: article.description,
+            datePublished: article.date,
+            author: {
+              "@type": "Person",
+              name: "Ken",
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "Webmaster Tools",
+            },
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": `https://schg.xyz/${lang}/articles/${article.slug}`,
+            },
+          }),
+        }}
+      />
 
       <article>
         {/* Header */}
