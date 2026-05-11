@@ -47,15 +47,51 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!article) return {}
   const ck = categoryKeywords[article.categoryKey]
   const kw = ck ? ck[lang === 'zh' ? 'zh' : 'en'] : ''
+  // Derive article-specific keywords from title
+  const titleKeywords = article.title
+    .replace(/[?:,']/g, '')
+    .split(/\s+/)
+    .filter(w => w.length > 2)
+    .slice(0, 6)
+    .join(', ')
+  const combinedKeywords = [kw, titleKeywords].filter(Boolean).join(', ')
+  const pageUrl = `https://schg.xyz/${lang}/articles/${slug}`
   return {
     title: `${article.title} - 站长工具`,
     description: article.description,
-    keywords: kw,
+    keywords: combinedKeywords,
     alternates: {
       languages: { 'zh': `/zh/articles/${slug}`, 'en': `/en/articles/${slug}` },
-      canonical: `https://schg.xyz/zh/articles/${slug}`,
+      canonical: pageUrl,
+    },
+    openGraph: {
+      title: article.title,
+      description: article.description,
+      type: 'article',
+      publishedTime: article.date,
+      modifiedTime: article.date,
+      authors: ['Ken'],
+      section: article.category,
+      url: pageUrl,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.description,
     },
   }
+}
+
+function renderInline(text: string): React.ReactNode {
+  // Handle **bold** syntax
+  const parts = text.split(/(\*\*.+?\*\*)/g)
+  if (parts.length === 1) return text
+  return parts.map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={i} className="font-semibold text-dark-50">{part.slice(2, -2)}</strong>
+    }
+    return part
+  })
 }
 
 function renderMarkdown(content: string) {
@@ -92,11 +128,11 @@ function renderMarkdown(content: string) {
     } else if (line.startsWith('### ')) {
       elements.push(<h3 key={i} className="mt-6 mb-3 text-lg font-bold text-dark-50">{line.slice(4)}</h3>)
     } else if (line.startsWith('- ')) {
-      elements.push(<li key={i} className="ml-5 mb-1.5 text-dark-200 list-disc">{line.slice(2)}</li>)
+      elements.push(<li key={i} className="ml-5 mb-1.5 text-dark-200 list-disc">{renderInline(line.slice(2))}</li>)
     } else if (line.trim() === '') {
       elements.push(<div key={i} className="h-3" />)
     } else {
-      elements.push(<p key={i} className="mb-4 text-dark-200 leading-relaxed">{line}</p>)
+      elements.push(<p key={i} className="mb-4 text-dark-200 leading-relaxed">{renderInline(line)}</p>)
     }
   }
 
@@ -140,6 +176,7 @@ export default async function ArticleDetailPage({ params }: PageProps) {
             headline: article.title,
             description: article.description,
             datePublished: article.date,
+            dateModified: article.date,
             author: {
               "@type": "Person",
               name: "Ken",
