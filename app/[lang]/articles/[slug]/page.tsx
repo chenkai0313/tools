@@ -55,13 +55,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     .slice(0, 6)
     .join(', ')
   const combinedKeywords = [kw, titleKeywords].filter(Boolean).join(', ')
-  const pageUrl = `https://schg.xyz/${lang}/articles/${slug}`
+  const pageUrl = `https://schg.xyz/${lang}/articles/${slug}/`
   return {
     title: `${article.title} - 站长工具`,
     description: article.description,
     keywords: combinedKeywords,
     alternates: {
-      languages: { 'zh': `/zh/articles/${slug}`, 'en': `/en/articles/${slug}` },
+      languages: { 'zh': `/zh/articles/${slug}/`, 'en': `/en/articles/${slug}/` },
       canonical: pageUrl,
     },
     openGraph: {

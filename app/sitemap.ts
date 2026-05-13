@@ -6,6 +6,7 @@ const tools = [
   'time', 'json', 'base64', 'password', 'cron', 'case',
   'qrcode', 'hash', 'encoding', 'regex', 'config', 'crypto',
   'bmi', 'random-data', 'image-tools', 'world-clock',
+  'roman-numeral', 'number-chinese', 'loan-calc',
 ]
 
 const articles = [
@@ -18,6 +19,9 @@ const articles = [
   'deepseek-coding-tips',
   'docker-install-ubuntu',
   'k3s-cluster-setup',
+  'obsidian-note-taking-guide',
+  'typeless-ai-writing-guide',
+  'codex-claude-code-vs-cursor-comparison',
 ]
 
 const staticPages = ['about', 'contact', 'privacy', 'terms']
@@ -30,12 +34,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   for (const lang of langs) {
     // Homepage
-    entries.push({ url: `${baseUrl}/${lang}`, lastModified: lastMod, changeFrequency: 'weekly', priority: 1.0 })
+    entries.push({ url: `${baseUrl}/${lang}/`, lastModified: lastMod, changeFrequency: 'weekly', priority: 1.0 })
 
     // Tool pages
     for (const tool of tools) {
       entries.push({
-        url: `${baseUrl}/${lang}/tools/${tool}`,
+        url: `${baseUrl}/${lang}/tools/${tool}/`,
         lastModified: lastMod,
         changeFrequency: 'monthly',
         priority: 0.8,
@@ -45,7 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Article pages
     for (const slug of articles) {
       entries.push({
-        url: `${baseUrl}/${lang}/articles/${slug}`,
+        url: `${baseUrl}/${lang}/articles/${slug}/`,
         lastModified: lastMod,
         changeFrequency: 'monthly',
         priority: 0.7,
@@ -53,11 +57,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
 
     // Article list
-    entries.push({ url: `${baseUrl}/${lang}/articles`, lastModified: lastMod, changeFrequency: 'weekly', priority: 0.6 })
+    entries.push({ url: `${baseUrl}/${lang}/articles/`, lastModified: lastMod, changeFrequency: 'weekly', priority: 0.6 })
 
     // Static pages
     for (const page of staticPages) {
-      entries.push({ url: `${baseUrl}/${lang}/${page}`, lastModified: lastMod, changeFrequency: 'monthly', priority: 0.5 })
+      entries.push({ url: `${baseUrl}/${lang}/${page}/`, lastModified: lastMod, changeFrequency: 'monthly', priority: 0.5 })
     }
   }
 
