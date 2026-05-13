@@ -71,9 +71,18 @@ export default function Base64ToolPage() {
       </nav>
 
       <h1 className="mb-2 text-2xl font-bold text-dark-50">{dict.nav.base64}</h1>
-      <p className="mb-8 text-sm text-dark-300">
-        {lang === 'zh' ? 'Base64 与图片互转，支持预览与拖拽上传' : 'Convert between Base64 and images with preview and drag-and-drop.'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? 'Base64 是一种用 64 个可打印字符（A-Z、a-z、0-9、+、/）表示任意二进制数据的编码方式。它广泛应用于 Web 开发中——将小图标直接内嵌到 HTML/CSS 中减少 HTTP 请求、在邮件 HTML 中嵌入图片避免外部链接失效、在 JSON API 中传输二进制文件。这个工具让你在 Base64 字符串和图片文件之间即时互相转换，支持 PNG、JPEG、GIF、WebP 四种格式。'
+            : 'Base64 encodes arbitrary binary data using 64 printable characters (A-Z, a-z, 0-9, +, /). It\'s widely used in web development — inlining small icons in HTML/CSS to reduce HTTP requests, embedding images in HTML emails to avoid broken links, and transmitting binary files in JSON APIs. This tool converts between Base64 strings and image files instantly, supporting PNG, JPEG, GIF, and WebP formats.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '所有图片处理完全在浏览器端完成，使用 Canvas API 和 FileReader——你的图片不会上传到任何服务器。支持拖拽上传、实时预览、一键复制 Base64 data URL。非常适合前端开发者在开发调试时快速获取图片的 Base64 编码。'
+            : 'All processing happens entirely in your browser using the Canvas API and FileReader — your images are never uploaded anywhere. Supports drag-and-drop, live preview, and one-click copy of Base64 data URLs. Perfect for frontend developers who need quick Base64 encoding during development.'}
+        </p>
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Base64 → Image */}

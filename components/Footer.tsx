@@ -55,8 +55,10 @@ export default function Footer({ dict, locale }: FooterProps) {
     { key: 'home', href: `/${locale}` },
     { key: 'articles', href: `/${locale}/articles` },
     { key: 'about', href: `/${locale}/about`, label: 'About' },
+    { key: 'cookiePolicy', href: `/${locale}/cookie-policy`, label: locale === 'zh' ? 'Cookie' : 'Cookies' },
+    { key: 'disclaimer', href: `/${locale}/disclaimer`, label: locale === 'zh' ? '免责' : 'Disclaimer' },
     { key: 'privacy', href: `/${locale}/privacy`, label: 'Privacy' },
-    { key: 'terms', href: `/${locale}/terms`, label: 'Terms' },
+    { key: 'terms', href: `/${locale}/terms`, label: locale === 'zh' ? '条款' : 'Terms' },
   ]
 
   return (

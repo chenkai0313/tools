@@ -95,9 +95,18 @@ export default function TimeToolPage() {
       </nav>
 
       <h1 className="mb-2 text-2xl font-bold text-dark-50">{dict.nav.time}</h1>
-      <p className="mb-8 text-sm text-dark-300">
-        {lang === 'zh' ? '时间戳与日期时间互转，支持秒/毫秒' : 'Convert between timestamps and date strings, supports seconds and milliseconds.'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? 'Unix 时间戳是计算机系统中表示时间的标准方式——它是从 1970年1月1日 00:00:00 UTC 起经过的秒数或毫秒数。无论你是在查看服务器日志、调试API接口、还是处理数据库中的时间字段，你都会频繁遇到这种格式。这个工具让你在时间戳和可读日期之间即时转换。'
+            : 'Unix timestamps are the standard way computers represent time — the number of seconds or milliseconds since January 1, 1970 00:00:00 UTC. Whether you\'re reading server logs, debugging API responses, or querying database time fields, you encounter this format constantly. This tool converts between timestamps and readable dates instantly.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持秒级（10位）和毫秒级（13位）时间戳，自动检测输入格式。双向转换——时间戳转日期、日期转时间戳——都在同一个界面上完成，双击即可复制结果。'
+            : 'Supports second-level (10-digit) and millisecond-level (13-digit) timestamps with automatic format detection. Two-way conversion — timestamp to date and date to timestamp — on a single screen. Double-click any result to copy.'}
+        </p>
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Timestamp → Date */}

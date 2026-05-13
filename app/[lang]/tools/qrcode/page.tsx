@@ -81,9 +81,18 @@ export default function QRCodePage() {
       </nav>
 
       <h1 className="mb-2 text-2xl font-bold text-dark-50">{dict.nav.qrcode}</h1>
-      <p className="mb-8 text-sm text-dark-300">
-        {lang === 'zh' ? '将文本、URL 等内容生成二维码，支持 Logo 和尺寸自定义' : 'Generate QR codes from text or URLs, with logo and size support'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '二维码（QR Code）是当今连接物理世界和数字世界最便捷的桥梁——扫一扫就能访问网站、连接 Wi-Fi、添加联系人、完成支付。这个工具让你在浏览器中即时生成高质量的 QR Code，无需安装任何软件或依赖第三方 API。'
+            : 'QR codes are the most convenient bridge between the physical and digital worlds — scan to visit a website, connect to Wi-Fi, add a contact, or complete a payment. This tool generates high-quality QR codes instantly in your browser — no software installation or third-party API calls needed.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持自定义尺寸（128px-1024px）、在二维码中央嵌入 Logo 图片、一键下载为高清 PNG。所有生成在浏览器本地使用 Canvas API 完成，输入的文本内容不会上传到任何服务器——扫码内容只有你和扫码者知道。'
+            : 'Customizable size (128px-1024px), optional center logo overlay, and one-click PNG download. All generation uses the Canvas API locally in your browser — your input text is never uploaded anywhere. Only you and the person scanning know what\'s encoded.'}
+        </p>
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Controls */}

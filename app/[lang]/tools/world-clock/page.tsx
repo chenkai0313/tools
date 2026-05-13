@@ -126,9 +126,18 @@ export default function WorldClockPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-dark-50 mb-2">{dict.nav['world-clock']}</h1>
-      <p className="text-sm text-dark-400 mb-6">
-        {lang === 'zh' ? '查看世界各地当前时间，进行时区转换' : 'View current time around the world and convert between timezones'}
-      </p>
+      <div className="mb-6 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '世界时钟是跨国团队协作和远程工作的必备工具——快速查看不同时区的当前时间，避免在不合适的时间打扰同事。这个工具实时显示全球各时区的当前时间和日期，每秒自动刷新，最多可同时查看 10 个时区。'
+            : 'A world clock is essential for global team collaboration and remote work — quickly check current times across timezones to avoid messaging colleagues at inappropriate hours. This tool displays real-time clocks for timezones worldwide, refreshing every second, with up to 10 timezones simultaneously.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持搜索添加任意 IANA 时区（如 Asia/Shanghai），一键添加北京、纽约、伦敦、东京等常用时区。内置时区转换器——输入日期时间和源时区，自动转换为目标时区时间。所有时间使用浏览器的 Intl API 计算，精确可靠。'
+            : 'Search and add any IANA timezone (e.g. Asia/Shanghai), with one-click quick add for Beijing, New York, London, Tokyo, and more. Built-in timezone converter — enter a date/time and source timezone to convert to any target timezone. All times computed via the browser Intl API for accuracy.'}
+        </p>
+      </div>
 
       {/* Tabs */}
       <div className="flex gap-2 mb-6">

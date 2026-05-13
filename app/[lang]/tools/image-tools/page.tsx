@@ -121,9 +121,18 @@ export default function ImageToolsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-dark-50 mb-2">{dict.nav['image-tools']}</h1>
-      <p className="text-sm text-dark-400 mb-6">
-        {lang === 'zh' ? '在线图片压缩和裁剪工具，所有操作在浏览器端完成' : 'Online image compression and cropping tool — all processing in your browser'}
-      </p>
+      <div className="mb-6 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '图片压缩和裁剪是 Web 开发中最高频的图片处理需求——压缩减小页面加载体积、裁剪调整展示尺寸。这个工具使用浏览器 Canvas API 完成所有操作，图片文件不会上传到任何服务器，保护你的隐私和敏感图片安全。'
+            : 'Image compression and cropping are the most frequent image processing tasks in web development — compression reduces page load size, cropping adjusts display dimensions. This tool uses the browser Canvas API for all operations; image files are never uploaded anywhere, protecting your privacy and sensitive images.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持 PNG/JPG/WebP 三种格式，最大 20MB 文件。压缩支持质量调节和格式切换（JPEG 体积最小，WebP 平衡体积和质量）。裁剪支持自定义 X/Y/宽/高和锁定宽高比。处理后一键下载。'
+            : 'Supports PNG/JPG/WebP formats, max 20MB. Compression with quality adjustment and format switching (JPEG for smallest size, WebP for balanced size/quality). Cropping with custom X/Y/Width/Height and aspect ratio lock. One-click download after processing.'}
+        </p>
+      </div>
 
       {/* Tabs */}
       <div className="flex gap-2 mb-6">

@@ -61,9 +61,18 @@ export default function CaseToolPage() {
       <h1 className="mb-2 text-2xl font-bold text-dark-50">
         {lang === 'zh' ? '命名风格转换' : 'Case Converter'}
       </h1>
-      <p className="mb-8 text-sm text-dark-300">
-        {lang === 'zh' ? '驼峰、下划线、连字符、帕斯卡等命名风格互转，自动检测输入格式' : 'Convert between camelCase, snake_case, kebab-case, PascalCase and more. Auto-detects input format.'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '编程世界中不同的语言和框架使用不同的命名规范——JavaScript 用 camelCase，Python 用 snake_case，CSS 用 kebab-case，Go 用 PascalCase 表示公开符号。在跨语言项目中频繁手动转换命名格式既枯燥又容易出错。这个工具支持 8 种命名格式的实时互转，输入即输出，无需点击按钮。'
+            : 'Different languages and frameworks use different naming conventions — JavaScript uses camelCase, Python uses snake_case, CSS uses kebab-case, Go uses PascalCase for exported symbols. Manually converting between formats across language boundaries is tedious and error-prone. This tool converts between 8 naming formats in real time — results appear as you type, no button click needed.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持 camelCase、PascalCase、snake_case、kebab-case、dot.case、SCREAMING_SNAKE、Train-Case、空格分隔共 8 种格式。自动识别输入格式，同时在所有格式下展示转换结果。双击任意结果即可复制。'
+            : 'Supports camelCase, PascalCase, snake_case, kebab-case, dot.case, SCREAMING_SNAKE, Train-Case, and space-separated — 8 formats total. Auto-detects input format and displays all conversions simultaneously. Double-click any result to copy.'}
+        </p>
+      </div>
 
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-6">
         {/* Input */}

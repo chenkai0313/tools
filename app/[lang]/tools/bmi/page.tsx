@@ -43,9 +43,18 @@ export default function BMIPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-dark-50 mb-2">{dict.nav.bmi}</h1>
-      <p className="text-sm text-dark-400 mb-6">
-        {lang === 'zh' ? '计算身体质量指数和年龄' : 'Calculate BMI and age'}
-      </p>
+      <div className="mb-6 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? 'BMI（Body Mass Index，身体质量指数）是衡量人体胖瘦程度的国际通用指标，计算公式为 体重(kg) ÷ 身高²(m²)。这个工具同时提供年龄计算功能——输入出生日期，精确计算到年/月/天。支持公制（kg/cm）和英制（lb/in）两种单位。'
+            : 'BMI (Body Mass Index) is the international standard for assessing body weight, calculated as weight(kg) ÷ height²(m²). This tool also provides age calculation from date of birth — precise to years, months, and days. Supports both metric (kg/cm) and imperial (lb/in) units.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '注意：BMI 仅作为参考指标，不代表医学诊断。运动员和肌肉量较高的人群 BMI 可能偏高但并不意味着肥胖。如有健康疑虑，请咨询专业医生。'
+            : 'Note: BMI is a reference metric only and does not constitute medical diagnosis. Athletes and individuals with high muscle mass may have elevated BMI without being obese. Consult a healthcare professional for health concerns.'}
+        </p>
+      </div>
 
       {/* Tabs */}
       <div className="flex gap-2 mb-6">

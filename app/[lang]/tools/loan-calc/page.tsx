@@ -46,9 +46,18 @@ export default function LoanCalcPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-dark-50 mb-2">{dict.nav['loan-calc']}</h1>
-      <p className="text-sm text-dark-400 mb-6">
-        {lang === 'zh' ? '输入贷款金额、年利率和期限，计算每月还款明细' : 'Enter loan amount, annual rate, and term to calculate monthly payments'}
-      </p>
+      <div className="mb-6 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '贷款计算器是购房、购车等大额消费决策中的重要参考工具。支持两种主流还款方式：<strong>等额本息</strong>（每月还款金额固定，前期利息占比高）和<strong>等额本金</strong>（每月还相同本金，利息逐月递减，总利息更少）。输入贷款金额、年利率和期限，立即查看月供和总利息。'
+            : 'A loan calculator is an essential tool for mortgage and auto loan decisions. Supports two repayment methods: <strong>Equal Interest</strong> (fixed monthly payment, higher initial interest portion) and <strong>Equal Principal</strong> (fixed principal repayment per month, decreasing interest — lower total interest). Enter loan amount, annual rate, and term to see monthly payments and total interest.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '快捷预设一键填入常见场景（房贷 100 万 30 年 3.85%、车贷 15 万 5 年 4.75% 等）。展开还款明细表查看逐月还款详情——每月还多少本金、多少利息、剩余本金。所有计算在浏览器本地完成，输入数据不存储不上传。注意：计算结果仅供参考，实际贷款条件以金融机构合同为准。'
+            : 'Quick presets for common scenarios (mortgage $1M 30yr 3.85%, auto loan $150K 5yr 4.75%). Expand the amortization schedule for month-by-month details — principal, interest, and remaining balance. All calculations are client-side; input data is never stored or uploaded. Note: results are for reference only; actual loan terms are governed by financial institution contracts.'}
+        </p>
+      </div>
 
       {/* Presets */}
       <div className="flex flex-wrap gap-2 mb-6">

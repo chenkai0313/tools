@@ -59,9 +59,18 @@ export default function EncodingPage() {
       </nav>
 
       <h1 className="mb-2 text-2xl font-bold text-dark-50">{dict.nav.encoding}</h1>
-      <p className="mb-8 text-sm text-dark-300">
-        {lang === 'zh' ? 'Unicode / URL 编码互转' : 'Unicode / URL encoding conversion'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '编码（Encoding）不是加密——它不保护数据安全，而是解决"如何让计算机安全地处理特殊字符"的问题。URL 编码将中文和特殊符号转为 %XX 格式以便在网址中传输；Unicode 编码将非 ASCII 字符转为 \\uXXXX 格式以便在 JavaScript 源码中使用。这是每个 Web 开发者的日常工具。'
+            : 'Encoding is not encryption — it doesn\'t protect data; it solves the problem of "how to safely handle special characters in computers." URL encoding converts Chinese characters and special symbols to %XX format for safe URL transmission. Unicode encoding converts non-ASCII characters to \\uXXXX format for use in JavaScript source code. A daily tool for every web developer.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持 Unicode 编解码和 URL 百分号编解码双向转换。输入中文自动得到 \\uXXXX 格式，粘贴百分号编码的 URL 自动还原为可读文本。所有处理在浏览器端完成。'
+            : 'Bidirectional Unicode and URL percent-encoding/decoding. Type Chinese to instantly get \\uXXXX format; paste a percent-encoded URL to decode it back to readable text. All processing is client-side.'}
+        </p>
+      </div>
 
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-6">
         {/* Encoding Type */}

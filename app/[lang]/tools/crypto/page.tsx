@@ -189,9 +189,18 @@ export default function CryptoPage() {
       </nav>
 
       <h1 className="mb-2 text-2xl font-bold text-dark-50">{dict.nav.crypto}</h1>
-      <p className="mb-8 text-sm text-dark-300">
-        {lang === 'zh' ? 'AES/DES 对称加密 和 RSA 非对称加密' : 'AES/DES symmetric encryption and RSA asymmetric encryption'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '加密是信息安全的基础——从 HTTPS 传输到密码存储，从 API 签名到区块链交易，加密算法无处不在。本工具支持两大类加密方式：<strong>对称加密</strong>（AES、DES）使用同一个密钥进行加密和解密，速度快适合大数据量；<strong>非对称加密</strong>（RSA）使用公钥和私钥配对，安全性更高适合密钥交换和数字签名。所有加解密运算完全在浏览器本地执行，密钥和明文不会发送到任何服务器。'
+            : 'Encryption underpins information security — from HTTPS transport to password storage, from API signing to blockchain transactions. This tool supports two categories: <strong>symmetric encryption</strong> (AES, DES) using a single key for both encryption and decryption — fast and suitable for large data; <strong>asymmetric encryption</strong> (RSA) using public/private key pairs — more secure, ideal for key exchange and digital signatures. All cryptographic operations run locally in your browser; keys and plaintext never leave your machine.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持 AES 的多种模式（ECB/CBC/CFB/OFB/CTR）、多种密钥长度（128/192/256位），RSA 支持加密/解密和签名/验证两种场景，密钥长度可选 512/1024/2048/4096 位。适合开发者本地加密敏感配置、学习密码学原理、或验证 API 签名逻辑。请注意：本工具适用于学习和非生产场景，请勿用于处理真实敏感数据。'
+            : 'Supports multiple AES modes (ECB/CBC/CFB/OFB/CTR), key sizes (128/192/256-bit), and RSA with encryption/decryption and signing/verification at 512/1024/2048/4096-bit key lengths. Ideal for encrypting local config files, learning cryptography concepts, or verifying API signature logic. Note: this tool is for learning and non-production use; do not use it for real sensitive data.'}
+        </p>
+      </div>
 
       {/* Tabs */}
       <div className="flex gap-2 mb-6">

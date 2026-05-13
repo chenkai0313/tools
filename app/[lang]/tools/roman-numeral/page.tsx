@@ -52,9 +52,18 @@ export default function RomanNumeralPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-dark-50 mb-2">{dict.nav['roman-numeral']}</h1>
-      <p className="text-sm text-dark-400 mb-6">
-        {lang === 'zh' ? '输入阿拉伯数字或罗马数字，自动识别并双向转换' : 'Enter Arabic or Roman numerals — auto-detected and converted both ways'}
-      </p>
+      <div className="mb-6 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '罗马数字是古罗马时期使用的数字系统，至今仍在钟表表盘、书籍章节编号、电影发行年份、建筑物基石日期等场景中广泛使用。这个工具支持阿拉伯数字（1-3999）和罗马数字的自动识别和双向转换——输入任意一种格式，瞬间得到另一种。'
+            : 'Roman numerals originated in ancient Rome and remain widely used today — clock faces, book chapters, movie release years, building cornerstone dates. This tool auto-detects and converts between Arabic numbers (1-3999) and Roman numerals in both directions — enter either format and get the other instantly.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '内置常用字符对照表（I=1, V=5, X=10, L=50, C=100, D=500, M=1000）和转换规则说明。支持实时转换，输入即输出，双击复制结果。'
+            : 'Includes a quick reference chart (I=1, V=5, X=10, L=50, C=100, D=500, M=1000) and conversion rules. Real-time conversion as you type; double-click to copy.'}
+        </p>
+      </div>
 
       {/* Input */}
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5 mb-6">

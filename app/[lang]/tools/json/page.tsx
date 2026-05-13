@@ -145,9 +145,18 @@ export default function JsonToolPage() {
       </nav>
 
       <h1 className="mb-2 text-2xl font-bold text-dark-50">{dict.nav.json}</h1>
-      <p className="mb-6 text-sm text-dark-300">
-        {lang === 'zh' ? 'JSON 格式化、压缩、树形查看、结构体生成与示例生成' : 'Format, compress, tree view, struct generation, and sample JSON generator.'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? 'JSON（JavaScript Object Notation）是 Web 开发中最核心的数据交换格式——它轻量、可读、跨语言，是现代 API、配置文件、数据库 NoSQL 文档的事实标准。无论你是在调试 REST API 返回的响应、编写前端和后端之间的数据契约、还是编辑 VS Code 的配置文件，你都在和 JSON 打交道。这个工具集成了 JSON 格式化、压缩、校验、树形查看、代码结构体生成和示例数据生成六个功能，一站式解决 JSON 相关的工作流。'
+            : 'JSON (JavaScript Object Notation) is the backbone of data exchange on the web — lightweight, human-readable, and cross-language. It\'s the de facto standard for REST APIs, configuration files, and NoSQL documents. Whether you\'re debugging an API response, defining data contracts between frontend and backend, or editing VS Code settings, you work with JSON constantly. This tool bundles formatting, compression, validation, tree view, code generation, and sample data — six functions in one place for your JSON workflow.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持将 JSON 转换为 Go、TypeScript、Rust、Python、Java、Kotlin、Swift 等 10 种语言的类型定义（结构体/接口），也支持从 Go struct 或 TypeScript interface 反向生成示例 JSON。所有处理在浏览器本地完成，粘贴的 JSON 数据不会上传到任何服务器。'
+            : 'Generate type definitions (structs/interfaces) for Go, TypeScript, Rust, Python, Java, Kotlin, Swift, and more — or reverse-generate sample JSON from Go structs and TypeScript interfaces. All processing happens locally in your browser; your JSON data is never uploaded anywhere.'}
+        </p>
+      </div>
 
       {/* Input Mode */}
       <div className="mb-4 flex items-center justify-between">

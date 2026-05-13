@@ -52,9 +52,18 @@ export default function HashPage() {
       </nav>
 
       <h1 className="mb-2 text-2xl font-bold text-dark-50">{dict.nav.hash}</h1>
-      <p className="mb-8 text-sm text-dark-300">
-        {lang === 'zh' ? '计算文本的 MD5 / SHA 哈希值' : 'Compute MD5 / SHA hash of text'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '哈希函数（Hash Function）将任意长度的输入数据映射为固定长度的输出（摘要），是密码学和数据完整性校验的基础工具。SHA-256 用于 API 签名和区块链，MD5 用于文件校验，SHA-512 用于密码哈希——不同的场景需要不同的算法。这个工具在浏览器本地计算五种主流哈希值，你的数据不会离开设备。'
+            : 'Hash functions map arbitrary-length input to a fixed-size output (digest), forming the foundation of cryptography and data integrity verification. SHA-256 for API signing and blockchain, MD5 for file checksums, SHA-512 for password hashing — different scenarios demand different algorithms. This tool computes five hash algorithms locally in your browser; your data never leaves your device.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持 MD5、SHA-1、SHA-256、SHA-384、SHA-512 五种算法，实时计算，支持大小写输出切换。注意：MD5 和 SHA-1 已被证明存在碰撞漏洞，不应用于安全场景；密码存储请使用 bcrypt/argon2 等专用算法，而非裸哈希。'
+            : 'Supports MD5, SHA-1, SHA-256, SHA-384, SHA-512 with real-time computation and uppercase/lowercase toggle. Note: MD5 and SHA-1 have known collision vulnerabilities and should not be used for security purposes. For password storage, use bcrypt/argon2 rather than raw hashes.'}
+        </p>
+      </div>
 
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-6">
         <div className="mb-4 flex flex-wrap gap-2">

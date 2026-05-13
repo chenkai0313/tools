@@ -60,9 +60,18 @@ export default function PasswordToolPage() {
       </nav>
 
       <h1 className="mb-2 text-2xl font-bold text-dark-50">{dict.nav.password}</h1>
-      <p className="mb-8 text-sm text-dark-300">
-        {lang === 'zh' ? '随机密码生成，支持多种字符组合与长度自定义' : 'Generate secure random passwords with customizable options.'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '密码生成器是日常开发和安全实践中使用频率最高的工具之一——注册账号、生成 API 密钥、配置数据库密码、创建 SSH 密钥对，每个场景都需要高强度的随机密码。这个工具使用密码学安全的随机数生成器（crypto.getRandomValues），在浏览器本地为你生成不可预测的强密码。'
+            : 'A password generator is one of the most frequently used developer tools — signing up for services, generating API keys, configuring database credentials, creating SSH key pairs — every scenario demands strong, random passwords. This tool uses a cryptographically secure random number generator (crypto.getRandomValues) to create unpredictable passwords locally in your browser.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持自定义字符类型组合（大写、小写、数字、符号），1-64 位长度自由调节，可排除容易混淆的相似字符（如 0 和 O、1 和 l）。所有密码在浏览器端生成，不会发送或存储到任何服务器——生成的密码只有你自己知道。'
+            : 'Customize character types (uppercase, lowercase, digits, symbols), adjustable length from 1-64 characters, and optionally exclude visually similar characters (0/O, 1/l). All passwords are generated client-side — nothing is sent to or stored on any server. Only you know your password.'}
+        </p>
+      </div>
 
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-6">
         {/* Options */}

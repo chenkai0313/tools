@@ -294,9 +294,18 @@ export default function ConfigPage() {
       </nav>
 
       <h1 className="mb-2 text-2xl font-bold text-dark-50">{dict.nav.config}</h1>
-      <p className="mb-8 text-sm text-dark-300">
-        {lang === 'zh' ? 'YAML / JSON / TOML / INI / Properties / .env / XML 格式互转' : 'Convert between YAML, JSON, TOML, INI, Properties, .env, and XML'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '现代软件开发中配置文件格式繁多——Spring Boot 用 YAML，Node.js 用 JSON，Python 用 TOML，Java 用 Properties，Docker 用 .env，传统系统用 INI 和 XML。在不同项目之间切换时，格式转换是高频需求。这个工具支持 7 种配置格式之间的互相转换，一个粘贴即可完成。'
+            : 'Modern software projects use a variety of config formats — Spring Boot uses YAML, Node.js uses JSON, Python uses TOML, Java uses Properties, Docker uses .env, and legacy systems use INI or XML. Switching between projects means constant format conversion. This tool converts between 7 config formats — paste once, convert instantly.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持 YAML、JSON、TOML、INI、Properties、.env、XML 七种格式互转。自动检测源格式，实时转换，格式不匹配时有明确提示。所有转换在浏览器本地完成——你的配置文件内容不会上传到任何服务器。'
+            : 'Bidirectional conversion between YAML, JSON, TOML, INI, Properties, .env, and XML. Auto-detects source format, converts in real time, and warns on format mismatches. All conversion is client-side — your config file content never leaves your browser.'}
+        </p>
+      </div>
 
       <div className="grid gap-6">
         {/* Format Selection */}

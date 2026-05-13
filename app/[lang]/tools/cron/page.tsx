@@ -140,9 +140,18 @@ export default function CronToolPage() {
       </nav>
 
       <h1 className="mb-2 text-2xl font-bold text-dark-50">{dict.nav.cron}</h1>
-      <p className="mb-8 text-sm text-dark-300">
-        {lang === 'zh' ? 'Cron 表达式解析与可视化构建' : 'Parse and visually build cron expressions.'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? 'Cron 表达式是 Unix/Linux 系统中用于定义定时任务的标准语法——五个字段分别代表分、时、日、月、周，用空格分隔。从 GitHub Actions 的 schedule 触发器到 Kubernetes 的 CronJob，从 Jenkins 的定时构建到系统的 crontab，Cron 表达式是自动化运维的通用语言。但它的语法对不熟悉的人来说并不直观——`*/5 * * * *` 到底是什么时候执行？'
+            : 'Cron expressions are the standard syntax for scheduling recurring tasks on Unix/Linux — five fields representing minute, hour, day, month, and weekday, separated by spaces. From GitHub Actions schedule triggers to Kubernetes CronJobs, from Jenkins pipelines to system crontabs, cron expressions are the universal language of automation. But the syntax isn\'t intuitive at first glance — when exactly does `*/5 * * * *` run?'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '这个工具双向解析 Cron 表达式：粘贴表达式获得人类可读的描述和接下来 5 次执行时间；或者通过可视化构建器点选生成表达式，无需记忆字段含义。内置 20+ 常用预设模板，覆盖日志轮转、数据库备份、缓存清理等典型场景。'
+            : 'This tool works both ways: paste a cron expression to get a human-readable description and the next 5 execution times; or use the visual builder to construct expressions by clicking — no memorization needed. Includes 20+ preset templates covering log rotation, database backups, cache clearing, and other common scenarios.'}
+        </p>
+      </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Left: Cron → Readable + Next Executions */}

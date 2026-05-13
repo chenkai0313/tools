@@ -24,10 +24,10 @@ const articles = [
   'codex-claude-code-vs-cursor-comparison',
 ]
 
-const staticPages = ['about', 'contact', 'privacy', 'terms']
+const staticPages = ['about', 'contact', 'privacy', 'terms', 'cookie-policy', 'disclaimer']
 const langs = ['en', 'zh']
 const baseUrl = 'https://schg.xyz'
-const lastMod = '2026-05-07'
+const lastMod = '2026-05-13'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = []

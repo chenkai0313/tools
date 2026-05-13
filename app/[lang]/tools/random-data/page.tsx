@@ -53,9 +53,18 @@ export default function RandomDataPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-dark-50 mb-2">{dict.nav['random-data']}</h1>
-      <p className="text-sm text-dark-400 mb-6">
-        {lang === 'zh' ? '生成随机姓名、邮箱、电话、地址等测试数据' : 'Generate random names, emails, phones, addresses and more'}
-      </p>
+      <div className="mb-6 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '随机数据生成器是开发和测试阶段的必备工具——前端填充表格 mock 数据、后端 API 调试、数据库初始化种子数据、演示环境的数据填充，都需要结构化的模拟数据。这个工具一次生成多条随机记录，支持 8 种字段类型和中英文双语数据。'
+            : 'A random data generator is essential for development and testing — filling frontend tables with mock data, debugging backend APIs, seeding databases, and populating demo environments. This tool generates multiple random records at once across 8 field types in both Chinese and English.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '支持姓名、邮箱、电话、地址、公司名、UUID、IP 地址、颜色共 8 种字段，一次生成 1-100 条，结果可导出为 CSV 或 JSON。所有数据在浏览器本地生成，无需网络请求——生成的数据可安全用于开发和测试。'
+            : '8 field types: name, email, phone, address, company, UUID, IP address, color. Generate 1-100 records at a time and export as CSV or JSON. All data is generated locally in your browser with no network requests — safe for development and testing use.'}
+        </p>
+      </div>
 
       {/* Controls */}
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5 mb-6">

@@ -40,9 +40,18 @@ export default function NumberChinesePage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <h1 className="text-2xl font-bold text-dark-50 mb-2">{dict.nav['number-chinese']}</h1>
-      <p className="text-sm text-dark-400 mb-6">
-        {lang === 'zh' ? '将阿拉伯数字转换为中文小写和大写（金额）两种格式' : 'Convert Arabic numbers to Chinese lowercase and financial uppercase'}
-      </p>
+      <div className="mb-6 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '阿拉伯数字转中文不是简单的逐位替换——中文数字有"零"的特殊处理规则（如 10001 读作"一万零一"而非"一万零零一"），还有"万"和"亿"的分组进位逻辑。这个工具准确处理所有边界情况，同时输出<strong>中文小写</strong>和<strong>中文大写（财务用）</strong>两种格式。'
+            : 'Converting Arabic numbers to Chinese is not simple digit substitution — Chinese numbers have special "zero" handling rules (10001 reads as "一万零一" not "一万零零一") and grouping logic for "万" and "亿". This tool handles all edge cases and outputs both <strong>Chinese lowercase</strong> and <strong>financial uppercase</strong> formats.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '财务大写数字（壹贰叁肆伍陆柒捌玖拾佰仟万亿）是中文发票、支票、合同等正式文书中金额的标准书写方式。支持整数和小数，最大 999999999999（近万亿）。双击复制结果。'
+            : 'Financial uppercase characters (壹贰叁肆伍陆柒捌玖拾佰仟万亿) are the standard for amounts in Chinese invoices, checks, and contracts. Supports integers and decimals up to 999999999999 (~1 trillion). Double-click to copy.'}
+        </p>
+      </div>
 
       {/* Input */}
       <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-5 mb-6">

@@ -73,69 +73,83 @@ export const toolContent: Record<string, Content> = {
   time: {
     zh: (
       <Section title="📖 时间戳转换工具使用说明">
-        <Block title="工具简介">时间戳转换工具是一个在线日期与 Unix 时间戳互转的工具。Unix 时间戳是从 1970 年 1 月 1 日（UTC）开始所经过的秒数（或毫秒数），广泛应用于服务器日志、数据库存储、API 接口签名等场景。</Block>
-        <Block title="功能说明">
+        <Block title="什么是 Unix 时间戳？">
+          Unix 时间戳（Unix Timestamp）是一种在计算机系统中广泛使用的时间表示方式。它定义为从 <strong>1970年1月1日 00:00:00 UTC</strong>（Unix 纪元）开始所经过的秒数或毫秒数。这个时间原点被称为 "Unix Epoch"，选择这个日期是因为 Unix 操作系统诞生于那个年代。时间戳的最大优势是<strong>跨平台、跨语言的一致性</strong>——无论你在 Go、Python、JavaScript 还是数据库中，同一个时间戳代表同一个瞬间。
+        </Block>
+        <Block title="秒级 vs 毫秒级">
           <List items={[
-            '<strong>秒级时间戳 ↔ 日期时间</strong>：10 位时间戳与标准日期格式互转',
-            '<strong>毫秒级时间戳 ↔ 日期时间</strong>：13 位时间戳与标准日期格式互转',
-            '<strong>实时预览</strong>：修改任意输入即时看到对应结果',
-            '<strong>一键复制</strong>：双击结果即可复制到剪贴板',
+            '<strong>秒级时间戳（10位）</strong>：精确到秒，例如 1715678901 表示精确到秒的时间。传统 Unix 系统、大多数后端语言（Go time.Unix、Python time.time()）默认使用秒级。也是服务器日志和数据库中最常见的格式。',
+            '<strong>毫秒级时间戳（13位）</strong>：精确到毫秒，例如 1715678901000 表示同一时刻的毫秒表示。JavaScript 的 Date.now() 返回毫秒级时间戳，浏览器端 API 调用、前端日志也多用此格式。它是秒级 × 1000 的结果。',
+            '<strong>快速识别方法</strong>：10 位 ≈ 秒级（范围约 2001~2286 年）；13 位 ≈ 毫秒级（范围约 2001~2286 年）。如果数值大于 10^12，大概率是微秒或纳秒级，需要除以 1000 后再使用。',
           ]} />
         </Block>
         <Block title="使用方法">
           <OrderedList items={[
-            '在"秒级时间戳"或"毫秒级时间戳"输入框中粘贴时间戳',
-            '对应的日期时间会自动显示在右侧',
-            '也可以在日期时间选择器中修改日期，自动生成对应的时间戳',
-            '双击结果区域复制到剪贴板',
+            '<strong>时间戳 → 日期</strong>：在输入框中粘贴 10 位或 13 位时间戳，工具会自动检测格式并转换为可读的日期时间（支持 ISO 8601、RFC 2822 和多种自定义格式）。双击任意格式即可复制。',
+            '<strong>日期 → 时间戳</strong>：填写年/月/日/时/分/秒字段，秒级和毫秒级时间戳实时生成。点击「现在」按钮快速填入当前系统时间。',
+            '<strong>点击「现在」</strong>：两个面板都有「现在」按钮——面板一填入当前毫秒级时间戳，面板二填入当前日期时间。',
           ]} />
         </Block>
-        <Block title="示例">
-          <ExampleBox>
-            {'输入：1746000000（秒级时间戳）\n输出：2025-04-30 12:00:00\n\n输入：1746000000000（毫秒级时间戳）\n输出：2025-04-30 12:00:00.000'}
-          </ExampleBox>
+        <Block title="实战案例">
+          <OrderedList items={[
+            '<strong>故障时间定位</strong>：运维同学说"昨天下午 3 点有流量突增"，你把 2026-05-12 15:00:00 填进去得到时间戳，再到日志平台用时间戳范围筛选，精确锁定那几分钟的日志。',
+            '<strong>JWT Token 校验</strong>：JWT 的 exp 字段通常用秒级时间戳表示过期时间。拿到 exp: 1747180800，粘贴进来立即知道 Token 在什么时候过期，不用心算。',
+            '<strong>数据库导出给非技术团队</strong>：数据库里 create_time 字段存的是时间戳 1715678901，导出报表时转换成 2024-05-14 10:35:01 给运营同事看。',
+          ]} />
         </Block>
-        <Block title="应用场景">
+        <Block title="常见误区">
           <List items={[
-            '调试 API 接口时查看返回的时间戳对应的实际日期',
-            '数据库查询中将日期条件转换为时间戳范围',
-            '查看服务器日志中时间戳对应的具体时间',
-            '前后端联调时确认时间参数是否正确',
+            '<strong>Year 2038 问题</strong>：32 位系统用有符号整数存储秒级时间戳，最大值 2,147,483,647 对应 2038年1月19日 03:14:07 UTC。超过这个时间会发生整数溢出。不过 64 位系统已无此问题，现代服务器和浏览器均安全。',
+            '<strong>时区混淆</strong>：Unix 时间戳本身是无时区的——无论你在北京、纽约还是伦敦，同一时刻的时间戳完全相同。转换后的日期时间默认使用<strong>你的本地时区</strong>。如果你需要 UTC 时间，请注意 ±8（北京时间）或对应偏移。',
+            '<strong>秒/毫秒单位混淆</strong>：有人拿到毫秒级时间戳但当成秒级来转换，会得到 50000 年的日期（荒谬）。如果你粘贴时间戳后看到年份远超现在，先检查是不是单位搞错了。',
+            '<strong>不是所有日期都有效</strong>：2月30日、4月31日等不存在的日期输入后不会产生有效的时间戳。工具会忽略无效日期。',
           ]} />
+        </Block>
+        <Block title="命令行替代方案">
+          <ExampleBox>
+            {'# 获取当前时间戳（秒）\ndate +%s\n\n# 获取当前时间戳（毫秒）\ndate +%s%3N\n\n# 时间戳转日期\ndate -r 1715678901 "+%Y-%m-%d %H:%M:%S"\n\n# Python 一行搞定\npython3 -c "import time; print(time.time())"\n\n# JavaScript（浏览器控制台）\nMath.floor(Date.now() / 1000)  // 秒级\nDate.now()                      // 毫秒级'}
+          </ExampleBox>
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 Timestamp Converter Guide">
-        <Block title="Introduction">The Timestamp Converter converts between Unix timestamps and human-readable dates. The Unix timestamp represents seconds (or milliseconds) since January 1, 1970 (UTC), widely used in server logs, databases, and API signatures.</Block>
-        <Block title="Features">
+        <Block title="What Is a Unix Timestamp?">
+          A Unix timestamp is the number of seconds (or milliseconds) elapsed since <strong>January 1, 1970 00:00:00 UTC</strong> — the Unix Epoch. This epoch was chosen because Unix originated in that era. Timestamps are <strong>cross-platform and language-agnostic</strong>: the same integer represents the same exact moment whether you're in Go, Python, JavaScript, or a database. That's why they're the backbone of server logs, API signatures, database time columns, and caching systems.
+        </Block>
+        <Block title="Seconds vs Milliseconds">
           <List items={[
-            '<strong>Seconds ↔ Date</strong>: 10-digit timestamps to date strings',
-            '<strong>Milliseconds ↔ Date</strong>: 13-digit timestamps to date strings',
-            '<strong>Real-time preview</strong>: Instant results as you type',
-            '<strong>Copy with double-click</strong>',
+            '<strong>Second-level (10 digits)</strong>: Precise to the second, e.g. 1715678901. Used by traditional Unix systems and most backend languages (Go time.Unix, Python time.time()). The most common format in server logs and databases.',
+            '<strong>Millisecond-level (13 digits)</strong>: Precise to the millisecond, e.g. 1715678901000. Used by JavaScript Date.now() and browser APIs. It is the second-level value × 1000.',
+            '<strong>Quick identification</strong>: 10 digits ≈ seconds (years ~2001-2286). 13 digits ≈ milliseconds (years ~2001-2286). Values above 10^12 are likely microsecond or nanosecond — divide by 1000 before using.',
           ]} />
         </Block>
         <Block title="How to Use">
           <OrderedList items={[
-            'Paste a timestamp into the seconds or milliseconds input',
-            'The corresponding date appears automatically',
-            'Modify date fields to generate timestamps',
-            'Double-click the result to copy',
+            '<strong>Timestamp → Date</strong>: Paste a 10 or 13-digit timestamp — the tool auto-detects the format and converts it to a readable date in ISO 8601, RFC 2822, and custom formats. Double-click any result to copy.',
+            '<strong>Date → Timestamp</strong>: Fill in year/month/day/hour/minute/second fields. Second and millisecond timestamps are generated in real time. Click "Now" to fill the current system time.',
+            '<strong>"Now" button</strong>: Both panels have one — the left fills the current millisecond timestamp, the right fills the current date/time fields.',
           ]} />
         </Block>
-        <Block title="Example">
-          <ExampleBox>
-            {'Input: 1746000000 (seconds)\nOutput: 2025-04-30 12:00:00'}
-          </ExampleBox>
+        <Block title="Real-World Examples">
+          <OrderedList items={[
+            '<strong>Incident response</strong>: Your ops teammate says "we had a traffic spike yesterday at 3pm." You convert 2026-05-12 15:00:00 to a timestamp, then filter your log platform by timestamp range — isolating the exact few minutes that matter.',
+            '<strong>JWT token inspection</strong>: JWT exp claims are often second-level timestamps. Paste exp: 1747180800 into the tool to instantly see when the token expires — no mental math required.',
+            '<strong>Database exports for non-engineering teams</strong>: Your database stores create_time as 1715678901, but your operations team needs human-readable dates. Convert to 2024-05-14 10:35:01 before exporting the report.',
+          ]} />
         </Block>
-        <Block title="Use Cases">
+        <Block title="Common Pitfalls">
           <List items={[
-            'Debugging API responses with timestamp fields',
-            'Converting date conditions to timestamp ranges in queries',
-            'Reading server log entries',
-            'Frontend-backend timestamp format alignment',
+            '<strong>Year 2038 Problem</strong>: 32-bit signed integers max out at 2,147,483,647 seconds — January 19, 2038 03:14:07 UTC. After that, overflow occurs. 64-bit systems have eliminated this, and all modern servers/browsers are safe.',
+            '<strong>Timezone confusion</strong>: Unix timestamps are timezone-agnostic — the same timestamp means the same moment in Beijing, New York, and London. Converted dates use <strong>your local timezone</strong> by default. If your team uses UTC, account for the offset.',
+            '<strong>Second vs millisecond mix-up</strong>: Feeding a millisecond timestamp as seconds gives you a date in the year 50000+. If the year looks absurd, check the unit.',
+            '<strong>Invalid dates</strong>: February 30 or April 31 will not produce a valid timestamp. The tool ignores invalid inputs.',
           ]} />
+        </Block>
+        <Block title="Command-Line Alternatives">
+          <ExampleBox>
+            {'# Current timestamp (seconds)\ndate +%s\n\n# Current timestamp (milliseconds)\ndate +%s%3N\n\n# Timestamp to date\ndate -r 1715678901 "+%Y-%m-%d %H:%M:%S"\n\n# Python one-liner\npython3 -c "import time; print(time.time())"\n\n# JavaScript (browser console)\nMath.floor(Date.now() / 1000)  // seconds\nDate.now()                      // milliseconds'}
+          </ExampleBox>
         </Block>
       </Section>
     ),
@@ -144,73 +158,77 @@ export const toolContent: Record<string, Content> = {
   json: {
     zh: (
       <Section title="📖 JSON 工具使用说明">
-        <Block title="工具简介">JSON（JavaScript Object Notation）是一种轻量级的数据交换格式，已成为 Web 开发中最主流的数据格式。本工具提供 JSON 格式化、校验、压缩和代码结构体生成等一站式功能。</Block>
-        <Block title="功能说明">
+        <Block title="什么是 JSON？">
+          JSON（JavaScript Object Notation）是一种轻量级的纯文本数据交换格式，由 Douglas Crockford 在 2001 年提出。它基于 JavaScript 对象语法，但独立于语言——几乎所有主流编程语言都有 JSON 解析器。JSON 只支持六种数据类型：字符串、数字、布尔值、null、数组和对象。它的简洁性和跨语言兼容性使其取代 XML 成为 Web API 的标准格式——现在你遇到的 99% 的 REST API 都使用 JSON。
+        </Block>
+        <Block title="六大核心功能">
           <List items={[
-            '<strong>JSON 格式化</strong>：将压缩的 JSON 美化成缩进清晰的树形结构',
-            '<strong>JSON 校验</strong>：检测 JSON 语法错误并提示具体位置',
-            '<strong>JSON 压缩</strong>：去除空格和换行，生成紧凑格式',
-            '<strong>字段提取</strong>：列出 JSON 中所有的键路径和值的类型',
-            '<strong>生成代码结构体</strong>：一键将 JSON 转换为 Go、TypeScript、Rust、Python、Java 的类型定义',
+            '<strong>格式化</strong>：将压缩的、难以阅读的 JSON 美化为带缩进的树形结构。也支持自定义缩进空格数（2/4/tab），方便粘贴到不同风格的代码中。',
+            '<strong>压缩</strong>：去除所有空格和换行，生成最紧凑的 JSON 字符串。适用于减少网络传输体积或嵌入 URL 查询参数中。',
+            '<strong>校验</strong>：实时检测 JSON 语法错误，并精确定位到出错行和列。常见错误包括：末尾多余逗号、键名未用双引号、使用了单引号、注释等。',
+            '<strong>树形查看</strong>：交互式展开/折叠 JSON 的树形层级结构，直观浏览字段关系和嵌套深度。',
+            '<strong>代码结构体生成</strong>：根据 JSON 数据自动生成 Go、TypeScript、Rust、Python、Java、Kotlin、Swift、C#、Dart、Scala 共 10 种语言的类型定义（struct/interface/data class）。支持 use <T> 泛型模式、可选字段、omitempty 标签等选项。',
+            '<strong>示例 JSON 生成</strong>：反向功能——粘贴 Go struct 或 TypeScript interface 定义，生成符合该结构体的示例 JSON 数据。后端给前端接口定义时可以快速生成 mock 数据。',
           ]} />
         </Block>
         <Block title="使用方法">
           <OrderedList items={[
-            '将 JSON 粘贴到左侧编辑区',
-            '自动格式化并显示树形预览',
-            '在右侧查看字段结构、生成代码',
-            '选择目标语言生成对应的结构体定义',
-            '点击复制按钮获取结果',
+            '在左侧编辑区粘贴 JSON 字符串或结构体定义',
+            '顶部切换输入模式：JSON 或 结构体定义（Go/TypeScript）',
+            '右侧标签页切换输出视图：格式化 / 压缩 / 树形 / 结构体 / 示例',
+            '代码结构体模式：选择目标语言，自动生成对应类型定义，一键复制到项目中',
+            '示例生成模式：粘贴 struct/interface，生成对应的示例 JSON 用于 mock',
           ]} />
         </Block>
-        <Block title="示例">
-          <ExampleBox>
-            {'输入压缩 JSON：\n{"name":"Alice","age":30}\n\n格式化后：\n{\n  "name": "Alice",\n  "age": 30\n}\n\n生成 TypeScript：\ninterface Root {\n  name: string;\n  age: number;\n}'}
-          </ExampleBox>
-        </Block>
-        <Block title="应用场景">
+        <Block title="常见错误与解决">
           <List items={[
-            '调试 API 接口时格式化返回的 JSON 数据',
-            '定义接口数据结构时从示例 JSON 生成类型定义',
-            '前后端联调时校验 JSON 格式是否正确',
-            '编写配置文件时检查 JSON 语法',
+            '<strong>末尾逗号</strong>：{"a": 1,} — JSON 不允许对象或数组最后一个元素后面有逗号。去掉末尾逗号即可。这是最常见的新手错误，因为 JavaScript 和 Python 都允许尾随逗号，但 JSON 不允许。',
+            '<strong>键名未加引号</strong>：{name: "Alice"} — JSON 要求所有键名必须用双引号包裹：{"name": "Alice"}。单引号也不行：{\'name\': "Alice"} 是无效 JSON。',
+            '<strong>注释</strong>：JSON 不支持 /* */ 或 // 注释。如果需要注释，考虑使用 YAML 格式，或使用 JSONC（VS Code 的 JSON with Comments 变体）。',
           ]} />
+        </Block>
+        <Block title="命令行替代方案">
+          <ExampleBox>
+            {'# Python 格式化 JSON\necho \'{"a":1,"b":2}\' | python3 -m json.tool\n\n# 使用 jq 格式化并高亮\necho \'{"a":1,"b":2}\' | jq .\n\n# jq 提取特定字段\necho \'{"users":[{"name":"Alice"},{"name":"Bob"}]}\' | jq \'.users[].name\'\n\n# Node.js 格式化 JSON\nnode -e "console.log(JSON.stringify(JSON.parse(process.argv[1]), null, 2))" \'{"a":1}\''}
+          </ExampleBox>
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 JSON Tools Guide">
-        <Block title="Introduction">JSON (JavaScript Object Notation) is the most popular data format in web development. This tool provides formatting, validation, compression, and code generation in one place.</Block>
-        <Block title="Features">
+        <Block title="What Is JSON?">
+          JSON (JavaScript Object Notation) is a lightweight, text-based data interchange format created by Douglas Crockford in 2001. It is based on JavaScript object syntax but is language-independent — virtually every programming language has a JSON parser. JSON supports six data types: strings, numbers, booleans, null, arrays, and objects. Its simplicity and cross-language compatibility have made it the universal standard for web APIs, replacing XML in nearly all modern use cases.
+        </Block>
+        <Block title="Six Core Functions">
           <List items={[
-            '<strong>Format</strong>: Beautify minified JSON with proper indentation',
-            '<strong>Validate</strong>: Detect syntax errors with precise locations',
-            '<strong>Compress</strong>: Remove whitespace for compact output',
-            '<strong>Field extraction</strong>: List all key paths and their types',
-            '<strong>Code generation</strong>: Generate structs for Go/TypeScript/Rust/Python/Java',
+            '<strong>Format</strong>: Beautify minified JSON with tree indentation. Customize indent size (2/4/tab).',
+            '<strong>Compress</strong>: Strip all whitespace and newlines for the most compact representation — ideal for reducing network payload size.',
+            '<strong>Validate</strong>: Real-time JSON syntax checking with precise line/column error locations. Catches trailing commas, unquoted keys, single quotes, and comments.',
+            '<strong>Tree View</strong>: Interactive expand/collapse of JSON hierarchy — visually explore field relationships and nesting depth.',
+            '<strong>Struct Generation</strong>: Auto-generate type definitions for Go, TypeScript, Rust, Python, Java, Kotlin, Swift, C#, Dart, and Scala. Options include generic types, optional fields, and omitempty tags.',
+            '<strong>Sample JSON</strong>: Reverse operation — paste a Go struct or TypeScript interface to generate matching sample JSON. Perfect for quickly creating mock data from API type definitions.',
           ]} />
         </Block>
         <Block title="How to Use">
           <OrderedList items={[
-            'Paste JSON into the editor',
-            'Auto-formatted preview appears',
-            'View field structure and generate code on the right',
-            'Select target language for struct definitions',
-            'Copy the result',
+            'Paste a JSON string or struct definition into the editor',
+            'Toggle input mode: JSON or Struct Definition (Go/TypeScript)',
+            'Switch output tabs: Format / Compress / Tree / Struct / Sample',
+            'For struct generation: select target language, copy the generated types directly',
+            'For sample JSON: paste a struct/interface and get mock JSON data instantly',
           ]} />
         </Block>
-        <Block title="Example">
-          <ExampleBox>
-            {'Minified JSON → Formatted with indentation\nJSON fields → TypeScript interface or Go struct'}
-          </ExampleBox>
-        </Block>
-        <Block title="Use Cases">
+        <Block title="Common Mistakes">
           <List items={[
-            'Debugging API JSON responses',
-            'Generating type definitions from sample data',
-            'Validating JSON syntax during development',
-            'Editing JSON configuration files',
+            '<strong>Trailing comma</strong>: {"a": 1,} — JSON forbids commas after the last element. JavaScript and Python allow trailing commas, but JSON does not. Remove the final comma.',
+            '<strong>Unquoted keys</strong>: {name: "Alice"} — All keys in JSON must be double-quoted: {"name": "Alice"}. Single quotes also don\'t work.',
+            '<strong>Comments</strong>: JSON does not support /* */ or // comments. If you need comments, consider YAML or JSONC (VS Code\'s JSON with Comments variant).',
           ]} />
+        </Block>
+        <Block title="Command-Line Alternatives">
+          <ExampleBox>
+            {'# Python format JSON\necho \'{"a":1,"b":2}\' | python3 -m json.tool\n\n# jq — format and colorize\necho \'{"a":1,"b":2}\' | jq .\n\n# jq — extract specific fields\necho \'{"users":[{"name":"Alice"},{"name":"Bob"}]}\' | jq \'.users[].name\'\n\n# Node.js format JSON\nnode -e "console.log(JSON.stringify(JSON.parse(process.argv[1]), null, 2))" \'{"a":1}\''}
+          </ExampleBox>
         </Block>
       </Section>
     ),
@@ -219,68 +237,80 @@ export const toolContent: Record<string, Content> = {
   base64: {
     zh: (
       <Section title="📖 Base64 图片工具使用说明">
-        <Block title="工具简介">Base64 是一种用 64 个可打印字符表示二进制数据的编码方式。本工具实现 Base64 编码与图片文件之间的双向转换，支持 PNG、JPG、GIF、WebP 四种格式，所有处理在浏览器端完成，不上传服务器。</Block>
+        <Block title="什么是 Base64？">
+          Base64 是一种将二进制数据编码为 64 个可打印 ASCII 字符（A-Z、a-z、0-9、+、/）的编码方案。每 3 字节（24 bit）原始数据被拆分为 4 个 6-bit 组，每个 6-bit 值对应一个 Base64 字符。如果原始数据不是 3 的倍数，使用 = 号填充。编码后体积增大约 33%，但换来的是可以安全地在文本协议（HTML、CSS、JSON、Email、XML）中传输任意二进制数据。
+        </Block>
+        <Block title="Base64 Data URL 格式">
+          <ExampleBox>
+            {'data:[<MIME type>][;base64],<encoded data>\n\n示例：\ndata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...\n\nMIME 类型从上传的图片文件自动识别（image/png, image/jpeg 等）'}
+          </ExampleBox>
+        </Block>
         <Block title="功能说明">
           <List items={[
-            '<strong>图片 → Base64</strong>：选择图片文件，自动生成 Base64 data URL',
-            '<strong>Base64 → 图片</strong>：粘贴 Base64 编码，实时预览图片',
-            '<strong>实时预览</strong>：转换后立即看到图片效果',
-            '<strong>一键复制</strong>：双击结果复制 Base64 字符串',
+            '<strong>图片 → Base64</strong>：选择图片文件（支持 PNG/JPG/GIF/WebP），自动生成完整的 data:image/...;base64,... Data URL。支持拖拽上传。',
+            '<strong>Base64 → 图片</strong>：粘贴 Base64 编码字符串（支持纯编码或完整 Data URL 格式），实时预览解码后的图片。自动检测并过滤 data:... 前缀。',
+            '<strong>实时预览</strong>：编码或解码后立即看到图片效果，确认转换正确。',
+            '<strong>一键复制</strong>：双击结果区域复制完整的 Base64 Data URL，可直接用于 HTML &lt;img src&gt; 或 CSS background-image。',
           ]} />
         </Block>
         <Block title="使用方法">
           <OrderedList items={[
-            '选择"图片 → Base64"模式，上传一张图片',
-            '自动生成完整的 data:image/...;base64 编码',
-            '选择"Base64 → 图片"模式，粘贴 Base64 字符串预览原图',
-            '双击结果区域即可复制',
+            '<strong>图片 → Base64</strong>：点击或拖拽图片文件到"图片 → Base64"面板，自动生成 Data URL。双击复制。',
+            '<strong>Base64 → 图片</strong>：在左侧文本框中粘贴 Base64 字符串，右侧实时显示图片预览。支持纯编码和完整 data: URL 两种输入。',
+            '工具会自动检测输入格式——粘贴纯 Base64 编码或完整的 Data URL 均可正确识别。',
           ]} />
         </Block>
-        <Block title="示例">
+        <Block title="Base64 嵌入 HTML 示例">
           <ExampleBox>
-            {'Base64 data URL 格式：\ndata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...'}
+            {'<!-- 图片标签中嵌入 Base64 -->\n<img src="data:image/png;base64,iVBOR..."/>\n\n<!-- CSS 背景图中嵌入 Base64 -->\nbackground-image: url(data:image/png;base64,iVBOR...);'}
           </ExampleBox>
         </Block>
-        <Block title="应用场景">
+        <Block title="使用建议与注意事项">
           <List items={[
-            '将小图标直接嵌入 HTML/CSS 中，减少 HTTP 请求',
-            '在邮件 HTML 中嵌入图片，避免图片链接失效',
-            '将用户上传的头像保存为 Base64 存储在数据库中',
-            '在 Markdown 文档中内嵌小图片',
+            '<strong>适用场景</strong>：小图标（&lt; 5KB）、邮件内嵌图片、减少 HTTP 请求。Base64 编码后体积增大约 33%，对小图片来说额外的字节量远小于一次 HTTP 请求的开销。',
+            '<strong>不适用场景</strong>：大图片（&gt; 100KB）。Base64 编码后体积更大，且浏览器无法利用缓存——每次 HTML 加载都会重新传输整个图片数据。大图片应使用外部 URL 配合浏览器缓存策略。',
+            '<strong>隐私保证</strong>：所有图片处理在浏览器本地完成，使用 Canvas API 和 FileReader，图片文件不会上传到任何服务器。可在浏览器 DevTools 的 Network 面板验证：关闭此页面时网络标签中无任何图片上传请求。',
+            '<strong>格式支持</strong>：输入支持 PNG、JPEG、GIF、WebP。对于其他格式（如 BMP、SVG）可能无法正确预览。',
           ]} />
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 Base64 Image Tool Guide">
-        <Block title="Introduction">Base64 encoding represents binary data using 64 printable characters. This tool converts between Base64 strings and image files (PNG, JPG, GIF, WebP). All processing happens in your browser.</Block>
+        <Block title="What Is Base64?">
+          Base64 is an encoding scheme that represents binary data using 64 printable ASCII characters (A-Z, a-z, 0-9, +, /). Every 3 bytes (24 bits) of raw data are split into 4 groups of 6 bits, each mapped to a Base64 character. If the input is not a multiple of 3 bytes, = padding is added. The encoded output is ~33% larger than the original, but the benefit is safe transmission of binary data through text-based protocols (HTML, CSS, JSON, Email, XML).
+        </Block>
+        <Block title="Base64 Data URL Format">
+          <ExampleBox>
+            {'data:[<MIME type>][;base64],<encoded data>\n\nExample:\ndata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...\n\nMIME type is auto-detected from the uploaded file (image/png, image/jpeg, etc.)'}
+          </ExampleBox>
+        </Block>
         <Block title="Features">
           <List items={[
-            '<strong>Image → Base64</strong>: Select an image, get its Base64 data URL',
-            '<strong>Base64 → Image</strong>: Paste Base64 and preview the image',
-            '<strong>Live preview</strong>: See results immediately',
-            '<strong>Copy with double-click</strong>',
+            '<strong>Image → Base64</strong>: Select an image file (PNG/JPG/GIF/WebP) to instantly generate a complete data:image/...;base64 Data URL. Drag-and-drop supported.',
+            '<strong>Base64 → Image</strong>: Paste a Base64 string (raw encoding or full Data URL) to preview the decoded image in real time.',
+            '<strong>Live preview</strong>: See the result immediately — verify your conversion is correct.',
+            '<strong>Copy with double-click</strong>: Copy the full Data URL, ready for &lt;img src&gt; or CSS background-image.',
           ]} />
         </Block>
         <Block title="How to Use">
           <OrderedList items={[
-            'Select an image file',
-            'The Base64 data URL is generated automatically',
-            'Switch to decode mode to preview from Base64',
-            'Double-click to copy the result',
+            '<strong>Image → Base64</strong>: Click or drag an image file onto the panel — the Data URL is generated automatically. Double-click to copy.',
+            '<strong>Base64 → Image</strong>: Paste a Base64 string into the text box. The image preview appears on the right. Both raw encoding and full data: URL formats are accepted.',
+            'The tool auto-detects the input format — paste either raw Base64 or a complete Data URL.',
           ]} />
         </Block>
-        <Block title="Example">
+        <Block title="Embedding Base64 in HTML">
           <ExampleBox>
-            {'Base64 data URL format:\ndata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...'}
+            {'<!-- Image tag with inline Base64 -->\n<img src="data:image/png;base64,iVBOR..."/>\n\n<!-- CSS background with inline Base64 -->\nbackground-image: url(data:image/png;base64,iVBOR...);'}
           </ExampleBox>
         </Block>
-        <Block title="Use Cases">
+        <Block title="Tips & Caveats">
           <List items={[
-            'Embedding small icons directly in HTML/CSS',
-            'Inlining images in email HTML',
-            'Storing user avatars as Base64 in databases',
-            'Embedding images in Markdown documentation',
+            '<strong>Good for</strong>: Small icons (&lt; 5KB), email-embedded images, eliminating HTTP requests. The ~33% size increase is negligible for small images compared to the overhead of an extra HTTP round trip.',
+            '<strong>Bad for</strong>: Large images (&gt; 100KB). The larger encoded size plus the inability to cache across page loads (the image reloads with every page) make external URLs with proper caching a better choice.',
+            '<strong>Privacy</strong>: All processing is client-side using the Canvas API and FileReader. Your images never leave your browser. Verify in DevTools → Network: zero image upload requests.',
+            '<strong>Format support</strong>: PNG, JPEG, GIF, WebP. Other formats (BMP, SVG) may not preview correctly.',
           ]} />
         </Block>
       </Section>
@@ -290,68 +320,46 @@ export const toolContent: Record<string, Content> = {
   password: {
     zh: (
       <Section title="📖 密码生成器使用说明">
-        <Block title="工具简介">密码生成器是一个在线随机密码生成工具，可以根据你的需求生成高强度、难以破解的随机密码。支持自定义字符类型组合、密码长度，并可以排除容易混淆的相似字符（如 0 和 O、1 和 I 等）。</Block>
+        <Block title="为什么需要密码生成器？">
+          大多数人创建的密码存在严重问题：使用常见词汇（password123）、个人信息（生日、姓名）、在多个网站重复使用同一密码，或者密码太短容易暴力破解。一个好的密码生成器使用<strong>密码学安全的随机数生成器（CSPRNG）</strong>生成真正随机、不可预测的密码字符串。本站的密码生成器使用 Web Crypto API 的 <code className="bg-dark-800/50 px-1 rounded text-xs">crypto.getRandomValues()</code>，生成的密码即使知道之前生成的所有输出，也无法预测下一个密码。
+        </Block>
         <Block title="功能说明">
           <List items={[
-            '<strong>字符类型选择</strong>：大写字母、小写字母、数字、特殊符号自由组合',
-            '<strong>长度调整</strong>：支持 1~64 位密码长度',
-            '<strong>排除相似字符</strong>：避免混淆 0/O、1/I/l 等',
-            '<strong>密码强度指示</strong>：实时显示密码强度等级',
+            '<strong>四种字符类型</strong>：大写字母（A-Z）、小写字母（a-z）、数字（0-9）、特殊符号（!@#$%^&*等）。勾选任意组合——建议全部勾选以获得最大密码空间。',
+            '<strong>长度自定义</strong>：1 到 64 位自由调节。NIST 推荐至少 8 位，重要账户建议 16 位以上。每增加一位，暴力破解时间呈指数增长。',
+            '<strong>排除相似字符</strong>：自动排除 0/O、1/I/l 等容易混淆的字符。对于需要手动输入的密码（如 Wi-Fi 密码），这个选项非常实用。',
+            '<strong>首字符限制</strong>：可选择首字符必须为字母。某些老旧系统要求密码必须以字母开头——虽然不推荐，但工具给你选择。',
+            '<strong>密码强度指示</strong>：综合考虑长度、字符集大小、是否包含字典词等因素，实时显示密码强度等级（弱/中/强/非常强）。',
           ]} />
         </Block>
-        <Block title="使用方法">
-          <OrderedList items={[
-            '勾选需要的字符类型（大写、小写、数字、符号）',
-            '拖动滑块调整密码长度',
-            '开启"排除相似字符"避免混淆',
-            '点击生成按钮，复制你满意的密码',
-          ]} />
-        </Block>
-        <Block title="示例">
-          <ExampleBox>
-            {'全部字符类型，16 位长度：\nkG7#mP2$xQ9&vR5@\n\n大小写+数字，排除相似，12 位：\nAb3Xm8Kp2Rw7'}
-          </ExampleBox>
-        </Block>
-        <Block title="应用场景">
+        <Block title="密码安全最佳实践">
           <List items={[
-            '注册网站时生成高强度账户密码',
-            '为服务器生成 SSH 密钥或数据库密码',
-            '生成 Wi-Fi 密码、应用密钥等',
-            '定期更换密码时生成新密码',
+            '<strong>长度 &gt; 复杂度</strong>：16 位纯小写字母（26^16 ≈ 4.3×10^22 种组合）远强于 8 位全字符集（≈ 6.6×10^15）。增加长度比增加特殊字符更有效。',
+            '<strong>每个网站用不同密码</strong>：使用密码管理器（如 Bitwarden、1Password）配合本工具生成的随机密码，为每个账户创建独立密码。',
+            '<strong>本工具不存储密码</strong>：生成的密码只在你的浏览器内存中，页面关闭即消失。请配合密码管理器使用，不要依赖复制粘贴。',
           ]} />
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 Password Generator Guide">
-        <Block title="Introduction">The Password Generator creates strong, cryptographically random passwords. Customize character types, length, and exclude similar characters to generate secure passwords.</Block>
+        <Block title="Why Use a Password Generator?">
+          Most human-created passwords are weak: common words (password123), personal info (birthdays, names), reused across sites, or simply too short. A good password generator uses a <strong>cryptographically secure pseudorandom number generator (CSPRNG)</strong> to produce truly random, unpredictable strings. This tool uses the Web Crypto API's <code className="bg-dark-800/50 px-1 rounded text-xs">crypto.getRandomValues()</code> — even knowing all previous outputs, you cannot predict the next password.
+        </Block>
         <Block title="Features">
           <List items={[
-            '<strong>Character types</strong>: Uppercase, lowercase, digits, symbols',
-            '<strong>Adjustable length</strong>: 1 to 64 characters',
-            '<strong>Exclude similar chars</strong>: Avoid confusing 0/O, 1/I/l',
-            '<strong>Strength indicator</strong>: Real-time password strength',
+            '<strong>4 character types</strong>: Uppercase (A-Z), lowercase (a-z), digits (0-9), symbols (!@#$%^&*). Mix all for maximum password space.',
+            '<strong>Adjustable length</strong>: 1 to 64 characters. NIST recommends at least 8; 16+ for important accounts. Each added character exponentially increases cracking time.',
+            '<strong>Exclude similar chars</strong>: Removes 0/O, 1/I/l to avoid visual confusion. Useful for passwords you\'ll type manually (Wi-Fi passwords).',
+            '<strong>First char as letter</strong>: Some legacy systems require passwords to start with a letter. Not recommended, but the option is there.',
+            '<strong>Strength indicator</strong>: Real-time rating (Weak/Medium/Strong/Very Strong) based on length, character set size, and pattern detection.',
           ]} />
         </Block>
-        <Block title="How to Use">
-          <OrderedList items={[
-            'Select character types',
-            'Adjust length with slider',
-            'Toggle "exclude similar" if desired',
-            'Generate and copy',
-          ]} />
-        </Block>
-        <Block title="Example">
-          <ExampleBox>
-            {'All types, 16 chars:\nkG7#mP2$xQ9&vR5@'}
-          </ExampleBox>
-        </Block>
-        <Block title="Use Cases">
+        <Block title="Password Security Best Practices">
           <List items={[
-            'Creating strong account passwords',
-            'Generating database or SSH keys',
-            'Creating Wi-Fi passwords',
-            'Regular password rotation',
+            '<strong>Length &gt; complexity</strong>: A 16-char lowercase password (26^16 ≈ 4.3×10^22 combinations) is far stronger than an 8-char all-character password (≈ 6.6×10^15). Add length before special characters.',
+            '<strong>Unique password per site</strong>: Use a password manager (Bitwarden, 1Password) with randomly generated passwords from this tool.',
+            '<strong>This tool stores nothing</strong>: Passwords exist only in browser memory and vanish when the page closes. Pair with a password manager — don\'t rely on copy-paste.',
           ]} />
         </Block>
       </Section>
@@ -361,69 +369,88 @@ export const toolContent: Record<string, Content> = {
   cron: {
     zh: (
       <Section title="📖 Cron 表达式工具使用说明">
-        <Block title="工具简介">Cron 是 Unix/Linux 系统中用于定时任务调度的标准格式，由 5 个字段组成分别表示分、时、日、月、周。本工具帮助你解析 Cron 表达式的含义、生成可视化执行计划，以及通过可视化方式构建 Cron 表达式。</Block>
-        <Block title="功能说明">
+        <Block title="什么是 Cron 表达式？">
+          Cron 是 Unix/Linux 系统的定时任务调度器，其表达式由 <strong>5 个字段</strong> 组成：<code className="bg-dark-800/50 px-1 rounded text-xs">分 时 日 月 周</code>，用空格分隔。每个字段可以是一个具体值、一个范围、一个步进值，或 *（任意）。Cron 表达式在 GitHub Actions（schedule 触发器）、Kubernetes CronJob、GitLab CI、Jenkins Pipeline、系统 crontab 中通用——学会了它，你可以在任何平台上配置定时任务。
+        </Block>
+        <Block title="五个字段详解">
           <List items={[
-            '<strong>Cron → 可读文本</strong>：将 Cron 表达式翻译为自然语言描述',
-            '<strong>最近执行时间</strong>：显示接下来 5 次执行时间',
-            '<strong>可视化构建器</strong>：通过点选菜单构建 Cron 表达式',
-            '<strong>预设模板</strong>：提供常用 Cron 配置供快速选择',
+            '<strong>分钟（0-59）</strong>：任务在第几分钟执行。例如 30 表示第 30 分钟（即 X:30）。最常用。',
+            '<strong>小时（0-23）</strong>：任务在第几小时执行。例如 9 表示早上 9 点。注意是 24 小时制。',
+            '<strong>日（1-31）</strong>：任务在每月第几天执行。例如 1 表示每月 1 日。注意：不是所有月份都有 31 天。',
+            '<strong>月（1-12）</strong>：任务在第几月执行。例如 1 表示一月。也可以使用 JAN-DEC 的英文缩写（部分实现）。',
+            '<strong>周（0-7，0 和 7 都表示周日）</strong>：任务在每周第几天执行。例如 5 表示周五。也可以使用 SUN-SAT 英文缩写。',
+          ]} />
+        </Block>
+        <Block title="特殊符号说明">
+          <List items={[
+            '<strong>*</strong>：匹配该字段所有可能的值。* * * * * 表示每分钟执行一次。',
+            '<strong>*/N</strong>：每隔 N 个单位执行。*/15 * * * * 表示每 15 分钟执行一次（即 0, 15, 30, 45 分）。',
+            '<strong>A-B</strong>：范围。1-5 * * * * 表示每小时的 1~5 分钟每分钟执行一次。',
+            '<strong>A,B,C</strong>：列举多个值。0 9,18 * * * 表示每天 9:00 和 18:00 执行。',
           ]} />
         </Block>
         <Block title="使用方法">
           <OrderedList items={[
-            '在输入框直接输入 Cron 表达式（如 */5 * * * *）',
-            '下方自动显示可读描述和最近 5 次执行时间',
-            '或者使用可视化构建器，通过选择菜单生成表达式',
-            '点击预设模板快速填入常用定时规则',
+            '<strong>解析模式</strong>：在输入框直接输入 Cron 表达式（如 */5 * * * *），下方自动显示可读描述和接下来 5 次执行时间。',
+            '<strong>构建模式</strong>：使用可视化构建器，通过下拉菜单为每个字段选择模式（每X分钟/具体值/范围），无需记忆语法即可生成表达式。',
+            '<strong>预设模板</strong>：点击预设按钮快速填入常用定时规则——每5分钟、每小时、每天、每周、每月、工作日、周末等。',
           ]} />
         </Block>
-        <Block title="示例">
+        <Block title="常用 Cron 表达式速查">
           <ExampleBox>
-            {'*/5 * * * *  →  每 5 分钟执行一次\n0 9 * * 1-5  →  工作日早上 9 点\n0 0 1 * *    →  每月 1 日零点\n30 2 * * *   →  每天凌晨 2:30'}
+            {'*/5 * * * *     每 5 分钟\n0 * * * *       每小时整点\n0 9 * * *       每天早上 9:00\n0 9 * * 1-5     每个工作日早上 9:00\n0 0 1 * *       每月 1 日零点\n0 0 * * 0       每周日零点\n0 2 * * 0       每周日凌晨 2:00\n30 3 15 * *     每月 15 日凌晨 3:30'}
           </ExampleBox>
         </Block>
-        <Block title="应用场景">
+        <Block title="常见误区">
           <List items={[
-            '配置服务器定时备份任务',
-            '设置日志清理周期',
-            '配置定时数据同步任务',
-            '部署监控脚本的定时执行',
-            '学习 Cron 表达式时快速验证',
+            '<strong>日和周同时指定</strong>：Cron 中"日"和"周"这两个字段存在互斥关系。如果你同时指定了"日"（如第 15 日）和"周"（如周五），不同系统的处理方式不同——有的取"或"（即 15 日或周五都执行），有的取"与"（必须同时满足）。避免同时使用这两个字段的具体值，将其中一个设为 *。',
+            '<strong>Cron 没有"秒"字段</strong>：标准 Unix Cron 只有 5 个字段，不支持秒级精度。如果需要精确到秒，需要使用 Spring Cron（6 个字段，第一个是秒）或 systemd timer。你的表达式如果有 6 个字段，请去掉第一个（秒）。',
+            '<strong>执行时间基于系统时区</strong>：服务器的 crontab 使用服务器的本地时区。如果你在北京的服务器设置 0 9 * * *，它会在北京时间 9:00 执行。但 GitHub Actions 的 schedule 使用 UTC 时区——同样的表达式会在 UTC 9:00（即北京时间 17:00）执行。设置定时任务前务必确认运行时区！',
+            '<strong>夏令时（DST）</strong>：在实行夏令时的地区，每年会有两次时间跳变。Cron 不会自动调整——凌晨 2:30 的任务在夏令时开始那天可能被跳过（2:00 直接跳到 3:00），在夏令时结束那天可能执行两次（1:30 出现两次）。关键任务应避开凌晨 2:00-3:00 时段。',
           ]} />
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 Cron Expression Tool Guide">
-        <Block title="Introduction">Cron is the standard format for scheduling tasks on Unix/Linux systems. This tool parses cron expressions into readable text and helps you build them visually.</Block>
-        <Block title="Features">
+        <Block title="What Is a Cron Expression?">
+          Cron is the job scheduler on Unix/Linux systems. A cron expression consists of <strong>5 fields</strong>: <code className="bg-dark-800/50 px-1 rounded text-xs">minute hour day month weekday</code>, separated by spaces. Each field can be a specific value, a range, a step value, or * (any). Cron expressions are universal across GitHub Actions (schedule trigger), Kubernetes CronJobs, GitLab CI, Jenkins Pipelines, and system crontabs — learn it once, use it everywhere.
+        </Block>
+        <Block title="The Five Fields Explained">
           <List items={[
-            '<strong>Cron → Readable</strong>: Translate cron to plain English',
-            '<strong>Next executions</strong>: Show upcoming 5 run times',
-            '<strong>Visual builder</strong>: Build cron expressions by clicking',
-            '<strong>Presets</strong>: Quick-select common cron schedules',
+            '<strong>Minute (0-59)</strong>: Which minute of the hour the task runs. E.g., 30 means at X:30. The most frequently used field.',
+            '<strong>Hour (0-23)</strong>: Which hour of the day (24-hour clock). E.g., 9 means 9:00 AM.',
+            '<strong>Day of month (1-31)</strong>: Which day of the month. E.g., 1 means the 1st. Note: not all months have 31 days.',
+            '<strong>Month (1-12)</strong>: Which month. E.g., 1 = January. Some implementations also support JAN-DEC abbreviations.',
+            '<strong>Day of week (0-7, both 0 and 7 = Sunday)</strong>: Which day of the week. E.g., 5 = Friday. SUN-SAT abbreviations also supported.',
+          ]} />
+        </Block>
+        <Block title="Special Characters">
+          <List items={[
+            '<strong>*</strong>: Matches all values for the field. * * * * * means every minute.',
+            '<strong>*/N</strong>: Every N units. */15 * * * * means every 15 minutes (at :00, :15, :30, :45).',
+            '<strong>A-B</strong>: Range. 1-5 * * * * means minutes 1 through 5 of every hour.',
+            '<strong>A,B,C</strong>: List of values. 0 9,18 * * * means at 9:00 AM and 6:00 PM daily.',
           ]} />
         </Block>
         <Block title="How to Use">
           <OrderedList items={[
-            'Type a cron expression (e.g. */5 * * * *)',
-            'Readable description and next run times appear below',
-            'Or use the visual builder to generate expressions',
-            'Click presets for common schedules',
+            '<strong>Parse mode</strong>: Type a cron expression (e.g. */5 * * * *) and see the human-readable description plus the next 5 execution times.',
+            '<strong>Build mode</strong>: Use the visual builder — select modes for each field via dropdowns (Every N / Specific / Range). No syntax memorization needed.',
+            '<strong>Presets</strong>: Click a preset to quickly fill common schedules — every 5 min, hourly, daily, weekly, monthly, weekdays, weekends.',
           ]} />
         </Block>
-        <Block title="Example">
+        <Block title="Common Cron Expressions">
           <ExampleBox>
-            {'*/5 * * * *  →  Every 5 minutes\n0 9 * * 1-5  →  Weekdays at 9:00 AM\n0 0 1 * *    →  First day of month at midnight'}
+            {'*/5 * * * *     Every 5 minutes\n0 * * * *       Every hour at :00\n0 9 * * *       Daily at 9:00 AM\n0 9 * * 1-5     Weekdays at 9:00 AM\n0 0 1 * *       First day of the month\n0 0 * * 0       Every Sunday at midnight\n0 2 * * 0       Every Sunday at 2:00 AM\n30 3 15 * *     15th of each month at 3:30 AM'}
           </ExampleBox>
         </Block>
-        <Block title="Use Cases">
+        <Block title="Common Pitfalls">
           <List items={[
-            'Configuring server backup schedules',
-            'Setting up log rotation',
-            'Scheduling data sync jobs',
-            'Learning cron syntax',
+            '<strong>Day-of-month AND day-of-week</strong>: These two fields have an implicit OR/AND ambiguity. If you specify both (e.g., "15th" and "Friday"), behavior varies by implementation — some treat it as OR (runs on 15th OR Friday), others as AND. Avoid using both fields with specific values; set one to *.',
+            '<strong>No seconds field</strong>: Standard Unix cron has 5 fields — it cannot express second-level precision. If you need seconds, use Spring Cron (6 fields, first is seconds) or systemd timers. If your expression has 6 fields, remove the first one.',
+            '<strong>System timezone matters</strong>: Server crontabs use the server\'s local timezone. If your server is in New York, 0 9 * * * runs at 9:00 AM EST. But GitHub Actions schedules use UTC — the same expression would run at 9:00 AM UTC (4:00 AM EST). Always verify the runtime timezone!',
+            '<strong>Daylight Saving Time (DST)</strong>: In DST-observing regions, cron does NOT auto-adjust. Tasks scheduled at 2:30 AM may be skipped when clocks jump forward (2:00→3:00), and may run twice when clocks fall back (1:30 appears twice). Avoid scheduling critical jobs between 2:00-3:00 AM.',
           ]} />
         </Block>
       </Section>
@@ -433,65 +460,49 @@ export const toolContent: Record<string, Content> = {
   case: {
     zh: (
       <Section title="📖 命名转换工具使用说明">
-        <Block title="工具简介">命名转换工具用于在多种编程命名规范之间相互转换。不同语言、团队、框架往往使用不同的命名规则，本工具支持驼峰、帕斯卡、下划线、短横线、点号等 8 种命名格式一键互转。</Block>
-        <Block title="功能说明">
+        <Block title="命名规范为什么重要？">
+          每种编程语言和框架都有自己的命名约定：JavaScript/TypeScript 偏好 camelCase（变量）和 PascalCase（类/组件），Python 标准库统一 snake_case，CSS/HTML 使用 kebab-case，Go 用 PascalCase 控制导出可见性，Java 常量用 SCREAMING_SNAKE。当一个项目跨越多种语言时——比如 Python 后端 + TypeScript 前端 + PostgreSQL 数据库——同一個字段可能有三种不同的命名格式。手动转换不仅低效，而且容易出错。这个工具 8 种格式实时同步转换。
+        </Block>
+        <Block title="8 种格式说明">
           <List items={[
-            '<strong>支持 8 种格式</strong>：camelCase、PascalCase、snake_case、kebab-case、dot.case、SCREAMING_SNAKE、Train-Case、空格分隔',
-            '<strong>实时转换</strong>：输入即转换，无需点击按钮',
-            '<strong>一键复制</strong>：双击任意结果复制',
+            '<strong>camelCase（驼峰）</strong>：首单词小写，后续单词首字母大写。JavaScript/TypeScript 变量名和函数名的标准格式。',
+            '<strong>PascalCase（帕斯卡）</strong>：每个单词首字母大写。React 组件名、C# 类名、Go 导出标识符使用。',
+            '<strong>snake_case（下划线）</strong>：全部小写，单词用下划线连接。Python 变量名和函数名、PostgreSQL 列名、Ruby 方法名的标准格式。',
+            '<strong>kebab-case（短横线）</strong>：全部小写，单词用连字符连接。CSS 类名、HTML 属性名、URL slug 的标准格式。',
+            '<strong>SCREAMING_SNAKE（大写下划线）</strong>：全大写，单词用下划线连接。常量、环境变量、枚举值。',
+            '<strong>dot.case（点号）</strong>：单词用点号连接。某些配置键名使用。',
+            '<strong>Train-Case（火车式）</strong>：每个单词首字母大写，用连字符连接。HTTP 头字段名（如 Content-Type）。',
+            '<strong>空格分隔</strong>：纯可读文本。适合需要人类阅读的场景。',
           ]} />
         </Block>
-        <Block title="使用方法">
-          <OrderedList items={[
-            '在输入框中输入需要转换的变量名或短语',
-            '所有 8 种格式的结果实时显示在下方',
-            '双击任意结果即可复制到剪贴板',
-          ]} />
-        </Block>
-        <Block title="示例">
+        <Block title="各语言命名对照">
           <ExampleBox>
-            {'输入：user login count\n\ncamelCase       → userLoginCount\nPascalCase      → UserLoginCount\nsnake_case      → user_login_count\nkebab-case      → user-login-count\nSCREAMING_SNAKE → USER_LOGIN_COUNT'}
+            {'user login count  →\n\nJavaScript变量  camelCase       userLoginCount\nReact组件       PascalCase      UserLoginCount\nPython变量      snake_case      user_login_count\nCSS类名        kebab-case      user-login-count\n常量/环境变量   SCREAMING_SNAKE USER_LOGIN_COUNT\nHTTP头          Train-Case      User-Login-Count'}
           </ExampleBox>
-        </Block>
-        <Block title="应用场景">
-          <List items={[
-            '在 Go（驼峰）和 Python（下划线）项目之间迁移代码',
-            '定义数据库字段（snake_case）映射到前端变量（camelCase）',
-            'CSS 类名（kebab-case）与 JavaScript 变量（camelCase）互转',
-            '统一团队代码风格规范',
-          ]} />
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 Case Converter Guide">
-        <Block title="Introduction">The Case Converter transforms text between multiple programming naming conventions. Supports 8 formats including camelCase, PascalCase, snake_case, kebab-case, and more.</Block>
-        <Block title="Features">
+        <Block title="Why Naming Conventions Matter">
+          Every programming language has its own naming convention: JavaScript/TypeScript uses camelCase (variables) and PascalCase (classes/components), Python uses snake_case, CSS uses kebab-case, Go uses PascalCase for exported identifiers, Java constants use SCREAMING_SNAKE. When a project spans multiple languages — say a Python backend + TypeScript frontend + PostgreSQL database — the same field can have three different formats. Manual conversion is tedious and error-prone. This tool syncs all 8 formats in real time.
+        </Block>
+        <Block title="8 Formats Explained">
           <List items={[
-            '<strong>8 formats</strong>: camelCase, PascalCase, snake_case, kebab-case, dot.case, SCREAMING_SNAKE, Train-Case',
-            '<strong>Real-time conversion</strong>: Results update as you type',
-            '<strong>Copy on double-click</strong>',
+            '<strong>camelCase</strong>: First word lowercase, subsequent words capitalized. Standard for JavaScript/TypeScript variables and functions.',
+            '<strong>PascalCase</strong>: Every word capitalized. Used by React components, C# classes, Go exported identifiers.',
+            '<strong>snake_case</strong>: All lowercase with underscores. Python variables/functions, PostgreSQL column names, Ruby methods.',
+            '<strong>kebab-case</strong>: All lowercase with hyphens. CSS class names, HTML attributes, URL slugs.',
+            '<strong>SCREAMING_SNAKE</strong>: All uppercase with underscores. Constants, environment variables, enum values.',
+            '<strong>dot.case</strong>: Words separated by dots. Some configuration key formats.',
+            '<strong>Train-Case</strong>: Capitalized words with hyphens. HTTP header field names (Content-Type).',
+            '<strong>Space separated</strong>: Plain readable text for human-facing displays.',
           ]} />
         </Block>
-        <Block title="How to Use">
-          <OrderedList items={[
-            'Type or paste a variable name or phrase',
-            'All 8 formats appear in real-time',
-            'Double-click any result to copy',
-          ]} />
-        </Block>
-        <Block title="Example">
+        <Block title="Language Quick Reference">
           <ExampleBox>
-            {'Input: user login count\n\ncamelCase  → userLoginCount\nsnake_case → user_login_count\nkebab-case → user-login-count'}
+            {'user login count  →\n\nJS variable      camelCase       userLoginCount\nReact component  PascalCase      UserLoginCount\nPython variable  snake_case      user_login_count\nCSS class        kebab-case      user-login-count\nConstant / env   SCREAMING_SNAKE USER_LOGIN_COUNT\nHTTP header      Train-Case      User-Login-Count'}
           </ExampleBox>
-        </Block>
-        <Block title="Use Cases">
-          <List items={[
-            'Migrating code between language conventions',
-            'Mapping database columns to frontend variables',
-            'Converting CSS class names to JavaScript variables',
-            'Enforcing team coding standards',
-          ]} />
         </Block>
       </Section>
     ),
@@ -500,70 +511,48 @@ export const toolContent: Record<string, Content> = {
   qrcode: {
     zh: (
       <Section title="📖 二维码生成工具使用说明">
-        <Block title="工具简介">二维码生成器是一个在线 QR Code 生成工具，可以将文本、链接等内容转换为标准二维码图片。支持自定义二维码尺寸，并允许在二维码中央嵌入 Logo 图片，生成带有品牌标识的个性化二维码。</Block>
+        <Block title="什么是 QR Code？">
+          QR Code（Quick Response Code，快速响应码）是一种二维矩阵条形码，由日本 DENSO WAVE 公司在 1994 年发明。相比一维条形码只能存储 20 个字符，QR Code 可以存储数千个字符——URL、文本、联系信息、Wi-Fi 配置，甚至比特币地址。QR Code 内置 Reed-Solomon 纠错机制，即使遮挡或损坏最多 30%，仍可正确解码。QR Code 的专利已过期，任何人都可以免费使用。
+        </Block>
         <Block title="功能说明">
           <List items={[
-            '<strong>多种内容类型</strong>：支持文本、URL、联系方式等任意内容',
-            '<strong>尺寸自定义</strong>：128px ~ 1024px 自由调整',
-            '<strong>Logo 嵌入</strong>：上传图片作为二维码中央的 Logo',
-            '<strong>下载 PNG</strong>：一键下载为高清 PNG 图片',
+            '<strong>任意内容</strong>：文本、URL、电话号码、邮件地址、Wi-Fi 配置（WIFI:S:SSID;T:WPA;P:password;;）等。',
+            '<strong>尺寸自定义</strong>：128px 到 1024px。256px 适合网页嵌入，512px+ 适合打印。大尺寸提供更好的扫描容错性。',
+            '<strong>Logo 嵌入</strong>：在二维码中央叠加品牌 Logo。二维码的纠错机制允许中央最多 30% 被遮挡——嵌入 Logo 利用了这一特性。建议设置纠错级别为 H（最高）以避免 Logo 影响识别率。',
+            '<strong>纠错级别</strong>：L（7%）、M（15%）、Q（25%）、H（30%）。要嵌入 Logo 请选 H 级。高纠错级别会增加二维码模块密度，需要更大的尺寸来保证清晰度。',
+            '<strong>下载 PNG</strong>：Canvas API 生成的高清 PNG，适合直接用于印刷和网页。',
           ]} />
         </Block>
-        <Block title="使用方法">
-          <OrderedList items={[
-            '在输入框中输入要生成二维码的文本或网址',
-            '调整尺寸滑块到合适大小',
-            '可选：点击"选择图片"上传 Logo',
-            '二维码右侧实时生成预览',
-            '点击"下载 PNG"保存图片',
-          ]} />
-        </Block>
-        <Block title="示例">
-          <ExampleBox>
-            {'输入网址 https://schg.xyz 生成二维码\n扫描后可直接访问网站\n\n尺寸建议：256px 适合网页展示\n        512px+ 适合打印'}
-          </ExampleBox>
-        </Block>
-        <Block title="应用场景">
+        <Block title="使用建议">
           <List items={[
-            '在名片上生成个人网站或微信二维码',
-            '为活动页面或产品链接生成推广二维码',
-            'Wi-Fi 配置二维码分享网络',
-            '在 PPT 或海报中加入二维码链接',
+            '<strong>Logo 尺寸</strong>：不超过二维码区域的 15%-20%，否则可能影响扫描成功率。',
+            '<strong>前景/背景色</strong>：深色前景 + 浅色背景效果最佳。避免颜色反转，部分扫描器不支持。',
+            '<strong>容错空间</strong>：二维码周围应保留至少 4 个模块宽度的空白区（quiet zone）。',
+            '<strong>隐私提示</strong>：所有二维码生成在浏览器 Canvas 中完成，输入文本不会上传到任何服务器。',
           ]} />
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 QR Code Generator Guide">
-        <Block title="Introduction">The QR Code Generator creates QR codes from text or URLs. Customize size and add a logo in the center for branded QR codes.</Block>
+        <Block title="What Is a QR Code?">
+          QR Code (Quick Response Code) is a two-dimensional matrix barcode invented by DENSO WAVE in 1994. While a 1D barcode stores ~20 characters, a QR code stores thousands — URLs, text, contact info, Wi-Fi credentials, even Bitcoin addresses. QR codes include Reed-Solomon error correction: even with up to 30% damage or occlusion, they still decode correctly. The QR Code patent has expired; anyone can use it freely.
+        </Block>
         <Block title="Features">
           <List items={[
-            '<strong>Any content</strong>: Text, URLs, and more',
-            '<strong>Custom size</strong>: 128px to 1024px',
-            '<strong>Logo overlay</strong>: Embed an image in the center',
-            '<strong>PNG download</strong>: Save as high-quality PNG',
+            '<strong>Any content</strong>: Text, URLs, phone numbers, email addresses, Wi-Fi configs (WIFI:S:SSID;T:WPA;P:password;;), and more.',
+            '<strong>Custom size</strong>: 128px to 1024px. 256px for web embedding; 512px+ for print.',
+            '<strong>Logo overlay</strong>: Brand logo in the center. QR error correction allows up to 30% occlusion — logo embedding exploits this. Use H (High) error correction when adding logos.',
+            '<strong>Error correction level</strong>: L (7%), M (15%), Q (25%), H (30%). Choose H for logo-embedded codes. Higher levels increase module density — need larger sizes for clarity.',
+            '<strong>PNG download</strong>: High-resolution PNG via Canvas API, ready for print and web.',
           ]} />
         </Block>
-        <Block title="How to Use">
-          <OrderedList items={[
-            'Enter text or a URL',
-            'Adjust the size',
-            'Optionally upload a logo image',
-            'Preview updates in real-time',
-            'Download as PNG',
-          ]} />
-        </Block>
-        <Block title="Example">
-          <ExampleBox>
-            {'Enter https://schg.xyz to generate a QR code\n\n256px for web display\n512px+ for printing'}
-          </ExampleBox>
-        </Block>
-        <Block title="Use Cases">
+        <Block title="Best Practices">
           <List items={[
-            'Business cards with QR codes',
-            'Promotional materials and posters',
-            'Wi-Fi network sharing',
-            'Presentations with quick-access links',
+            '<strong>Logo size</strong>: Keep it under 15-20% of the QR area to avoid scan failures.',
+            '<strong>Colors</strong>: Dark foreground + light background works best. Avoid color inversion — some scanners can\'t handle it.',
+            '<strong>Quiet zone</strong>: Leave at least 4 module-widths of clear space around the QR code.',
+            '<strong>Privacy</strong>: All QR generation happens in your browser\'s Canvas. Input text is never uploaded.',
           ]} />
         </Block>
       </Section>
@@ -573,69 +562,53 @@ export const toolContent: Record<string, Content> = {
   hash: {
     zh: (
       <Section title="📖 哈希计算工具使用说明">
-        <Block title="工具简介">哈希计算工具是一个在线文本哈希值生成器，支持 MD5、SHA-1、SHA-256、SHA-384、SHA-512 五种主流哈希算法。哈希函数将任意长度的输入通过数学运算映射为固定长度的输出，常用于数据完整性校验和密码存储。</Block>
-        <Block title="功能说明">
+        <Block title="什么是哈希函数？">
+          哈希函数（Hash Function）是一类数学算法，它将任意长度的输入数据映射为<strong>固定长度</strong>的输出（称为摘要、哈希值或指纹）。哈希函数的核心特性：<strong>确定性</strong>（相同输入永远得到相同输出）、<strong>单向性</strong>（无法从哈希值反推原始输入）、<strong>雪崩效应</strong>（输入改动一个 bit，输出至少一半不同）。这三个特性使哈希成为数据完整性校验的基础。
+        </Block>
+        <Block title="五种算法对比">
           <List items={[
-            '<strong>五种算法</strong>：MD5、SHA-1、SHA-256、SHA-384、SHA-512',
-            '<strong>实时计算</strong>：输入文本即时生成哈希值',
-            '<strong>大小写切换</strong>：支持输出大写或小写哈希值',
-            '<strong>一键复制</strong>：双击结果复制到剪贴板',
+            '<strong>MD5（128 位）</strong>：输出 32 位十六进制字符串。速度快但已被破解——存在碰撞漏洞，两个不同文件可生成相同 MD5。不应用于安全场景，但仍广泛用于文件校验和（如软件下载站的校验码）。',
+            '<strong>SHA-1（160 位）</strong>：输出 40 位十六进制。2017 年 Google 公布首个 SHA-1 碰撞攻击（SHAttered）。Git 仍用 SHA-1 作为对象标识符，但已向 SHA-256 过渡。不推荐用于新项目。',
+            '<strong>SHA-256（256 位）</strong>：输出 64 位十六进制。SHA-2 家族中最常用的算法。比特币挖矿、TLS 证书、API 签名（HMAC-SHA256）均使用此算法。目前认为安全。',
+            '<strong>SHA-384（384 位）</strong>：SHA-512 的截断版，输出 96 位十六进制。安全性介于 SHA-256 和 SHA-512 之间，在某些平台上比 SHA-512 更快。',
+            '<strong>SHA-512（512 位）</strong>：输出 128 位十六进制，哈希值最长。适用于高安全要求场景，但计算开销更大。在 64 位 CPU 上效率比 SHA-256 更高。',
           ]} />
         </Block>
-        <Block title="使用方法">
-          <OrderedList items={[
-            '在文本框中输入要计算哈希的字符串',
-            '选择要使用的哈希算法（MD5、SHA-1、SHA-256 等）',
-            '可选：勾选"大写"将结果转为大写字母',
-            '查看实时计算结果，双击复制',
-          ]} />
+        <Block title="⚠️ 安全提醒">
+          <Tips>
+            <strong>MD5 和 SHA-1 已被破解，不应用于任何安全场景。</strong>对于密码存储，不要直接使用 SHA 哈希——应使用 bcrypt、scrypt 或 Argon2 等专门的密码哈希算法（它们内置了加盐和多次迭代）。SHA-256 适用于 API 签名、文件完整性校验、证书验证等场景，但不适用于密码存储。
+          </Tips>
         </Block>
-        <Block title="示例">
+        <Block title="命令行替代方案">
           <ExampleBox>
-            {'输入："hello world"\n\nMD5：5eb63bbbe01eeed093cb22bb8f5acdc3\nSHA-256：b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9\nSHA-512：309ecc489c12d6eb4cc40f50c902f2b4d0ed77ee511a7c7a9bcd3ca86d4cd86f9...'}
+            {'# Linux/macOS\nsha256sum file.txt\necho -n "hello" | sha256sum\nmd5sum file.txt\n\n# macOS 专用\nshasum -a 256 file.txt\nmd5 file.txt'}
           </ExampleBox>
-        </Block>
-        <Block title="应用场景">
-          <List items={[
-            '验证下载文件的完整性（比对 MD5/SHA 校验值）',
-            '数据库中安全存储用户密码的哈希值（配合加盐使用）',
-            'API 接口签名生成使用 SHA-256 哈希',
-            '消息或数据的完整性校验',
-          ]} />
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 Hash Calculator Guide">
-        <Block title="Introduction">The Hash Calculator generates hash values for text using MD5, SHA-1, SHA-256, SHA-384, and SHA-512. Hash functions map input data to fixed-size outputs for integrity verification.</Block>
-        <Block title="Features">
+        <Block title="What Is a Hash Function?">
+          A hash function is a mathematical algorithm that maps arbitrary-length input to a <strong>fixed-length</strong> output (called a digest, hash value, or fingerprint). Key properties: <strong>deterministic</strong> (same input → same output every time), <strong>one-way</strong> (cannot reverse a hash back to its input), and <strong>avalanche effect</strong> (changing one input bit changes ~50% of output bits). These properties make hashes the foundation of data integrity verification.
+        </Block>
+        <Block title="Algorithm Comparison">
           <List items={[
-            '<strong>5 algorithms</strong>: MD5, SHA-1, SHA-256, SHA-384, SHA-512',
-            '<strong>Real-time computation</strong>',
-            '<strong>Uppercase toggle</strong>',
-            '<strong>Copy on double-click</strong>',
+            '<strong>MD5 (128-bit)</strong>: 32 hex chars. Fast but broken — collision attacks exist. Do not use for security. Still common for file checksums.',
+            '<strong>SHA-1 (160-bit)</strong>: 40 hex chars. First practical collision found by Google in 2017 (SHAttered). Git still uses it for object IDs but is migrating to SHA-256.',
+            '<strong>SHA-256 (256-bit)</strong>: 64 hex chars. The workhorse of SHA-2. Used in Bitcoin mining, TLS certificates, and API signing (HMAC-SHA256). Currently considered secure.',
+            '<strong>SHA-384 (384-bit)</strong>: 96 hex chars. Truncated variant of SHA-512. Faster than SHA-512 on some platforms.',
+            '<strong>SHA-512 (512-bit)</strong>: 128 hex chars. Longest output, highest security margin. Actually faster than SHA-256 on 64-bit CPUs.',
           ]} />
         </Block>
-        <Block title="How to Use">
-          <OrderedList items={[
-            'Enter text to hash',
-            'Select an algorithm',
-            'Optionally toggle uppercase output',
-            'View and copy the result',
-          ]} />
+        <Block title="⚠️ Security Note">
+          <Tips>
+            <strong>MD5 and SHA-1 are broken — do not use for any security purpose.</strong> For password storage, never use raw SHA hashes. Use bcrypt, scrypt, or Argon2 — purpose-built password hashing algorithms with built-in salting and iteration. SHA-256 is appropriate for API signing, file integrity, and certificate verification — but not password storage.
+          </Tips>
         </Block>
-        <Block title="Example">
+        <Block title="Command-Line Alternatives">
           <ExampleBox>
-            {'Input: "hello world"\n\nMD5: 5eb63bbbe01eeed093cb22bb8f5acdc3\nSHA-256: b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9'}
+            {'# Linux/macOS\nsha256sum file.txt\necho -n "hello" | sha256sum\nmd5sum file.txt\n\n# macOS specific\nshasum -a 256 file.txt\nmd5 file.txt'}
           </ExampleBox>
-        </Block>
-        <Block title="Use Cases">
-          <List items={[
-            'Verifying file integrity with checksums',
-            'Storing password hashes (with salt)',
-            'API request signing',
-            'Data integrity verification',
-          ]} />
         </Block>
       </Section>
     ),
@@ -644,68 +617,42 @@ export const toolContent: Record<string, Content> = {
   encoding: {
     zh: (
       <Section title="📖 编码转换工具使用说明">
-        <Block title="工具简介">编码转换工具支持 Unicode 编解码和 URL 百分号编解码两种常用编码方式。Unicode 编码用于表示非 ASCII 字符，URL 编码用于在网址中安全传输特殊字符，在 Web 开发中非常常见。</Block>
-        <Block title="功能说明">
+        <Block title="什么是编码？">
+          编码（Encoding）是将字符转换为特定格式以便在计算机系统中传输和存储的过程。<strong>编码不是加密</strong>——它不提供安全保护，任何人都可以解码。这个工具支持两种 Web 开发中最常用的编码：<strong>URL 编码</strong>（将特殊字符转成 %XX 格式，确保 URL 安全传输中文和特殊符号）和 <strong>Unicode 编码</strong>（将非 ASCII 字符转成 \\uXXXX 转义序列，用于 JavaScript 源码和 JSON 序列化）。
+        </Block>
+        <Block title="URL 编码详解">
           <List items={[
-            '<strong>Unicode 编码</strong>：将中文等字符转为 \\uXXXX 格式',
-            '<strong>Unicode 解码</strong>：将 \\uXXXX 格式还原为原始文本',
-            '<strong>URL 编码</strong>：将特殊字符转换为 %XX 格式',
-            '<strong>URL 解码</strong>：将 %XX 格式还原为原始文本',
+            '<strong>编码规则</strong>：URL 只允许 ASCII 字符集的特定子集（字母、数字、-_.~ 及保留字符）。其他字符（中文、空格、特殊符号）必须转换为 %XX 格式，其中 XX 是字符 UTF-8 编码的十六进制表示。',
+            '<strong>encodeURI vs encodeURIComponent</strong>：JavaScript 有两个 URL 编码函数——encodeURI 保留 URL 中的特殊字符（:/?#[]@），适用于完整 URL；encodeURIComponent 编码所有特殊字符，适用于 URL 参数值。',
+            '<strong>常见陷阱</strong>：对完整 URL 使用 encodeURIComponent 会导致 :// 被编码为 %3A%2F%2F；对 URL 参数值使用 encodeURI 可能导致 & 未被编码从而截断参数。',
           ]} />
         </Block>
-        <Block title="使用方法">
-          <OrderedList items={[
-            '选择要使用的编码类型（Unicode 或 URL）',
-            '选择编码方向（编码或解码）',
-            '在输入框中输入要转换的文本',
-            '结果实时显示在下方，双击复制',
-          ]} />
-        </Block>
-        <Block title="示例">
-          <ExampleBox>
-            {'URL 编码：\n搜索?q=你好世界\n→ %E6%90%9C%E7%B4%A2?q=%E4%BD%A0%E5%A5%BD%E4%B8%96%E7%95%8C\n\nUnicode 编码：\n站长工具\n→ \\u7ad9\\u957f\\u5de5\\u5177'}
-          </ExampleBox>
-        </Block>
-        <Block title="应用场景">
+        <Block title="Unicode 编码详解">
           <List items={[
-            '调试 API 时处理 URL 中的中文字符',
-            '将中文 JSON 内容转为纯 ASCII 表示',
-            '处理前端表单提交时的 URL 编码数据',
-            '在 JavaScript 源码中使用 \\uXXXX 转义非 ASCII 字符',
+            '<strong>\\uXXXX 格式</strong>：基本多语言面（BMP）字符用 4 位十六进制表示。例如"中"的码点是 U+4E2D，编码为 \\u4e2d。',
+            '<strong>\\u{XXXXX} 格式</strong>：超出 BMP 的字符（如 emoji 😀 U+1F600）使用 ES6 的 \\u{1F600} 格式或代理对 \\uD83D\\uDE00。',
+            '<strong>JSON 中的 Unicode</strong>：JSON 标准要求非 ASCII 字符用 \\uXXXX 转义（虽然大多数解析器接受原始 UTF-8）。当你需要将 JSON 嵌入纯 ASCII 环境时，Unicode 转义是必需的。',
           ]} />
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 Encoding Converter Guide">
-        <Block title="Introduction">The Encoding Converter supports Unicode (\\uXXXX) encoding/decoding and URL percent-encoding/decoding for safely transmitting special characters in web applications.</Block>
-        <Block title="Features">
+        <Block title="What Is Encoding?">
+          Encoding converts characters into specific formats for transmission and storage in computer systems. <strong>Encoding is not encryption</strong> — it provides no security; anyone can decode it. This tool supports two essential web encoding types: <strong>URL encoding</strong> (converting special characters to %XX format for safe URL transmission) and <strong>Unicode encoding</strong> (converting non-ASCII characters to \\uXXXX escape sequences for JavaScript source and JSON serialization).
+        </Block>
+        <Block title="URL Encoding Explained">
           <List items={[
-            '<strong>Unicode encode</strong>: Convert characters to \\uXXXX format',
-            '<strong>Unicode decode</strong>: Restore \\uXXXX to original text',
-            '<strong>URL encode</strong>: Convert special chars to %XX format',
-            '<strong>URL decode</strong>: Restore %XX to original text',
+            '<strong>Rules</strong>: URLs allow only a subset of ASCII. Everything else (Chinese, spaces, symbols) must be percent-encoded as %XX where XX is the hex UTF-8 byte value.',
+            '<strong>encodeURI vs encodeURIComponent</strong>: encodeURI preserves URL structure chars (:/?#[]@) for full URLs. encodeURIComponent encodes everything — use it for individual parameter values.',
+            '<strong>Common trap</strong>: Using encodeURIComponent on a full URL encodes :// as %3A%2F%2F. Using encodeURI on a query parameter value may leave & unencoded, silently breaking the URL.',
           ]} />
         </Block>
-        <Block title="How to Use">
-          <OrderedList items={[
-            'Select encoding type (Unicode or URL)',
-            'Choose direction (encode or decode)',
-            'Enter text to convert',
-            'View and copy results',
-          ]} />
-        </Block>
-        <Block title="Example">
-          <ExampleBox>
-            {'URL encode: 你好 → %E4%BD%A0%E5%A5%BD\nUnicode encode: 站长工具 → \\u7ad9\\u957f\\u5de5\\u5177'}
-          </ExampleBox>
-        </Block>
-        <Block title="Use Cases">
+        <Block title="Unicode Encoding Explained">
           <List items={[
-            'Debugging URLs with special characters',
-            'Encoding Chinese characters in JSON',
-            'Processing form submissions',
-            'Writing portable JavaScript source code',
+            '<strong>\\uXXXX format</strong>: BMP characters use 4 hex digits. Example: U+4E2D (中) → \\u4e2d.',
+            '<strong>\\u{XXXXX} format</strong>: Characters beyond BMP (like emoji 😀 U+1F600) use ES6 \\u{1F600} or surrogate pairs \\uD83D\\uDE00.',
+            '<strong>JSON and Unicode</strong>: The JSON spec requires \\uXXXX escaping for non-ASCII, though most parsers accept raw UTF-8. Unicode escaping is necessary when embedding JSON in pure ASCII environments.',
           ]} />
         </Block>
       </Section>
@@ -715,71 +662,60 @@ export const toolContent: Record<string, Content> = {
   regex: {
     zh: (
       <Section title="📖 正则表达式测试工具使用说明">
-        <Block title="工具简介">正则表达式测试工具是一个在线正则调试器，支持输入正则表达式和测试文本，实时展示匹配结果。支持 g/i/m/s/u/y 所有匹配标志，高亮显示所有匹配位置，并展示捕获分组。是编写和调试正则表达式的得力助手。</Block>
-        <Block title="功能说明">
+        <Block title="什么是正则表达式？">
+          正则表达式（Regular Expression，简称 regex 或 regexp）是一种描述字符串匹配模式的语法。它诞生于 1950 年代，由数学家 Stephen Kleene 提出，现在几乎所有编程语言都内置了正则支持。正则的核心价值在于<strong>用一行表达式替代几十行字符串处理代码</strong>——验证邮箱格式、提取日志中的 IP 地址、批量替换文本中的日期格式，都可以用一个正则表达式完成。
+        </Block>
+        <Block title="6 种 Flags 详解">
           <List items={[
-            '<strong>实时匹配高亮</strong>：在测试文本中高亮所有匹配内容',
-            '<strong>捕获分组展示</strong>：显示每个匹配的 $1、$2 等分组内容',
-            '<strong>匹配位置</strong>：显示每个匹配所在的位置索引',
-            '<strong>错误提示</strong>：正则语法错误时显示详细错误信息',
-            '<strong>完整 flags 支持</strong>：g（全局）、i（忽略大小写）、m（多行）、s（点号匹配换行）、u（Unicode）、y（粘性）',
+            '<strong>g（global）</strong>：全局匹配。没有 g 时只匹配第一个结果，加上 g 后匹配所有结果。大多数查找和替换场景都需要 g。',
+            '<strong>i（case-insensitive）</strong>：忽略字母大小写。/hello/i 可以匹配 Hello、HELLO、heLLo。',
+            '<strong>m（multiline）</strong>：多行模式。^ 和 $ 不仅匹配整个字符串的开始和结束，还匹配每一行的行首和行尾。',
+            '<strong>s（dotAll）</strong>：点号匹配所有字符，包括换行符 \\n。没有 s 时 . 不匹配换行符——这是新手最容易踩的坑之一。',
+            '<strong>u（unicode）</strong>：Unicode 模式。启用后支持 \\u{XXXXX} 语法和 Unicode 属性转义（如 \\p{Script=Han} 匹配中文）。处理中文和 emoji 时必须开启。',
+            '<strong>y（sticky）</strong>：粘性匹配。从正则的 lastIndex 位置开始匹配，且必须刚好在该位置匹配成功。用得较少，主要用于 tokenizer 场景。',
           ]} />
         </Block>
-        <Block title="使用方法">
-          <OrderedList items={[
-            '在第一个输入框中输入正则表达式（不要包含 / 定界符）',
-            '在下方勾选需要的 flags（如 g 全局匹配）',
-            '在"测试文本"框中输入要匹配的文本',
-            '匹配结果实时高亮显示，结果区展示详情',
-          ]} />
-        </Block>
-        <Block title="示例">
+        <Block title="常用正则速查">
           <ExampleBox>
-            {'正则：\\d{3,4}[ -]?\\d{7,8}\n匹配：中国大陆电话号码\n\n正则：[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\n匹配：Email 地址\n\n正则：https?://[^\\s]+\n匹配：HTTP/HTTPS 网址'}
+            {'邮箱：[\\w.-]+@[\\w.-]+\\.\\w+\n手机号：1[3-9]\\d{9}\n身份证：\\d{17}[\\dXx]\nIP地址：\\d{1,3}(\\.\\d{1,3}){3}\nURL：https?://[^\\s]+\n日期(yyyy-mm-dd)：\\d{4}-\\d{2}-\\d{2}\n中文：[\\u4e00-\\u9fa5]+\n空白行：^\\s*$'}
           </ExampleBox>
         </Block>
-        <Block title="应用场景">
+        <Block title="常见错误">
           <List items={[
-            '表单验证：验证邮箱、手机号、身份证格式',
-            '日志分析：从日志中提取 IP 地址、错误信息',
-            '数据清洗：批量替换文本中的特定模式',
-            '代码重构：在代码编辑器中执行查找替换',
-            '学习正则：通过实时反馈学习和调试正则语法',
+            '<strong>忘记转义特殊字符</strong>：. * + ? [ ] ( ) {{ }} ^ $ | \\ / 这些字符在正则中有特殊含义。如果要匹配字面值，必须用 \\ 转义：匹配 1+1=2 的正则是 1\\+1=2。',
+            '<strong>贪婪匹配导致匹配过多</strong>：.* 默认是贪婪的，会尽可能多地匹配。<a>link</a> 用 <a>.*</a> 会一次匹配全部而非单个标签。改为 .*? 使用惰性匹配。',
+            '<strong>未考虑 Unicode</strong>：\\w 默认只匹配 [a-zA-Z0-9_]，不包含中文。要匹配中文需显式加 [\\u4e00-\\u9fa5] 或开启 u flag 用 Unicode 属性。',
+            '<strong>灾难性回溯（Catastrophic Backtracking）</strong>：嵌套量词如 (a+)+b 在匹配 aaaaaaaaaaaaa 且不匹配时会指数级回溯，导致浏览器卡死。避免嵌套量词。',
           ]} />
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 Regex Tester Guide">
-        <Block title="Introduction">The Regex Tester is an online regular expression debugger. Enter a pattern and test text, see matches highlighted in real-time. Supports all flags (g/i/m/s/u/y), capture groups, and match positions.</Block>
-        <Block title="Features">
+        <Block title="What Is a Regular Expression?">
+          A regular expression (regex/regexp) is a pattern-matching syntax for strings. Invented in the 1950s by mathematician Stephen Kleene, regex is now built into virtually every programming language. Its core value: <strong>replace dozens of lines of string-handling code with a single expression</strong> — validate emails, extract IP addresses from logs, batch-replace date formats — all with one regex.
+        </Block>
+        <Block title="6 Flags Explained">
           <List items={[
-            '<strong>Real-time highlighting</strong>: See matches instantly',
-            '<strong>Capture groups</strong>: View $1, $2 group contents',
-            '<strong>Match positions</strong>: See where each match occurs',
-            '<strong>Error feedback</strong>: Detailed syntax error messages',
-            '<strong>Full flags</strong>: g, i, m, s, u, y',
+            '<strong>g (global)</strong>: Match all occurrences. Without g, only the first match is returned. Essential for search-and-replace.',
+            '<strong>i (case-insensitive)</strong>: /hello/i matches Hello, HELLO, heLLo.',
+            '<strong>m (multiline)</strong>: ^ and $ match the start/end of every line, not just the whole string.',
+            '<strong>s (dotAll)</strong>: Dot matches everything, including newlines. Without s, . does not match \\n — one of the most common beginner mistakes.',
+            '<strong>u (unicode)</strong>: Enables \\u{XXXXX} and Unicode property escapes (\\p{Script=Han} for Chinese). Always enable when processing CJK or emoji.',
+            '<strong>y (sticky)</strong>: Match must start exactly at lastIndex. Rarely used; mainly for tokenizers.',
           ]} />
         </Block>
-        <Block title="How to Use">
-          <OrderedList items={[
-            'Enter a regex pattern (without delimiters)',
-            'Select flags',
-            'Enter test text',
-            'Matches highlight automatically',
-          ]} />
-        </Block>
-        <Block title="Example">
+        <Block title="Common Regex Patterns">
           <ExampleBox>
-            {'Pattern: \\d{3,4}[ -]?\\d{7,8}  → Phone numbers\nPattern: [\\w.-]+@[\\w.-]+\\.[\\w]{2,}  → Emails\nPattern: https?://[^\\s]+  → URLs'}
+            {'Email: [\\w.-]+@[\\w.-]+\\.\\w+\nPhone: 1[3-9]\\d{9}\nID card: \\d{17}[\\dXx]\nIP: \\d{1,3}(\\.\\d{1,3}){3}\nURL: https?://[^\\s]+\nDate (yyyy-mm-dd): \\d{4}-\\d{2}-\\d{2}\nChinese: [\\u4e00-\\u9fa5]+\nBlank line: ^\\s*$'}
           </ExampleBox>
         </Block>
-        <Block title="Use Cases">
+        <Block title="Common Mistakes">
           <List items={[
-            'Form validation (email, phone, ID)',
-            'Log parsing and analysis',
-            'Data cleaning and transformation',
-            'Learning and debugging regex patterns',
+            '<strong>Forgetting to escape special chars</strong>: . * + ? [ ] ( ) {{ }} ^ $ | \\ / have special meaning. To match them literally, escape with \\: match 1+1=2 with 1\\+1=2.',
+            '<strong>Greedy matching grabs too much</strong>: .* is greedy — it matches as much as possible. <a>.*</a> on <a>a</a><a>b</a> matches everything, not each tag. Use .*? for lazy matching.',
+            '<strong>Ignoring Unicode</strong>: \\w matches [a-zA-Z0-9_] only, not Chinese. Add [\\u4e00-\\u9fa5] or use the u flag with Unicode properties.',
+            '<strong>Catastrophic backtracking</strong>: Nested quantifiers like (a+)+b on "aaaaaaaaaaaa" (no b) cause exponential backtracking that freezes the browser. Avoid nested quantifiers.',
           ]} />
         </Block>
       </Section>
@@ -789,70 +725,52 @@ export const toolContent: Record<string, Content> = {
   config: {
     zh: (
       <Section title="📖 配置文件格式转换工具使用说明">
-        <Block title="工具简介">配置文件格式转换工具支持 YAML、JSON、TOML、INI、Properties、.env、XML 七种常见配置文件格式之间的相互转换。不同项目、不同语言使用不同的配置格式，本工具让你无需安装任何软件即可在浏览器中完成格式转换。</Block>
-        <Block title="功能说明">
+        <Block title="七种配置格式概览">
+          不同生态系统的配置格式各有特点，没有一种格式适用所有场景。了解每种格式的优势和适用场景，有助于在项目中做出正确选择：
+        </Block>
+        <Block title="各格式详解">
           <List items={[
-            '<strong>七种格式互转</strong>：YAML / JSON / TOML / INI / Properties / .env / XML',
-            '<strong>自动检测格式</strong>：粘贴内容后自动识别当前格式',
-            '<strong>实时转换</strong>：修改输入即时得到转换结果',
-            '<strong>格式不匹配提示</strong>：检测到输入格式与所选格式不一致时给出警告',
+            '<strong>YAML（.yml/.yaml）</strong>：可读性最强，支持注释、锚点和引用。Kubernetes、Docker Compose、GitHub Actions、Ansible 的标准格式。缩进敏感，新手容易因缩进错误导致解析失败。',
+            '<strong>JSON（.json）</strong>：最通用的数据交换格式，几乎所有语言原生支持。不支持注释（JSONC 除外），不能有尾随逗号。常用于前端配置（package.json、tsconfig.json）和 API 响应。',
+            '<strong>TOML（.toml）</strong>：Tom\'s Obvious Minimal Language。语义比 YAML 更明确，Python 社区（pyproject.toml）和 Rust 社区（Cargo.toml）广泛使用。支持注释和嵌套表格。',
+            '<strong>INI（.ini）</strong>：最简单的配置格式，Windows 和 PHP 传统项目常用。[section] 分区 + key=value 键值对。不支持嵌套结构。',
+            '<strong>Properties（.properties）</strong>：Java 生态标准（application.properties）。和 INI 类似但无 section 概念，key=value 格式，也支持 key:value 或 key value。',
+            '<strong>.env</strong>：Docker、Node.js 项目的环境变量格式。KEY=VALUE 形式，无嵌套结构、无引号。适合简单的环境变量注入，不适合复杂配置。',
+            '<strong>XML（.xml）</strong>：最冗长但功能最全面的格式。支持属性、命名空间、Schema 校验。传统企业应用（Spring XML config、Maven POM）和 SOAP 仍在使用。',
           ]} />
         </Block>
-        <Block title="使用方法">
-          <OrderedList items={[
-            '在"从"选择器中选择源格式（如 YAML）',
-            '在"到"选择器中选择目标格式（如 JSON）',
-            '在左侧编辑区粘贴源文件内容',
-            '右侧实时显示转换结果',
-            '双击转换结果复制到剪贴板',
-          ]} />
-        </Block>
-        <Block title="示例">
-          <ExampleBox>
-            {'YAML → JSON：\nserver:\n  port: 8080\n  host: localhost\n↓\n{"server":{"port":8080,"host":"localhost"}}\n\nTOML → .env：\n[database]\nhost = "localhost"\nport = 3306\n↓\nDATABASE_HOST=localhost\nDATABASE_PORT=3306'}
-          </ExampleBox>
-        </Block>
-        <Block title="应用场景">
+        <Block title="转换注意事项">
           <List items={[
-            '将 Spring Boot 的 application.properties 转为 application.yml',
-            '将 Docker Compose 的 YAML 转为 JSON 格式',
-            '处理不同项目间的配置格式迁移',
-            '将 Python 项目的 TOML 配置转为 .env 环境变量',
+            '<strong>注释丢失</strong>：YAML/TOML/INI 转换为 JSON/env 格式时会丢失注释信息，因为 JSON 和 .env 不支持注释。保存原始文件以备回退。',
+            '<strong>类型退化</strong>：YAML 原生支持日期（2026-01-01）和布尔值。转换为 JSON 后类型可能变为字符串，需要手动调整。',
+            '<strong>嵌套转换</strong>：Properties 和 .env 是扁平结构（无嵌套），将深层嵌套的 YAML/JSON 转换为这些格式时会使用 SECTION_KEY 的扁平化命名。反向转换时会尝试还原嵌套，但层级关系可能不完美。',
+            '<strong>隐私保证</strong>：所有格式转换在浏览器本地完成，配置文件内容不会上传到任何服务器。你可以在 DevTools 的 Network 面板验证：转换期间没有任何网络请求。',
           ]} />
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 Config Format Converter Guide">
-        <Block title="Introduction">The Config Format Converter converts between YAML, JSON, TOML, INI, Properties, .env, and XML formats. Different projects use different config formats — convert between them instantly in your browser.</Block>
-        <Block title="Features">
+        <Block title="Seven Config Formats at a Glance">
+          Each ecosystem has its own config format — none fits all use cases. Understanding the strengths and ideal scenarios for each helps you choose the right one:
+        </Block>
+        <Block title="Format Details">
           <List items={[
-            '<strong>7 formats</strong>: YAML / JSON / TOML / INI / Properties / .env / XML',
-            '<strong>Auto-detect</strong>: Recognizes the input format automatically',
-            '<strong>Real-time conversion</strong>',
-            '<strong>Mismatch warning</strong>: Alerts when input format doesn\'t match selection',
+            '<strong>YAML (.yml/.yaml)</strong>: Most human-readable. Supports comments, anchors, and references. Standard for Kubernetes, Docker Compose, GitHub Actions, Ansible. Indentation-sensitive — beginners often hit parse errors from wrong indentation.',
+            '<strong>JSON (.json)</strong>: Universal data interchange. No comments (except JSONC), no trailing commas. Common for frontend configs (package.json, tsconfig.json) and API responses.',
+            '<strong>TOML (.toml)</strong>: Tom\'s Obvious Minimal Language. Clearer semantics than YAML. Widely used by Python (pyproject.toml) and Rust (Cargo.toml). Supports comments and nested tables.',
+            '<strong>INI (.ini)</strong>: Simplest format. Common in Windows and PHP legacy projects. [section] + key=value. No nesting.',
+            '<strong>Properties (.properties)</strong>: Java ecosystem standard (application.properties). Similar to INI but without sections. key=value, also supports key:value.',
+            '<strong>.env</strong>: Docker and Node.js environment variable format. KEY=VALUE, no nesting, no quotes. Great for injecting env vars; poor for complex config.',
+            '<strong>XML (.xml)</strong>: Most verbose but most feature-rich. Supports attributes, namespaces, Schema validation. Still used by enterprise apps (Spring XML config, Maven POM) and SOAP.',
           ]} />
         </Block>
-        <Block title="How to Use">
-          <OrderedList items={[
-            'Select source format (From)',
-            'Select target format (To)',
-            'Paste source content on the left',
-            'Converted result appears on the right',
-            'Double-click to copy',
-          ]} />
-        </Block>
-        <Block title="Example">
-          <ExampleBox>
-            {'YAML → JSON:\nserver:\n  port: 8080\n↓\n{"server":{"port":8080}}'}
-          </ExampleBox>
-        </Block>
-        <Block title="Use Cases">
+        <Block title="Conversion Caveats">
           <List items={[
-            'Migrating Spring Boot properties to YAML',
-            'Converting Docker Compose files',
-            'Cross-project config format migration',
-            'TOML to .env conversion for deployment',
+            '<strong>Comments are lost</strong>: YAML/TOML/INI comments disappear when converting to JSON or .env since those formats don\'t support comments. Keep the original file.',
+            '<strong>Type degradation</strong>: YAML natively supports dates and booleans. Converting to JSON may flatten types to strings. Verify manually.',
+            '<strong>Nesting flattening</strong>: Properties and .env are flat formats. Converting nested YAML/JSON to them uses SECTION_KEY flattening. Reverse conversion attempts to restore nesting, but structure may not be perfect.',
+            '<strong>Privacy</strong>: All conversion happens client-side. Config content is never uploaded. Verify in DevTools → Network: zero requests during conversion.',
           ]} />
         </Block>
       </Section>
@@ -862,71 +780,83 @@ export const toolContent: Record<string, Content> = {
   crypto: {
     zh: (
       <Section title="📖 加解密工具使用说明">
-        <Block title="工具简介">加解密工具提供对称加密（AES、DES）和非对称加密（RSA）两种加密方式。所有加解密操作在浏览器端完成，数据不会上传到任何服务器，保障你的数据安全。支持密钥生成、加密解密以及数字签名验证。</Block>
-        <Block title="功能说明">
+        <Block title="对称加密 vs 非对称加密">
+          加密分为两大类：<strong>对称加密</strong>（加密和解密使用同一个密钥，如 AES、DES）和<strong>非对称加密</strong>（使用公钥加密、私钥解密，如 RSA）。对称加密速度快，适合加密大量数据；非对称加密安全性更高但速度慢，通常用于密钥交换（用 RSA 加密 AES 密钥）和数字签名。本工具同时支持这两种加密方式。
+        </Block>
+        <Block title="⚙️ 对称加密功能">
           <List items={[
-            '<strong>AES 对称加密</strong>：使用相同的密钥加密和解密，支持密钥自动生成',
-            '<strong>DES 对称加密</strong>：经典的对称加密算法',
-            '<strong>RSA 非对称加密</strong>：公钥加密、私钥解密，支持密钥对生成',
-            '<strong>RSA 签名验证</strong>：私钥签名、公钥验签，确保数据完整性和来源可信',
-            '<strong>浏览器端处理</strong>：所有计算在本机完成，数据不上传',
+            '<strong>算法选择</strong>：AES（256/192/128 位密钥）和 DES（56 位密钥）。AES 是 NIST 标准，全球公认安全。DES 由于密钥太短已不推荐用于生产，仅供学习参考。',
+            '<strong>加密模式</strong>：支持 ECB、CBC、CFB、OFB、CTR 五种模式。ECB 模式不安全（相同明文产生相同密文），推荐使用 CBC 模式。不同模式适用于不同场景——CBC 是最常用的通用模式，CTR 适合流式加密，CFB/OFB 适合需要避免填充的场景。',
+            '<strong>密钥生成</strong>：点击生成按钮自动生成随机密钥，或手动输入自定义密钥。AES-256 需要 32 字节密钥，AES-128 需要 16 字节。工具会自动处理密钥长度匹配。',
+            '<strong>输出格式</strong>：加密结果输出为 Base64 编码，方便复制和传输。也支持 Hex 编码选项。',
+          ]} />
+        </Block>
+        <Block title="⚙️ RSA 非对称加密功能">
+          <List items={[
+            '<strong>密钥对生成</strong>：支持 512/1024/2048/4096 位密钥长度。2048 位是当前推荐的安全长度；4096 位更安全但加密/解密速度明显更慢。密钥以 PEM 格式显示。',
+            '<strong>加密/解密</strong>：使用公钥加密明文，只有持有对应私钥的人才能解密。适用于保护传输中的数据——任何人都可以用你的公钥加密消息，但只有你能解密。',
+            '<strong>签名/验证</strong>：私钥签名（生成数字签名）、公钥验证（验证签名真实性）。用于确保数据完整性和来源可信——接收方用发送方的公钥验证签名，确认数据未被篡改且确实来自声称的发送者。',
           ]} />
         </Block>
         <Block title="使用方法">
           <OrderedList items={[
-            '选择加密方式（AES、DES 或 RSA）',
-            '对称加密：输入或生成密钥，选择加密/解密模式，输入文本',
-            'RSA 加密：生成密钥对，使用公钥加密，私钥解密',
-            '查看结果，双击复制密文或明文',
+            '选择对称加密或 RSA 标签页',
+            '<strong>对称加密</strong>：选择算法（AES/DES）、模式（ECB/CBC/CFB/OFB/CTR），输入或生成密钥，切换加密/解密模式，输入文本查看结果',
+            '<strong>RSA 加密</strong>：选择密钥长度（推荐 2048），点击"生成密钥对"。加密时使用公钥加密输入文本；解密时粘贴对应私钥进行解密',
+            '<strong>RSA 签名</strong>：切换到签名模式，用私钥对文本签名，用公钥验证签名',
+            '加密结果以 Base64 格式显示（带公钥/私钥的完整 PEM 输出），双击复制',
           ]} />
         </Block>
-        <Block title="示例">
+        <Block title="⚠️ 安全提醒（请务必阅读）">
+          <Tips>
+            <strong>本工具适用于学习和非生产场景。</strong>真实敏感数据（用户密码、身份证号、银行卡号、商业机密等）请使用经过安全审计的生产级加密库（如 OpenSSL、LibreSSL、云厂商的 KMS 密钥管理服务）。具体而言：ECB 模式不安全，相同明文产生相同密文；DES 的 56 位密钥已可被暴力破解；密钥管理和分发比加密本身更难——在任何地方记录密钥都可能被泄露。所有加密操作在浏览器端完成，密钥和明文不上传服务器，但浏览器的 JavaScript 运行环境本身不是安全边界。
+          </Tips>
+        </Block>
+        <Block title="命令行替代方案">
           <ExampleBox>
-            {'AES 加密：\n明文：Hello World\n密钥：MySecretKey123\n密文：U2FsdGVkX1/...\n\nRSA：\n生成 2048 位密钥对 → 公钥加密 → 私钥解密\n或：私钥签名 → 公钥验证'}
+            {'# OpenSSL AES-256-CBC 加密\necho "Hello World" | openssl enc -aes-256-cbc -a -pbkdf2 -pass pass:MyKey\n\n# OpenSSL AES 解密\nopenssl enc -aes-256-cbc -d -a -pbkdf2 -pass pass:MyKey -in encrypted.txt\n\n# 生成 RSA 密钥对\nopenssl genpkey -algorithm RSA -out private.pem -pkeyopt rsa_keygen_bits:2048\nopenssl rsa -pubout -in private.pem -out public.pem\n\n# RSA 签名和验证\nopenssl dgst -sha256 -sign private.pem -out sig.bin data.txt\nopenssl dgst -sha256 -verify public.pem -signature sig.bin data.txt'}
           </ExampleBox>
-        </Block>
-        <Block title="应用场景">
-          <List items={[
-            '本地加密敏感配置文件，防止明文泄露',
-            'API 通信中使用 RSA 公钥加密传输密钥',
-            '使用 RSA 签名验证软件包或消息的完整性',
-            '学习对称加密和非对称加密的原理和区别',
-          ]} />
         </Block>
       </Section>
     ),
     en: (
       <Section title="📖 Encryption/Decryption Tool Guide">
-        <Block title="Introduction">The Encryption/Decryption tool supports AES, DES symmetric encryption and RSA asymmetric encryption. All operations run in your browser — data never leaves your machine.</Block>
-        <Block title="Features">
+        <Block title="Symmetric vs Asymmetric Encryption">
+          Encryption falls into two categories: <strong>symmetric</strong> (same key for encrypt and decrypt — AES, DES) and <strong>asymmetric</strong> (public key encrypts, private key decrypts — RSA). Symmetric is fast and suited for bulk data. Asymmetric is more secure but slower, typically used for key exchange (encrypt an AES key with RSA) and digital signatures. This tool supports both.
+        </Block>
+        <Block title="⚙️ Symmetric Encryption">
           <List items={[
-            '<strong>AES</strong>: Symmetric encryption with auto key generation',
-            '<strong>DES</strong>: Classic symmetric encryption algorithm',
-            '<strong>RSA</strong>: Public/private key encryption with key pair generation',
-            '<strong>RSA Sign/Verify</strong>: Digital signatures for data authenticity',
-            '<strong>100% client-side</strong>: No data uploaded to servers',
+            '<strong>Algorithms</strong>: AES (256/192/128-bit keys) and DES (56-bit). AES is the NIST standard — globally recognized as secure. DES is included for learning purposes only; its 56-bit key is too short for production use.',
+            '<strong>Modes</strong>: ECB, CBC, CFB, OFB, CTR. ECB is insecure (identical plaintext → identical ciphertext). Use CBC for general purposes. CTR is ideal for streaming. CFB/OFB avoid padding. Pick CBC when in doubt.',
+            '<strong>Key generation</strong>: Auto-generate a random key or enter your own. AES-256 needs a 32-byte key; AES-128 needs 16 bytes. The tool handles key length matching.',
+            '<strong>Output</strong>: Encrypted result in Base64. Hex output also supported.',
+          ]} />
+        </Block>
+        <Block title="⚙️ RSA Asymmetric Encryption">
+          <List items={[
+            '<strong>Key pair generation</strong>: 512/1024/2048/4096-bit key lengths. 2048-bit is the current recommended minimum. 4096-bit is more secure but noticeably slower. Keys are displayed in PEM format.',
+            '<strong>Encrypt/Decrypt</strong>: Anyone can encrypt with your public key — only you, holding the private key, can decrypt. Perfect for protecting data in transit.',
+            '<strong>Sign/Verify</strong>: Sign with private key (create a digital signature), verify with public key (confirm authenticity). Ensures data integrity and origin authenticity — the recipient verifies the data wasn\'t tampered with and genuinely comes from the claimed sender.',
           ]} />
         </Block>
         <Block title="How to Use">
           <OrderedList items={[
-            'Select encryption type (AES, DES, or RSA)',
-            'Symmetric: Enter/generate a key, choose encrypt/decrypt mode',
-            'RSA: Generate key pair, encrypt with public key, decrypt with private',
-            'View and copy results',
+            'Select Symmetric or RSA tab',
+            '<strong>Symmetric</strong>: Choose algorithm (AES/DES) and mode (CBC/CFB/CTR/ECB/OFB), enter or generate a key, toggle encrypt/decrypt, enter text and view results.',
+            '<strong>RSA encryption</strong>: Choose key length (2048 recommended), generate key pair. Encrypt text with the public key; decrypt by pasting the corresponding private key.',
+            '<strong>RSA signing</strong>: Switch to sign mode. Sign text with private key, verify with public key.',
+            'Results appear in Base64 with full PEM output. Double-click to copy.',
           ]} />
         </Block>
-        <Block title="Example">
+        <Block title="⚠️ Security Notice (Please Read)">
+          <Tips>
+            <strong>This tool is for learning and non-production use.</strong> For real sensitive data (passwords, PII, financial data, trade secrets), use production-grade, security-audited cryptographic libraries (OpenSSL, LibreSSL, cloud KMS). Specifically: ECB mode is unsafe (identical plaintext → identical ciphertext); DES\'s 56-bit key is brute-forceable; key management and distribution are harder than encryption itself — any record of a key is a potential leak. All crypto runs client-side — keys and plaintext are not uploaded — but a browser\'s JavaScript runtime is NOT a security boundary.
+          </Tips>
+        </Block>
+        <Block title="Command-Line Alternatives">
           <ExampleBox>
-            {'AES: "Hello World" + key "MySecretKey123" → encrypted Base64\nRSA: Generate 2048-bit keys → encrypt with public → decrypt with private\nRSA Sign: Private key sign → public key verify'}
+            {'# OpenSSL AES-256-CBC encrypt\necho "Hello World" | openssl enc -aes-256-cbc -a -pbkdf2 -pass pass:MyKey\n\n# OpenSSL AES decrypt\nopenssl enc -aes-256-cbc -d -a -pbkdf2 -pass pass:MyKey -in encrypted.txt\n\n# Generate RSA key pair\nopenssl genpkey -algorithm RSA -out private.pem -pkeyopt rsa_keygen_bits:2048\nopenssl rsa -pubout -in private.pem -out public.pem\n\n# RSA sign and verify\nopenssl dgst -sha256 -sign private.pem -out sig.bin data.txt\nopenssl dgst -sha256 -verify public.pem -signature sig.bin data.txt'}
           </ExampleBox>
-        </Block>
-        <Block title="Use Cases">
-          <List items={[
-            'Encrypting sensitive config files locally',
-            'Secure key exchange with RSA public-key encryption',
-            'Verifying software package integrity with signatures',
-            'Learning cryptography concepts',
-          ]} />
         </Block>
       </Section>
     ),

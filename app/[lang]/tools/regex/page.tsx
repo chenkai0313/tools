@@ -92,9 +92,18 @@ export default function RegexPage() {
       </nav>
 
       <h1 className="mb-2 text-2xl font-bold text-dark-50">{dict.nav.regex}</h1>
-      <p className="mb-8 text-sm text-dark-300">
-        {lang === 'zh' ? '在线正则表达式测试，实时匹配高亮' : 'Online regex tester with real-time match highlighting'}
-      </p>
+      <div className="mb-8 space-y-3 text-sm text-dark-200 leading-relaxed">
+        <p>
+          {lang === 'zh'
+            ? '正则表达式（Regular Expression）是文本处理的"瑞士军刀"——表单验证、日志解析、数据清洗、代码重构中的查找替换，正则无处不在。但正则的语法晦涩难读，写错一个字符就完全匹配不到。实时反馈是调试正则的最有效方式。'
+            : 'Regular expressions are the Swiss Army knife of text processing — form validation, log parsing, data cleaning, find-and-replace in code refactoring — regex is everywhere. But the syntax is dense and unforgiving; one wrong character and nothing matches. Real-time feedback is the most effective way to debug regex.'}
+        </p>
+        <p>
+          {lang === 'zh'
+            ? '这个工具提供实时匹配高亮、捕获分组展示、匹配位置定位和语法错误提示。支持 g/i/m/s/u/y 全部 6 种 flags。输入正则和测试文本，毫秒级看到匹配结果——所见即所得。'
+            : 'This tool provides real-time match highlighting, capture group display, match position tracking, and syntax error feedback. Supports all 6 flags: g, i, m, s, u, y. Enter a pattern and test text to see matches in milliseconds — WYSIWYG for regex.'}
+        </p>
+      </div>
 
       <div className="grid gap-6">
         {/* Pattern Input */}
