@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && rm -rf docs && cp -r out docs && touch docs/.nojekyll",
+    "build": "next build && rm -rf docs && cp -r out docs && touch docs/.nojekyll && for d in out docs; do find \"$d\" -name index.html -not -path \"$d/index.html\" | while read f; do dir=$(dirname \"$f\"); parent=$(dirname \"$dir\"); name=$(basename \"$dir\"); cp \"$f\" \"${parent}/${name}.html\"; done; done",
     "start": "next start",
     "lint": "eslint"
   },
