@@ -119,6 +119,16 @@ export default function Footer({ dict, locale }: FooterProps) {
                 <span className="text-dark-500 group-hover:text-dark-400 transition-colors text-xs hidden sm:inline">-</span>
                 <span className="text-dark-500 group-hover:text-dark-300 transition-colors text-xs">{dict.footer.friendDesc}</span>
               </a>
+              <a
+                href="https://ptable.top/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-2 text-sm transition-colors"
+              >
+                <span className="font-medium text-dark-200 group-hover:text-indigo-400 transition-colors">ptable.top</span>
+                <span className="text-dark-500 group-hover:text-dark-400 transition-colors text-xs hidden sm:inline">-</span>
+                <span className="text-dark-500 group-hover:text-dark-300 transition-colors text-xs">{locale === 'zh' ? '元素周期表查询' : 'Periodic Table'}</span>
+              </a>
             </div>
           </div>
         </div>
