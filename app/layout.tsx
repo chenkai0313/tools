@@ -38,8 +38,7 @@ export default function RootLayout({
     >
       <head>
         <meta name="baidu-site-verification" content="codeva-D3JK5USaIt" />
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2997084266989115" crossOrigin="anonymous"></script>
-        <script dangerouslySetInnerHTML={{
+<script dangerouslySetInnerHTML={{
           __html: `
           var _hmt = _hmt || [];
           (function() {
