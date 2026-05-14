@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { WebApplicationSchema, BreadcrumbListSchema } from '@/components/JsonLd'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -14,10 +15,34 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         ? '在线时间戳与日期时间互转工具，支持秒级和毫秒级。'
         : 'Online timestamp to date converter, supports seconds and milliseconds.',
     },
-    alternates: { languages: { 'zh': '/zh/tools/time', 'en': '/en/tools/time' } },
+    alternates: { languages: { 'zh': '/zh/tools/time/', 'en': '/en/tools/time/' } },
   }
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return children
+export default async function Layout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  const zhName = '时间戳转换'
+  const enName = 'Timestamp Converter'
+  const zhDesc = '在线时间戳与日期时间互转工具，支持秒级和毫秒级，实时预览，双击复制结果。'
+  const enDesc = 'Online timestamp to date converter. Supports seconds and milliseconds with real-time preview.'
+  const home = lang === 'zh' ? '首页' : 'Home'
+  const tools = lang === 'zh' ? '工具' : 'Tools'
+  const base = 'https://schg.xyz'
+
+  return (
+    <>
+      <WebApplicationSchema
+        name={lang === 'zh' ? zhName : enName}
+        description={lang === 'zh' ? zhDesc : enDesc}
+        url={`${base}/${lang}/tools/time/`}
+        lang={lang}
+      />
+      <BreadcrumbListSchema items={[
+        { name: home, url: `${base}/${lang}/` },
+        { name: tools, url: `${base}/${lang}/tools/time/` },
+        { name: lang === 'zh' ? zhName : enName, url: `${base}/${lang}/tools/time/` },
+      ]} />
+      {children}
+    </>
+  )
 }

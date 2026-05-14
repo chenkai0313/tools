@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { WebApplicationSchema, BreadcrumbListSchema } from '@/components/JsonLd'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -14,10 +15,34 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         ? 'Base64与图片互转工具，支持PNG/JPG/GIF/WebP格式。'
         : 'Convert between Base64 strings and images, supports PNG/JPG/GIF/WebP.',
     },
-    alternates: { languages: { 'zh': '/zh/tools/base64', 'en': '/en/tools/base64' } },
+    alternates: { languages: { 'zh': '/zh/tools/base64/', 'en': '/en/tools/base64/' } },
   }
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return children
+export default async function Layout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  const zhName = 'Base64 图片'
+  const enName = 'Base64 Image'
+  const zhDesc = '在线Base64与图片互转工具，支持PNG/JPG/GIF/WebP格式，上传自动编码，粘贴Base64实时预览。'
+  const enDesc = 'Online Base64 image converter. Convert images to Base64 and vice versa with live preview.'
+  const home = lang === 'zh' ? '首页' : 'Home'
+  const tools = lang === 'zh' ? '工具' : 'Tools'
+  const base = 'https://schg.xyz'
+
+  return (
+    <>
+      <WebApplicationSchema
+        name={lang === 'zh' ? zhName : enName}
+        description={lang === 'zh' ? zhDesc : enDesc}
+        url={`${base}/${lang}/tools/base64/`}
+        lang={lang}
+      />
+      <BreadcrumbListSchema items={[
+        { name: home, url: `${base}/${lang}/` },
+        { name: tools, url: `${base}/${lang}/tools/base64/` },
+        { name: lang === 'zh' ? zhName : enName, url: `${base}/${lang}/tools/base64/` },
+      ]} />
+      {children}
+    </>
+  )
 }

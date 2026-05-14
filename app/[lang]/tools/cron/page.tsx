@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { useState, useCallback, useMemo } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 import { parseCron, cronToText, getNextExecutions, getCronPresets } from '@/lib/cron'
 
 type FieldMode = 'every' | 'step' | 'value' | 'range'
@@ -359,6 +360,7 @@ export default function CronToolPage() {
       </div>
 
       {toolContent.cron[lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="cron" />
     </div>
   )
 }

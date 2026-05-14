@@ -1,5 +1,6 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import HtmlLangSetter from '@/components/HtmlLangSetter'
 import { getDictionary, isLocale } from '@/i18n'
 import { notFound } from 'next/navigation'
 
@@ -21,6 +22,7 @@ export default async function LangLayout({
 
   return (
     <>
+      <HtmlLangSetter />
       <Header dict={dict} locale={lang} />
       <main className="flex-1">{children}</main>
       <Footer dict={dict} locale={lang} />

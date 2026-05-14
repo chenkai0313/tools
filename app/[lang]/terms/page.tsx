@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     title: `${lang === 'zh' ? '使用条款' : 'Terms of Service'} - 站长工具`,
     description: lang === 'zh' ? 'Ken 站长工具的使用条款。使用本站即表示你同意这些条款。' : 'Terms of service for Ken Webmaster Tools. By using this site, you agree to these terms.',
     keywords: '使用条款, terms of service, terms of use, 服务条款, 用户协议, disclaimer',
-    alternates: { languages: { 'zh': '/zh/terms', 'en': '/en/terms' } },
+    alternates: { languages: { 'zh': '/zh/terms/', 'en': '/en/terms/' } },
   }
 }
 

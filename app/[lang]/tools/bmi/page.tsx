@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { getDictionary, type Locale } from '@/i18n'
 import { calcBMI, getBMICategory, calcAge, getHealthyWeightRange, kgToLb, lbToKg, cmToIn, inToCm } from '@/lib/bmi'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 
 export default function BMIPage() {
   const { lang } = useParams() as { lang: Locale }
@@ -197,6 +198,7 @@ export default function BMIPage() {
       )}
 
       {toolContent.bmi[lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="bmi" />
     </div>
   )
 }

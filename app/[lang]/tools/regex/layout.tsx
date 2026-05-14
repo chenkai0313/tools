@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { WebApplicationSchema, BreadcrumbListSchema } from '@/components/JsonLd'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -14,10 +15,34 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         ? '在线正则测试，实时匹配高亮，支持完整flags。'
         : 'Online regex tester with real-time highlighting and full flag support.',
     },
-    alternates: { languages: { 'zh': '/zh/tools/regex', 'en': '/en/tools/regex' } },
+    alternates: { languages: { 'zh': '/zh/tools/regex/', 'en': '/en/tools/regex/' } },
   }
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return children
+export default async function Layout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  const zhName = '正则表达式测试'
+  const enName = 'Regex Tester'
+  const zhDesc = '在线正则表达式测试工具，实时匹配高亮，支持全部flags，展示匹配位置和捕获分组。'
+  const enDesc = 'Online regex tester with real-time match highlighting, full flag support, and group capture display.'
+  const home = lang === 'zh' ? '首页' : 'Home'
+  const tools = lang === 'zh' ? '工具' : 'Tools'
+  const base = 'https://schg.xyz'
+
+  return (
+    <>
+      <WebApplicationSchema
+        name={lang === 'zh' ? zhName : enName}
+        description={lang === 'zh' ? zhDesc : enDesc}
+        url={`${base}/${lang}/tools/regex/`}
+        lang={lang}
+      />
+      <BreadcrumbListSchema items={[
+        { name: home, url: `${base}/${lang}/` },
+        { name: tools, url: `${base}/${lang}/tools/regex/` },
+        { name: lang === 'zh' ? zhName : enName, url: `${base}/${lang}/tools/regex/` },
+      ]} />
+      {children}
+    </>
+  )
 }

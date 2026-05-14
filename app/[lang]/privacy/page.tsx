@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     title: `${lang === 'zh' ? '隐私政策' : 'Privacy Policy'} - 站长工具`,
     description: lang === 'zh' ? 'Ken 站长工具的隐私政策。了解我们收集哪些信息、如何使用以及你的权利。' : 'Privacy policy for Ken Webmaster Tools. Learn about what data we collect, how we use it, and your rights.',
     keywords: '隐私政策, privacy policy, data privacy, GDPR, cookie, 数据隐私, 隐私保护',
-    alternates: { languages: { 'zh': '/zh/privacy', 'en': '/en/privacy' } },
+    alternates: { languages: { 'zh': '/zh/privacy/', 'en': '/en/privacy/' } },
   }
 }
 

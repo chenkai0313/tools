@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { useState, useCallback, useRef } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 import { fileToBase64, base64ToImageSrc, isValidBase64, formatFileSize } from '@/lib/base64'
 
 export default function Base64ToolPage() {
@@ -169,6 +170,7 @@ export default function Base64ToolPage() {
       </div>
 
       {toolContent.base64[lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="base64" />
     </div>
   )
 }

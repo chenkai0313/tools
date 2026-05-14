@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { getDictionary, type Locale } from '@/i18n'
 import { toRoman, fromRoman, getCurrentYearRoman } from '@/lib/roman'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 
 export default function RomanNumeralPage() {
   const { lang } = useParams() as { lang: Locale }
@@ -140,6 +141,7 @@ export default function RomanNumeralPage() {
       </div>
 
       {toolContent['roman-numeral'][lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="roman-numeral" />
     </div>
   )
 }

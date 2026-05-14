@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 import QRCode from 'qrcode'
 
 export default function QRCodePage() {
@@ -190,6 +191,7 @@ export default function QRCodePage() {
       </div>
 
       {toolContent.qrcode[lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="qrcode" />
     </div>
   )
 }

@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { getDictionary, type Locale } from '@/i18n'
 import { generateRandomData, dataToCSV, dataToJSON, getFieldLabels, type RandomField } from '@/lib/random'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 
 const ALL_FIELDS: RandomField[] = ['name', 'email', 'phone', 'address', 'company', 'id', 'ip', 'color']
 
@@ -146,6 +147,7 @@ export default function RandomDataPage() {
       )}
 
       {toolContent['random-data'][lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="random-data" />
     </div>
   )
 }

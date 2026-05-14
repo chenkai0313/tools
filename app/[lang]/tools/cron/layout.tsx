@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { WebApplicationSchema, BreadcrumbListSchema } from '@/components/JsonLd'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -14,10 +15,34 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         ? 'Cron表达式解析与生成，支持转可读文本和执行时间预览。'
         : 'Cron expression parser and generator with human-readable output.',
     },
-    alternates: { languages: { 'zh': '/zh/tools/cron', 'en': '/en/tools/cron' } },
+    alternates: { languages: { 'zh': '/zh/tools/cron/', 'en': '/en/tools/cron/' } },
   }
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return children
+export default async function Layout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  const zhName = 'Cron 表达式'
+  const enName = 'Cron Expression'
+  const zhDesc = '在线Cron表达式解析生成工具，将Cron转为可读时间描述，实时预览最近5次执行时间。'
+  const enDesc = 'Online cron expression parser. Parse cron schedules to readable text and preview next execution times.'
+  const home = lang === 'zh' ? '首页' : 'Home'
+  const tools = lang === 'zh' ? '工具' : 'Tools'
+  const base = 'https://schg.xyz'
+
+  return (
+    <>
+      <WebApplicationSchema
+        name={lang === 'zh' ? zhName : enName}
+        description={lang === 'zh' ? zhDesc : enDesc}
+        url={`${base}/${lang}/tools/cron/`}
+        lang={lang}
+      />
+      <BreadcrumbListSchema items={[
+        { name: home, url: `${base}/${lang}/` },
+        { name: tools, url: `${base}/${lang}/tools/cron/` },
+        { name: lang === 'zh' ? zhName : enName, url: `${base}/${lang}/tools/cron/` },
+      ]} />
+      {children}
+    </>
+  )
 }

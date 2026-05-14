@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { WebApplicationSchema, BreadcrumbListSchema } from '@/components/JsonLd'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -14,10 +15,34 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         ? 'AES/DES/RSA在线加解密，密钥生成、签名验证，浏览器端处理。'
         : 'Online AES/DES/RSA encryption/decryption with key generation and signing.',
     },
-    alternates: { languages: { 'zh': '/zh/tools/crypto', 'en': '/en/tools/crypto' } },
+    alternates: { languages: { 'zh': '/zh/tools/crypto/', 'en': '/en/tools/crypto/' } },
   }
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return children
+export default async function Layout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  const zhName = '加解密工具'
+  const enName = 'Encryption/Decryption'
+  const zhDesc = '在线加解密工具，支持AES/DES对称加密和RSA非对称加密，所有计算在浏览器端完成。'
+  const enDesc = 'Online encryption/decryption tool supporting AES/DES/RSA. All processing runs in-browser.'
+  const home = lang === 'zh' ? '首页' : 'Home'
+  const tools = lang === 'zh' ? '工具' : 'Tools'
+  const base = 'https://schg.xyz'
+
+  return (
+    <>
+      <WebApplicationSchema
+        name={lang === 'zh' ? zhName : enName}
+        description={lang === 'zh' ? zhDesc : enDesc}
+        url={`${base}/${lang}/tools/crypto/`}
+        lang={lang}
+      />
+      <BreadcrumbListSchema items={[
+        { name: home, url: `${base}/${lang}/` },
+        { name: tools, url: `${base}/${lang}/tools/crypto/` },
+        { name: lang === 'zh' ? zhName : enName, url: `${base}/${lang}/tools/crypto/` },
+      ]} />
+      {children}
+    </>
+  )
 }

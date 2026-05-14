@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { useState, useCallback, useMemo } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 import {
   timestampToDateTime,
   dateTimeToTimestamp,
@@ -300,6 +301,7 @@ export default function TimeToolPage() {
       </div>
 
       {toolContent.time[lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="time" />
     </div>
   )
 }

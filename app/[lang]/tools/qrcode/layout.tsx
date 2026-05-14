@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { WebApplicationSchema, BreadcrumbListSchema } from '@/components/JsonLd'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -14,10 +15,34 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         ? '自定义尺寸和Logo的在线二维码生成器。'
         : 'Online QR code generator with custom size and logo support.',
     },
-    alternates: { languages: { 'zh': '/zh/tools/qrcode', 'en': '/en/tools/qrcode' } },
+    alternates: { languages: { 'zh': '/zh/tools/qrcode/', 'en': '/en/tools/qrcode/' } },
   }
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return children
+export default async function Layout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  const zhName = '二维码生成'
+  const enName = 'QR Code Generator'
+  const zhDesc = '在线二维码生成器，支持文本、网址生成二维码，可自定义尺寸并嵌入Logo，一键下载PNG。'
+  const enDesc = 'Online QR code generator. Generate QR codes with custom size and logo overlay. Download as PNG.'
+  const home = lang === 'zh' ? '首页' : 'Home'
+  const tools = lang === 'zh' ? '工具' : 'Tools'
+  const base = 'https://schg.xyz'
+
+  return (
+    <>
+      <WebApplicationSchema
+        name={lang === 'zh' ? zhName : enName}
+        description={lang === 'zh' ? zhDesc : enDesc}
+        url={`${base}/${lang}/tools/qrcode/`}
+        lang={lang}
+      />
+      <BreadcrumbListSchema items={[
+        { name: home, url: `${base}/${lang}/` },
+        { name: tools, url: `${base}/${lang}/tools/qrcode/` },
+        { name: lang === 'zh' ? zhName : enName, url: `${base}/${lang}/tools/qrcode/` },
+      ]} />
+      {children}
+    </>
+  )
 }

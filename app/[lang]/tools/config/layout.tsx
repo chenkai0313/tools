@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { WebApplicationSchema, BreadcrumbListSchema } from '@/components/JsonLd'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -14,10 +15,34 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         ? 'YAML/JSON/TOML/INI/Properties/.env/XML 七种格式互转。'
         : 'Convert between YAML, JSON, TOML, INI, Properties, .env, and XML.',
     },
-    alternates: { languages: { 'zh': '/zh/tools/config', 'en': '/en/tools/config' } },
+    alternates: { languages: { 'zh': '/zh/tools/config/', 'en': '/en/tools/config/' } },
   }
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return children
+export default async function Layout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  const zhName = '配置文件格式转化'
+  const enName = 'Config Format Converter'
+  const zhDesc = '在线配置文件格式互转工具，支持YAML/JSON/TOML/INI/Properties/.env/XML七种格式互转。'
+  const enDesc = 'Online config format converter. Convert between YAML, JSON, TOML, INI, Properties, .env, and XML.'
+  const home = lang === 'zh' ? '首页' : 'Home'
+  const tools = lang === 'zh' ? '工具' : 'Tools'
+  const base = 'https://schg.xyz'
+
+  return (
+    <>
+      <WebApplicationSchema
+        name={lang === 'zh' ? zhName : enName}
+        description={lang === 'zh' ? zhDesc : enDesc}
+        url={`${base}/${lang}/tools/config/`}
+        lang={lang}
+      />
+      <BreadcrumbListSchema items={[
+        { name: home, url: `${base}/${lang}/` },
+        { name: tools, url: `${base}/${lang}/tools/config/` },
+        { name: lang === 'zh' ? zhName : enName, url: `${base}/${lang}/tools/config/` },
+      ]} />
+      {children}
+    </>
+  )
 }

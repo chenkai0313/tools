@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { getDictionary, type Locale } from '@/i18n'
 import { calcEqualInterest, calcEqualPrincipal } from '@/lib/loan'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 
 export default function LoanCalcPage() {
   const { lang } = useParams() as { lang: Locale }
@@ -204,6 +205,7 @@ export default function LoanCalcPage() {
       )}
 
       {toolContent['loan-calc'][lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="loan-calc" />
     </div>
   )
 }

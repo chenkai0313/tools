@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useMemo } from 'react'
 import { useParams } from 'next/navigation'
 import { getDictionary, type Locale } from '@/i18n'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 
 const MAX_SIZE = 20 * 1024 * 1024 // 20MB
 
@@ -319,6 +320,7 @@ export default function ImageToolsPage() {
       )}
 
       {toolContent['image-tools'][lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="image-tools" />
     </div>
   )
 }

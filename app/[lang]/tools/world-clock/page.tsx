@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import { getDictionary, type Locale } from '@/i18n'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 
 type TimezoneEntry = { id: string; label: string }
 
@@ -270,6 +271,7 @@ export default function WorldClockPage() {
       )}
 
       {toolContent['world-clock'][lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="world-clock" />
     </div>
   )
 }

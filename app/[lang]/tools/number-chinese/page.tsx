@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { getDictionary, type Locale } from '@/i18n'
 import { numberToChinese, numberToChineseUpper } from '@/lib/numberchinese'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 
 export default function NumberChinesePage() {
   const { lang } = useParams() as { lang: Locale }
@@ -120,6 +121,7 @@ export default function NumberChinesePage() {
       )}
 
       {toolContent['number-chinese'][lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="number-chinese" />
     </div>
   )
 }

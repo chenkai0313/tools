@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 import { formatJSON, compressJSON, validateJSON, generateStruct, parseStructToJSON, ALL_LANGS, STRUCT_INPUT_LANGS, type TargetLang, type StructInputLang } from '@/lib/json'
 import JsonTree from '@/components/JsonTree'
 
@@ -473,6 +474,7 @@ export default function JsonToolPage() {
           ))}
         </div>
       </section>
+      <RelatedTools lang={lang} current="json" />
     </div>
   )
 }

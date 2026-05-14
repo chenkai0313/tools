@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { useState, useCallback } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 import { generatePasswords, calculateStrength, type PasswordOptions } from '@/lib/password'
 
 export default function PasswordToolPage() {
@@ -176,6 +177,7 @@ export default function PasswordToolPage() {
       </div>
 
       {toolContent.password[lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="password" />
     </div>
   )
 }

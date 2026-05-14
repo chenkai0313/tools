@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { useState, useCallback, useRef } from 'react'
 import { getDictionary, type Locale } from '@/i18n'
 import { toolContent } from '@/components/ToolContent'
+import RelatedTools from '@/components/RelatedTools'
 import CryptoJS from 'crypto-js'
 import {
   generateRSAKeyPair, exportPublicKey, exportPrivateKey,
@@ -441,6 +442,7 @@ export default function CryptoPage() {
       )}
 
       {toolContent.crypto[lang as 'zh' | 'en']}
+      <RelatedTools lang={lang} current="crypto" />
     </div>
   )
 }

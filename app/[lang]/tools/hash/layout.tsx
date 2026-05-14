@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { WebApplicationSchema, BreadcrumbListSchema } from '@/components/JsonLd'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -14,10 +15,34 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         ? '支持MD5/SHA-1/SHA-256/SHA-384/SHA-512的在线哈希计算工具。'
         : 'Online hash calculator for MD5, SHA-1, SHA-256, SHA-384, SHA-512.',
     },
-    alternates: { languages: { 'zh': '/zh/tools/hash', 'en': '/en/tools/hash' } },
+    alternates: { languages: { 'zh': '/zh/tools/hash/', 'en': '/en/tools/hash/' } },
   }
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return children
+export default async function Layout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  const zhName = '哈希计算'
+  const enName = 'Hash Calculator'
+  const zhDesc = '在线哈希值计算工具，支持MD5、SHA-1、SHA-256、SHA-384、SHA-512算法，实时计算。'
+  const enDesc = 'Online hash calculator supporting MD5, SHA-1, SHA-256, SHA-384, SHA-512 with real-time computation.'
+  const home = lang === 'zh' ? '首页' : 'Home'
+  const tools = lang === 'zh' ? '工具' : 'Tools'
+  const base = 'https://schg.xyz'
+
+  return (
+    <>
+      <WebApplicationSchema
+        name={lang === 'zh' ? zhName : enName}
+        description={lang === 'zh' ? zhDesc : enDesc}
+        url={`${base}/${lang}/tools/hash/`}
+        lang={lang}
+      />
+      <BreadcrumbListSchema items={[
+        { name: home, url: `${base}/${lang}/` },
+        { name: tools, url: `${base}/${lang}/tools/hash/` },
+        { name: lang === 'zh' ? zhName : enName, url: `${base}/${lang}/tools/hash/` },
+      ]} />
+      {children}
+    </>
+  )
 }
