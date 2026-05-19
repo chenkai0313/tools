@@ -20,6 +20,245 @@ export const categories: { key: string; label: Record<string, string> }[] = [
 
 export const articles: Article[] = [
   {
+    slug: 'frontend-seo-developer-guide',
+    title: 'Frontend SEO for Developers: What SPAs, Crawlers, and Structured Data Actually Mean',
+    description: 'Practical frontend SEO guide covering SPA crawler limitations, server-side rendering vs static export, semantic HTML, JSON-LD structured data, and Core Web Vitals for developers who actually ship code.',
+    category: 'Frontend',
+    categoryKey: 'frontend',
+    date: '2026-05-19',
+    readTime: 8,
+    hot: true,
+    content: `## I Shipped a Vue App That Google Could Not Read
+
+Three years ago I launched a side project — a Vue 2 SPA with Vue Router in history mode. It looked great. The client was happy. A week later I checked Google Search Console. Zero indexed pages. Not one.
+
+I had been writing frontend code for five years at that point. Nobody had ever told me that Google might not see my content the way users did. CSS was rendering, JavaScript was executing, the app was fast — but to a search crawler, it was an empty `<div id="app">` followed by a 200-line webpack bundle it would never run.
+
+That moment changed how I think about frontend architecture. SEO is not something you bolt on after launch. It is a constraint that shapes how you render, how you route, and how you structure HTML. Here is what I have learned since.
+
+## How Search Crawlers Actually Work
+
+Search engine crawlers are not browsers. They do not have your GPU, they do not have infinite time, and they definitely do not want to run your 2MB webpack bundle.
+
+Googlebot uses a two-phase crawl. The first pass downloads the HTML and indexes whatever text it finds immediately. Days or weeks later, a second pass runs JavaScript and indexes any dynamically rendered content. That delay between passes is the problem — if your content depends entirely on JavaScript to appear, you are invisible during the first pass, which is when most ranking decisions happen.
+
+Bing, Baidu, and smaller search engines are even less forgiving. Some run zero JavaScript. Baidu's crawler, which matters enormously if you target the Chinese market, has notoriously weak JS rendering. If your `<title>` tag is set via `document.title = "..."` instead of in the HTML source, Baidu simply does not see it.
+
+What this means in practice: every piece of content you want indexed must exist in the initial HTML payload. Not after hydration. Not after an API call. In the raw HTTP response body.
+
+## The SPA Problem and Three Ways Out
+
+A traditional Vue or React SPA built with `create-vue` or Create React App ships an HTML file that looks like this:
+
+\`\`\`html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My App</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="/assets/index.abc123.js"></script>
+</body>
+</html>
+\`\`\`
+
+Every page on your site — homepage, about, pricing, blog posts — serves this exact same HTML. The `<div id="app">` is empty. The JavaScript bundle replaces it with actual content after it downloads, parses, and executes. That chain takes 2-5 seconds for a user on a fast connection. For a crawler on a budget, it might time out before any content appears.
+
+There are three ways out of this hole.
+
+### Static Site Generation
+
+Tools like Next.js, Nuxt, and Astro pre-render your pages at build time into static HTML files. No server, no runtime rendering — just flat HTML with the content already in it. This is what I use for schg.xyz. Every tool page compiles to an HTML file with the title, description, and JSON-LD already embedded. The crawler sees everything on the first request.
+
+\`\`\`bash
+# Static export in Next.js
+next build && next export
+# Output: out/zh/tools/time/index.html — full HTML, no JS required
+\`\`\`
+
+The trade-off: content that changes frequently needs a rebuild. For a blog or tool site, that is fine. For a dashboard with user-specific data, it is not.
+
+### Server-Side Rendering
+
+With SSR, every request hits your Node.js server, which renders the React/Vue tree to an HTML string and sends it back. The crawler gets full content. The user gets an interactive page after hydration.
+
+The catch: SSR adds server cost and complexity. Every page load runs your component tree on the server. At scale, you need caching layers, CDN integration, and fallback handling for when rendering fails. I have debugged SSR memory leaks at 3 AM and I do not recommend the experience.
+
+### Hybrid: ISR and Partial Prerendering
+
+Next.js Incremental Static Regeneration lets you statically generate pages at request time and cache the result. The first visitor triggers a build; subsequent visitors get static HTML. It gives you the SEO benefits of static with the freshness of SSR, without running a render server for every request.
+
+\`\`\`javascript
+// Next.js ISR — revalidate every 60 seconds
+export async function getStaticProps() {
+  const posts = await fetchPosts()
+  return { props: { posts }, revalidate: 60 }
+}
+\`\`\`
+
+## The HTML Tags That Search Engines Actually Read
+
+You can write the most beautiful React component tree in the world. If these HTML elements are wrong or missing, your rankings suffer.
+
+### Title Tag
+
+The `<title>` is the single most important on-page SEO element. It must be unique per page, include the primary keyword near the beginning, and stay under 60 characters. Never default to the app name on every page.
+
+\`\`\`tsx
+// Good: unique, keyword-first, concise
+export async function generateMetadata({ params }) {
+  const { lang } = await params
+  return {
+    title: lang === 'zh' ? '时间戳转换 - 站长工具' : 'Timestamp Converter - Webmaster Tools',
+  }
+}
+\`\`\`
+
+Framework-specific note: if you are using Vue with `vue-meta` or React Helmet, verify that the title appears in the source HTML, not just after hydration. Right-click → View Page Source. If you do not see the title tag, the crawler does not either.
+
+### Meta Description
+
+Not a direct ranking factor, but it controls the snippet text under your link in search results. A compelling snippet gets more clicks. More clicks signal relevance to Google. Indirectly, description matters a lot.
+
+### Hreflang Tags
+
+If your site has multiple languages, hreflang tells Google which version to show to which user. Missing or broken hreflang is one of the most common international SEO issues I see.
+
+\`\`\`html
+<link rel="alternate" hreflang="zh" href="https://schg.xyz/zh/tools/time/" />
+<link rel="alternate" hreflang="en" href="https://en/tools/time/" />
+<link rel="alternate" hreflang="x-default" href="https://schg.xyz/zh/tools/time/" />
+\`\`\`
+
+Important detail: hreflang URLs must be absolute and must include the trailing slash if your canonical does. Inconsistent trailing slashes between canonical and hreflang confuse Google and split your indexing signals between two URLs it treats as different pages.
+
+### Semantic HTML Structure
+
+Crawlers parse heading hierarchy (`<h1>` through `<h6>`) to understand document structure. A page with one `<h1>`, clear `<h2>` sections, and proper semantic tags (`<nav>`, `<main>`, `<article>`) signals well-organized content.
+
+I used to wrap everything in `<div>` tags because it was easier to style. The crawler saw undifferentiated text blocks. Switching to semantic HTML took an afternoon and gave every page a machine-readable outline for free.
+
+## JSON-LD: The Structured Data Most Developers Skip
+
+Structured data lets you tell search engines exactly what your page contains — not through inference, but through explicit typed data. JSON-LD is the format Google recommends, and it belongs in every page's `<head>`.
+
+For schg.xyz, I added three schema types to every tool page.
+
+### WebApplication Schema
+
+Tells Google this page is an interactive web application, not just a document. Includes the application category, operating system requirements, and publisher information.
+
+\`\`\`html
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Timestamp Converter",
+  "description": "Convert between Unix timestamps and human-readable dates.",
+  "url": "https://schg.xyz/en/tools/time/",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+\`\`\`
+
+### BreadcrumbList Schema
+
+Produces the breadcrumb trail you see under search results. Instead of a bare URL, users see "Home > Tools > Timestamp Converter" which increases click-through.
+
+\`\`\`html
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://schg.xyz/en/" },
+    { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://schg.xyz/en/tools/time/" },
+    { "@type": "ListItem", "position": 3, "name": "Timestamp Converter", "item": "https://schg.xyz/en/tools/time/" }
+  ]
+}
+</script>
+\`\`\`
+
+### Testing Structured Data
+
+Google's Rich Results Test tool validates your JSON-LD. Paste your URL or code snippet and it shows exactly which rich results your page is eligible for. I run this on every new page type before launch. A missing `"@type"` or wrong URL format means your structured data is silently ignored.
+
+You can also use the [JSON Tools](https://schg.xyz/en/tools/json/) on schg.xyz to format and validate your JSON-LD snippets before embedding them — catching syntax errors in structured data is much faster with a formatter than squinting at a minified string in your `<head>`.
+
+## Core Web Vitals and SEO: The Performance Connection
+
+In 2021 Google made Core Web Vitals a ranking signal. The three metrics that matter:
+
+- **LCP (Largest Contentful Paint)**: How fast the main content loads. Target under 2.5 seconds.
+- **INP (Interaction to Next Paint)**: How fast the page responds to clicks and taps. Target under 200ms.
+- **CLS (Cumulative Layout Shift)**: How much the page jumps around while loading. Target under 0.1.
+
+For a static HTML site, these are easy to hit. For a heavy SPA, they are not. Here is what matters in practice.
+
+### LCP: Kill the Render-Blocking Chain
+
+Your LCP is only as fast as the slowest resource in the critical path. A common culprit: loading a web font from Google Fonts, which blocks text rendering until the font file arrives.
+
+\`\`\`html
+<!-- Bad: blocks rendering -->
+<link href="https://fonts.googleapis.com/css2?family=Inter" rel="stylesheet">
+
+<!-- Better: self-host with font-display: swap -->
+<style>
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter.woff2') format('woff2');
+  font-display: swap;
+}
+</style>
+\`\`\`
+
+Self-hosting fonts and using `font-display: swap` means text renders immediately in a fallback font, then swaps when the custom font loads. No blank screen while waiting for the font CDN.
+
+### CLS: Reserve Space for Dynamic Content
+
+Layout shift happens when content pops in after the initial render and pushes everything down. The fix is simple: always specify width and height on images, and never inject ads or embeds without a reserved container.
+
+\`\`\`css
+img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: attr(width) / attr(height);
+}
+\`\`\`
+
+For ad slots, reserve the container dimensions even when the ad has not loaded. An empty 300x250 box is better than a 0-height box that expands and shifts your content.
+
+### INP: Less JavaScript, Faster Responses
+
+Interaction delay usually comes from long tasks — JavaScript functions that block the main thread for more than 50ms. The fix is less about optimization tricks and more about shipping less JavaScript in the first place.
+
+This is another argument for static generation. A statically exported page has zero framework JavaScript to hydrate. The browser parses HTML and paints it. There is nothing to block interaction because there is nothing to execute.
+
+## A Practical Checklist for Frontend SEO
+
+Here is what I check on every project before launch. It takes about 30 minutes and catches 90% of SEO issues.
+
+- View Page Source on every page type. Is the title tag there? The meta description? The heading hierarchy?
+- Run Google's Rich Results Test on one URL per page type. Are your JSON-LD schemas valid?
+- Check hreflang tags with a crawler like Screaming Frog. Are all alternates reciprocal (A links to B, B links back to A)?
+- Run Lighthouse in incognito mode. Is LCP under 2.5s, CLS under 0.1?
+- Submit the sitemap to Google Search Console. Are all important URLs included? Are any 404s or redirects in the index?
+- Verify the `<html lang>` attribute matches the page language. A hardcoded `lang="en"` on a Chinese page or vice versa confuses screen readers and search engines.
+- Use a [regex tester](https://schg.xyz/en/tools/regex/) to validate URL patterns in your sitemap and hreflang tags before deployment. A mistyped regex in your routing config can silently break dozens of pages.
+
+## Conclusion
+
+Frontend SEO stopped being someone else's problem the moment SPAs became the default. The good news is that the most impactful fixes are the simplest ones: ship HTML with content in it, write a unique `<title>` per page, add JSON-LD structured data, and do not make crawlers run your JavaScript.
+
+I rebuilt schg.xyz as a fully static export after wasting months with an SPA that barely got indexed. The improvement was immediate — every new tool page was indexed within days instead of weeks. For content sites, documentation, blogs, and marketing pages, static generation is not just a performance optimization. It is an SEO requirement.
+
+The tools mentioned in this article — JSON formatter, regex tester, config converter — are all available for free at [schg.xyz](https://schg.xyz). They run entirely in your browser. No uploads, no registration, no server-side processing. Just tools that work.`,
+  },
+  {
     slug: 'json-format-guide',
     title: 'What is JSON? How to Format, Validate and Parse JSON Data',
     description: 'Complete guide to JSON format: learn JSON syntax rules, common mistakes to avoid, how to format JSON in JavaScript/Python/Go, and best practices for API development.',
