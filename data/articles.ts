@@ -32,7 +32,7 @@ export const articles: Article[] = [
 
 Three years ago I launched a side project — a Vue 2 SPA with Vue Router in history mode. It looked great. The client was happy. A week later I checked Google Search Console. Zero indexed pages. Not one.
 
-I had been writing frontend code for five years at that point. Nobody had ever told me that Google might not see my content the way users did. CSS was rendering, JavaScript was executing, the app was fast — but to a search crawler, it was an empty `<div id="app">` followed by a 200-line webpack bundle it would never run.
+I had been writing frontend code for five years at that point. Nobody had ever told me that Google might not see my content the way users did. CSS was rendering, JavaScript was executing, the app was fast — but to a search crawler, it was an empty \`<div id="app">\` followed by a 200-line webpack bundle it would never run.
 
 That moment changed how I think about frontend architecture. SEO is not something you bolt on after launch. It is a constraint that shapes how you render, how you route, and how you structure HTML. Here is what I have learned since.
 
@@ -42,13 +42,13 @@ Search engine crawlers are not browsers. They do not have your GPU, they do not 
 
 Googlebot uses a two-phase crawl. The first pass downloads the HTML and indexes whatever text it finds immediately. Days or weeks later, a second pass runs JavaScript and indexes any dynamically rendered content. That delay between passes is the problem — if your content depends entirely on JavaScript to appear, you are invisible during the first pass, which is when most ranking decisions happen.
 
-Bing, Baidu, and smaller search engines are even less forgiving. Some run zero JavaScript. Baidu's crawler, which matters enormously if you target the Chinese market, has notoriously weak JS rendering. If your `<title>` tag is set via `document.title = "..."` instead of in the HTML source, Baidu simply does not see it.
+Bing, Baidu, and smaller search engines are even less forgiving. Some run zero JavaScript. Baidu's crawler, which matters enormously if you target the Chinese market, has notoriously weak JS rendering. If your \`<title>\` tag is set via \`document.title = "..."\` instead of in the HTML source, Baidu simply does not see it.
 
 What this means in practice: every piece of content you want indexed must exist in the initial HTML payload. Not after hydration. Not after an API call. In the raw HTTP response body.
 
 ## The SPA Problem and Three Ways Out
 
-A traditional Vue or React SPA built with `create-vue` or Create React App ships an HTML file that looks like this:
+A traditional Vue or React SPA built with \`create-vue\` or Create React App ships an HTML file that looks like this:
 
 \`\`\`html
 <!DOCTYPE html>
@@ -63,7 +63,7 @@ A traditional Vue or React SPA built with `create-vue` or Create React App ships
 </html>
 \`\`\`
 
-Every page on your site — homepage, about, pricing, blog posts — serves this exact same HTML. The `<div id="app">` is empty. The JavaScript bundle replaces it with actual content after it downloads, parses, and executes. That chain takes 2-5 seconds for a user on a fast connection. For a crawler on a budget, it might time out before any content appears.
+Every page on your site — homepage, about, pricing, blog posts — serves this exact same HTML. The \`<div id="app">\` is empty. The JavaScript bundle replaces it with actual content after it downloads, parses, and executes. That chain takes 2-5 seconds for a user on a fast connection. For a crawler on a budget, it might time out before any content appears.
 
 There are three ways out of this hole.
 
@@ -103,7 +103,7 @@ You can write the most beautiful React component tree in the world. If these HTM
 
 ### Title Tag
 
-The `<title>` is the single most important on-page SEO element. It must be unique per page, include the primary keyword near the beginning, and stay under 60 characters. Never default to the app name on every page.
+The \`<title>\` is the single most important on-page SEO element. It must be unique per page, include the primary keyword near the beginning, and stay under 60 characters. Never default to the app name on every page.
 
 \`\`\`tsx
 // Good: unique, keyword-first, concise
@@ -115,7 +115,7 @@ export async function generateMetadata({ params }) {
 }
 \`\`\`
 
-Framework-specific note: if you are using Vue with `vue-meta` or React Helmet, verify that the title appears in the source HTML, not just after hydration. Right-click → View Page Source. If you do not see the title tag, the crawler does not either.
+Framework-specific note: if you are using Vue with \`vue-meta\` or React Helmet, verify that the title appears in the source HTML, not just after hydration. Right-click → View Page Source. If you do not see the title tag, the crawler does not either.
 
 ### Meta Description
 
@@ -135,13 +135,13 @@ Important detail: hreflang URLs must be absolute and must include the trailing s
 
 ### Semantic HTML Structure
 
-Crawlers parse heading hierarchy (`<h1>` through `<h6>`) to understand document structure. A page with one `<h1>`, clear `<h2>` sections, and proper semantic tags (`<nav>`, `<main>`, `<article>`) signals well-organized content.
+Crawlers parse heading hierarchy (\`<h1>\` through \`<h6>\`) to understand document structure. A page with one \`<h1>\`, clear \`<h2>\` sections, and proper semantic tags (\`<nav>\`, \`<main>\`, \`<article>\`) signals well-organized content.
 
-I used to wrap everything in `<div>` tags because it was easier to style. The crawler saw undifferentiated text blocks. Switching to semantic HTML took an afternoon and gave every page a machine-readable outline for free.
+I used to wrap everything in \`<div>\` tags because it was easier to style. The crawler saw undifferentiated text blocks. Switching to semantic HTML took an afternoon and gave every page a machine-readable outline for free.
 
 ## JSON-LD: The Structured Data Most Developers Skip
 
-Structured data lets you tell search engines exactly what your page contains — not through inference, but through explicit typed data. JSON-LD is the format Google recommends, and it belongs in every page's `<head>`.
+Structured data lets you tell search engines exactly what your page contains — not through inference, but through explicit typed data. JSON-LD is the format Google recommends, and it belongs in every page's \`<head>\`.
 
 For schg.xyz, I added three schema types to every tool page.
 
@@ -184,9 +184,9 @@ Produces the breadcrumb trail you see under search results. Instead of a bare UR
 
 ### Testing Structured Data
 
-Google's Rich Results Test tool validates your JSON-LD. Paste your URL or code snippet and it shows exactly which rich results your page is eligible for. I run this on every new page type before launch. A missing `"@type"` or wrong URL format means your structured data is silently ignored.
+Google's Rich Results Test tool validates your JSON-LD. Paste your URL or code snippet and it shows exactly which rich results your page is eligible for. I run this on every new page type before launch. A missing \`"@type"\` or wrong URL format means your structured data is silently ignored.
 
-You can also use the [JSON Tools](https://schg.xyz/en/tools/json/) on schg.xyz to format and validate your JSON-LD snippets before embedding them — catching syntax errors in structured data is much faster with a formatter than squinting at a minified string in your `<head>`.
+You can also use the [JSON Tools](https://schg.xyz/en/tools/json/) on schg.xyz to format and validate your JSON-LD snippets before embedding them — catching syntax errors in structured data is much faster with a formatter than squinting at a minified string in your \`<head>\`.
 
 ## Core Web Vitals and SEO: The Performance Connection
 
@@ -216,7 +216,7 @@ Your LCP is only as fast as the slowest resource in the critical path. A common 
 </style>
 \`\`\`
 
-Self-hosting fonts and using `font-display: swap` means text renders immediately in a fallback font, then swaps when the custom font loads. No blank screen while waiting for the font CDN.
+Self-hosting fonts and using \`font-display: swap\` means text renders immediately in a fallback font, then swaps when the custom font loads. No blank screen while waiting for the font CDN.
 
 ### CLS: Reserve Space for Dynamic Content
 
@@ -247,12 +247,12 @@ Here is what I check on every project before launch. It takes about 30 minutes a
 - Check hreflang tags with a crawler like Screaming Frog. Are all alternates reciprocal (A links to B, B links back to A)?
 - Run Lighthouse in incognito mode. Is LCP under 2.5s, CLS under 0.1?
 - Submit the sitemap to Google Search Console. Are all important URLs included? Are any 404s or redirects in the index?
-- Verify the `<html lang>` attribute matches the page language. A hardcoded `lang="en"` on a Chinese page or vice versa confuses screen readers and search engines.
+- Verify the \`<html lang>\` attribute matches the page language. A hardcoded \`lang="en"\` on a Chinese page or vice versa confuses screen readers and search engines.
 - Use a [regex tester](https://schg.xyz/en/tools/regex/) to validate URL patterns in your sitemap and hreflang tags before deployment. A mistyped regex in your routing config can silently break dozens of pages.
 
 ## Conclusion
 
-Frontend SEO stopped being someone else's problem the moment SPAs became the default. The good news is that the most impactful fixes are the simplest ones: ship HTML with content in it, write a unique `<title>` per page, add JSON-LD structured data, and do not make crawlers run your JavaScript.
+Frontend SEO stopped being someone else's problem the moment SPAs became the default. The good news is that the most impactful fixes are the simplest ones: ship HTML with content in it, write a unique \`<title>\` per page, add JSON-LD structured data, and do not make crawlers run your JavaScript.
 
 I rebuilt schg.xyz as a fully static export after wasting months with an SPA that barely got indexed. The improvement was immediate — every new tool page was indexed within days instead of weeks. For content sites, documentation, blogs, and marketing pages, static generation is not just a performance optimization. It is an SEO requirement.
 
