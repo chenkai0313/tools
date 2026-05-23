@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://schg.xyz/sitemap.xml
