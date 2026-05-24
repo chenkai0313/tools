@@ -1163,6 +1163,213 @@ const encryptionKey = process.env.ENCRYPTION_KEY
 The hash vs encryption distinction is not academic — choosing the wrong algorithm creates security holes. Hash for verification, encrypt for confidentiality, and use the right tool for each job.`,
   },
   {
+    slug: 'hash-verification-for-downloads',
+    title: 'Hash Verification for Downloads: Why SHA-256 Still Matters',
+    description: 'Learn hash verification for downloads with SHA-256, MD5, and practical checksum commands. A webmaster-friendly guide to checking file integrity before install.',
+    category: 'Security',
+    categoryKey: 'security',
+    date: '2026-05-24',
+    readTime: 9,
+    hot: false,
+    content: `## I Learned to Check Hashes After a Bad Plugin Update
+
+A few years ago I downloaded a WordPress plugin update from what looked like a perfectly normal mirror. The ZIP file unpacked fine. The admin panel did not complain. Then the site started making outbound requests to a domain I had never seen before.
+
+The problem was not subtle in hindsight. I had skipped the one check that would have taken maybe 20 seconds: verifying the file hash before installing it.
+
+That experience changed my habits. If I download a CMS package, a backup archive, a server image, a browser build, or even a config bundle from a client, I check the hash. Not every time for tiny throwaway files, sure. But anything that touches production? I do it. Hash verification is one of those old-school security habits that still holds up, especially for webmasters who move files around all day.
+
+If you have ever wondered what hash verification actually does, whether MD5 is still useful, or how to verify file integrity before install, this is the practical version.
+
+## What Hash Verification Actually Checks
+
+Hash verification means taking a file, running it through a hash function, and comparing the result to a known checksum published by the original source.
+
+If the two values match, you know the file is exactly the same as the one the publisher intended you to download. If the values differ, something changed. That change might be harmless corruption during transfer. It might be a partially uploaded file on your own server. Or it might be tampering.
+
+Here is the important part: a hash is not just a file size check. Two files can have the same size and still be completely different internally. A good hash function turns the full file content into a short fingerprint, and even a one-byte change should produce a very different output.
+
+What does that mean in practice for a webmaster?
+
+- You can verify a downloaded plugin before uploading it to your site
+- You can confirm a backup archive was not damaged before restoring it
+- You can publish checksums for tools or assets you distribute
+- You can compare the same file across environments without opening it manually
+
+This is why hash verification still matters. It is simple, fast, and brutally reliable for detecting unwanted changes.
+
+## MD5 vs SHA-256 for Downloads
+
+This is where people get confused. They hear that MD5 is broken, then assume hashes are no longer useful for download verification. That is not really the right takeaway.
+
+MD5 is broken for security-sensitive collision resistance. In plain English, attackers can deliberately create different files that produce the same MD5 value under certain conditions. That makes MD5 a poor choice for anything you want to trust against an active attacker.
+
+SHA-256 is the safer default today. It is widely available on Linux, macOS, Windows, browsers, Node.js, Python, and pretty much every toolchain a webmaster is likely to touch.
+
+So here is my rule:
+
+- If you are publishing a checksum today, use SHA-256
+- If a vendor only gives you an MD5 checksum, it is still better than checking nothing at all for accidental corruption
+- If the file matters enough to affect production, I would rather see SHA-256 or stronger
+
+I still run into MD5 on older download pages, especially for themes, plugins, ROM mirrors, archived software, and random server tools. For integrity-only checks inside a trusted workflow, MD5 can still help catch a broken upload or incomplete transfer. But for public download verification, SHA-256 is the number I want to see.
+
+## How to Verify File Integrity Before Install
+
+Most people expect this to be annoying. It really is not.
+
+On macOS or Linux, I usually do it right in the terminal:
+
+\`\`\`bash
+# Generate a SHA-256 hash for a downloaded file
+shasum -a 256 wordpress-6.8.zip
+
+# On many Linux distributions, this works too
+sha256sum wordpress-6.8.zip
+
+# Older mirrors may still publish MD5
+md5 wordpress-6.8.zip      # macOS
+md5sum wordpress-6.8.zip   # Linux
+\`\`\`
+
+The output will be a long hex string. Compare that to the checksum published on the official download page. If they match exactly, the file passes the check.
+
+On Windows, PowerShell has a built-in command that does the same job:
+
+\`\`\`bash
+# Run in PowerShell
+Get-FileHash .\wordpress-6.8.zip -Algorithm SHA256
+Get-FileHash .\wordpress-6.8.zip -Algorithm MD5
+\`\`\`
+
+Yes, that block is labeled as bash here because the site renderer has a limited list of supported code languages. The command itself is for PowerShell.
+
+The catch is that manual comparison gets tedious when you are handling multiple files. That is where checksum files help.
+
+## Why Checksum Files Are Better Than Copy-Pasting Hashes
+
+A good download page publishes a separate checksum file, often named something like \`SHA256SUMS\` or \`checksums.txt\`. That file lists expected hashes next to filenames, which makes batch verification much easier.
+
+Here is a tiny example:
+
+\`\`\`text
+8f434346648f6b96df89dda901c5176b10a6d83961d6312fd71db3f44b4c5465  wordpress-6.8.zip
+2d5b8c4ec7c1e0cb7d9ef9ec3ef03ff716f0db7e6179d9d40c2f676b6ce1fabc  plugin-bundle.zip
+\`\`\`
+
+And here is how you would verify against that file on Linux:
+
+\`\`\`bash
+# Verify every listed file in one shot
+sha256sum -c SHA256SUMS
+
+# Example output
+# wordpress-6.8.zip: OK
+# plugin-bundle.zip: OK
+\`\`\`
+
+I like this workflow because it scales. If I am moving deploy artifacts between my laptop, a staging server, and object storage, I would rather verify ten files at once than paste ten hashes manually into a note.
+
+If you run a tools site and you publish downloadable assets, checksum files are worth the extra minute.
+
+## A Small Python Script for Hash Verification
+
+Sometimes I want a quick script because I am checking files inside a deployment flow or a one-off maintenance task. Python makes this easy.
+
+\`\`\`python
+import hashlib
+from pathlib import Path
+
+file_path = Path("wordpress-6.8.zip")
+expected = "8f434346648f6b96df89dda901c5176b10a6d83961d6312fd71db3f44b4c5465"
+
+sha256 = hashlib.sha256()
+with file_path.open("rb") as f:
+    for chunk in iter(lambda: f.read(8192), b""):
+        sha256.update(chunk)
+
+actual = sha256.hexdigest()
+print(actual)
+print("MATCH" if actual == expected else "MISMATCH")
+\`\`\`
+
+This is the kind of script I trust because it is boring. No magic. No third-party package. Just read the file in chunks, hash it, compare the result.
+
+If you are handling large backups, chunked reading matters. I have seen people load a 4GB archive into memory just to compute a hash. That is an easy way to make a cheap VPS miserable for no reason.
+
+## Browser-Side Hash Verification Is Good for Privacy
+
+One thing I like about webmaster tools that run locally in the browser is that they avoid unnecessary uploads. That matters more than people think.
+
+If your goal is to hash a config export, a backup manifest, or a list of API keys you have redacted but still do not want to send anywhere, a browser-side hash tool is the right model. The file stays on your machine. The calculation happens locally. No server needs to inspect your content.
+
+That is one reason I like the architecture of browser-based tools in general. For text transforms, JSON formatting, encoding conversion, and basic crypto utilities, local processing is often the safer default.
+
+If you want to hash a string in the browser with JavaScript, the Web Crypto API can do it directly:
+
+\`\`\`javascript
+async function sha256(text) {
+  const data = new TextEncoder().encode(text)
+  const digest = await crypto.subtle.digest("SHA-256", data)
+  return [...new Uint8Array(digest)]
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("")
+}
+
+sha256("hello world").then(console.log)
+\`\`\`
+
+That snippet hashes text, not files, but the underlying idea is the same. The browser can do the work without shipping your data off to a server you do not control.
+
+## Common Hash Verification Mistakes I Keep Seeing
+
+The first mistake is comparing the wrong file. This sounds silly until you have done it once. I have absolutely hashed the extracted folder instead of the original ZIP and then wasted ten minutes wondering why the checksum did not match.
+
+The second mistake is copying hashes from third-party blogs instead of the official source. If the vendor publishes checksums, get them there. Not from a forum thread. Not from a reposted tutorial. Not from some download mirror with six popups and a fake green button.
+
+The third mistake is trusting file names too much. A file called \`wordpress-latest.zip\` tells you almost nothing. I prefer versioned file names because they are much easier to track in logs and checksum manifests.
+
+The fourth mistake is assuming HTTPS alone is enough. HTTPS helps protect transport, which is good, but hash verification gives you a second check. If a mirror sync went wrong, if a deploy artifact got truncated, or if somebody uploaded the wrong build, HTTPS will not catch that. A checksum will.
+
+The fifth mistake is using plain hashes for password storage. This article is about hash verification for downloads, not password hashing, but I still need to say it because people mix these topics together all the time. SHA-256 is fine for file integrity checks. It is not the right choice for storing user passwords. That is a different problem and needs tools like bcrypt or Argon2.
+
+## If You Publish Downloads, Make Verification Easy
+
+If you run a software site, theme shop, plugin catalog, or even just a resource page with occasional downloads, do your users a favor and publish checksums clearly.
+
+My preference is simple:
+
+- Show the SHA-256 checksum right next to the download link
+- Offer a copy button if your UI supports it
+- Provide a \`SHA256SUMS\` file for batch verification
+- Keep version numbers in the file name
+- Do not hide checksums at the bottom of a changelog page nobody reads
+
+If you want to generate a checksum file during release prep, the shell version is tiny:
+
+\`\`\`bash
+# Create a checksum manifest for all zip files in the current folder
+sha256sum *.zip > SHA256SUMS
+
+# Later, verify them all
+sha256sum -c SHA256SUMS
+\`\`\`
+
+That is enough for many release workflows. You do not need a huge signing infrastructure to make your downloads more trustworthy. A clearly published SHA-256 checksum is already a real improvement.
+
+## What I Learned From Doing This the Hard Way
+
+Hash verification sounds old-fashioned until the day it saves you from installing a broken file on a production site.
+
+I used to treat checksums as something Linux distributions cared about and normal webmasters ignored. Over time I changed my mind. Webmasters download a lot of sensitive stuff: plugins, database exports, backup archives, deployment bundles, SSL-related files, browser builds, config packages. That is exactly the kind of workflow where a small integrity check pays off.
+
+And honestly, the habit sticks once you start. When a file hash matches, I stop thinking about whether the ZIP got mangled somewhere between the publisher, the CDN, and my machine. When it does not match, I know to stop immediately instead of hoping the installer sorts it out.
+
+That is why SHA-256 still matters. Hash verification is fast, local, and practical. It is one of the few security steps that gives you a very clear answer with very little overhead.
+
+If you want related tools to pair with this workflow, a JSON formatter is useful for cleaning manifest files, and a Base64 or encoding tool helps when you need to inspect opaque strings from APIs, signatures, or config exports. But for raw file trust, hash verification is still the first check I reach for.`,
+  },
+  {
     slug: 'docker-install-ubuntu',
     title: 'How to Install Docker and Docker Compose on Ubuntu: Complete Guide',
     description: 'Step-by-step guide to install Docker Engine and Docker Compose on Ubuntu. Includes registry mirror setup for China, proxy configuration, and post-installation tips.',
