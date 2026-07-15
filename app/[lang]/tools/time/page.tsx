@@ -86,7 +86,7 @@ export default function TimeToolPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <div className="mx-auto max-w-5xl px-4 py-8">
       <nav className="mb-6 text-sm text-dark-400">
         <Link href={`/${lang}`} className="hover:text-dark-200 transition-colors">{dict.common.breadcrumb.home}</Link>
         <span className="mx-2">›</span>
@@ -109,7 +109,7 @@ export default function TimeToolPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="flex flex-col gap-6">
         {/* Timestamp → Date */}
         <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] p-6">
           <h2 className="mb-4 text-sm font-semibold text-dark-50">
